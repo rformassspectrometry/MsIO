@@ -1,0 +1,42 @@
+Package: MsIO
+Title: Serializing and restoring/importing mass spectrometry data objects
+Version: 0.0.1
+Authors@R:
+    c(person(given = "Johannes", family = "Rainer",
+             email = "Johannes.Rainer@eurac.edu",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0002-6977-7147")),
+      person(given = "Chong", family = "Tang",
+             email = "chong.tang@uclouvain.be",
+	     role = "ctb"),
+      person(given = "Laurent", family = "Gatto",
+             email = "laurent.gatto@uclouvain.be",
+	     role = "ctb",
+	     comment = c(ORCID = "0000-0002-1520-2268")))
+Description: The serialization mechanism of R allows to save and load R data
+             objects in a binary format, that can however not read by other
+	     programming languages or software. The MsIO package supports
+	     serializing and restoring or importing mass spectrometry data
+	     objects to and from language agnostic file formats. The file type
+	     can be defined and configured through a second argument `param`
+	     of the export/import methods.
+Depends:
+    R (>= 4.2.0)
+Imports:
+    methods
+Suggests:
+    testthat,
+    Spectra,
+    knitr (>= 1.1.0),
+    roxygen2,
+    BiocStyle (>= 2.5.19),
+    msdata,
+    rmarkdown
+License: Artistic-2.0
+Encoding: UTF-8
+VignetteBuilder: knitr
+BugReports: https://github.com/RforMassSpectrometry/MsIO/issues
+URL: https://github.com/RforMassSpectrometry/MsIO
+biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomics
+Roxygen: list(markdown=TRUE)
+RoxygenNote: 7.3.1
