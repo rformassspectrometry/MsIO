@@ -20,8 +20,6 @@
 #'
 #' - [`MsBackendMzR`] object
 #' - [`Spectra`] object
-#' - [`MsExperiment`] object.
-#' - [`XcmsExperiment`] object.
 #'
 #' @param path For `PlainTextParam()`: `character(1)`, defining where the files
 #'   are going to be stored/ should be loaded from. The default is
@@ -40,6 +38,8 @@
 #' restored data as an instance of the class specified with parameter `object`.
 #'
 #' @author Philippine Louail
+#'
+#' @importFrom methods new
 #'
 NULL
 

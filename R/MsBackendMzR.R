@@ -1,5 +1,5 @@
-#'@title Method to save and load content of an MsBackend object
-#'
+#' @include PlainTextParam.R
+#'@title Methods to save and load contents of an MsBackend object.
 #'
 #' @description
 #'
@@ -13,16 +13,17 @@
 #'
 #' @author Philippine Louail
 #'
-#' @importFrom Spectra processingChunkSize dropNaSpectraVariables Spectra MsBackendMzR
+#' @importFrom Spectra dropNaSpectraVariables MsBackendMzR dataStorage dataStorage<-
 #'
 #' @importFrom utils read.table write.table
 #'
 #' @importFrom MsCoreUtils common_path
 #'
+#' @importFrom S4Vectors DataFrame
 #'
+#' @noRd
 NULL
 
-#### Need to try to switch to use albaster for the DataFrame export
 #' @rdname PlainTextParam
 setMethod("saveMsObject", signature(object = "MsBackendMzR",
                                     param = "PlainTextParam"),
@@ -34,7 +35,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
               fl <- file.path(param@path, "backend_data.txt")
               if (file.exists(fl))
                   warning("Overwriting already present 'backend_data.txt' file")
-              writeLines(paste0("# ", class(object)[1L]), con = fl)
+              writeLines(paste0("# ", class(object)[1L]), con = fl) ##Need to try to switch to use albaster for the DataFrame export
               suppressWarnings(
                   write.table(object@spectraData,
                               file = fl, sep = "\t", quote = FALSE,
@@ -55,9 +56,11 @@ setMethod("loadMsObject", signature(object = "MsBackendMzR",
               b@spectraData <- data
               if (length(spectraPath) > 0) {
                   old <- common_path(dataStorage(b))
-                  ## if (nchar(old) > 0)
-                  ##     old <- paste0(old, "/")
-                  dataStorage(b) <- sub(old, spectraPath, dataStorage(b))
+                  dataStoragePaths <- dataStorage(b)
+                  normalizedDataStoragePaths <- normalizePath(dataStoragePaths,
+                                                              winslash = "/")
+                  dataStorage(b) <- sub(old, spectraPath,
+                                        normalizedDataStoragePaths)
               }
               b
           })

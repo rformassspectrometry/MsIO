@@ -1,5 +1,5 @@
 library(testthat)
-library("Spectra")
+library(Spectra)
 library(MsIO)
 
 # Backend object
