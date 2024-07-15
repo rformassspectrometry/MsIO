@@ -3,14 +3,14 @@
 \name{PlainTextParam}
 \alias{PlainTextParam}
 \alias{saveMsObject,MsBackendMzR,PlainTextParam-method}
-\alias{loadMsObject,MsBackendMzR,PlainTextParam-method}
+\alias{readMsObject,MsBackendMzR,PlainTextParam-method}
 \title{Store contents of MS objects as plain text files}
 \usage{
 PlainTextParam(path = tempdir())
 
 \S4method{saveMsObject}{MsBackendMzR,PlainTextParam}(object, param)
 
-\S4method{loadMsObject}{MsBackendMzR,PlainTextParam}(object, param, spectraPath = character())
+\S4method{readMsObject}{MsBackendMzR,PlainTextParam}(object, param, spectraPath = character())
 }
 \arguments{
 \item{path}{For \code{PlainTextParam()}: \code{character(1)}, defining where the files
@@ -18,13 +18,13 @@ are going to be stored/ should be loaded from. The default is
 \code{path = tempdir()}.}
 
 \item{object}{for \code{saveMsObject()}: the MS data object to save, for
-\code{loadMsObject()}: the MS data object that should be returned}
+\code{readMsObject()}: the MS data object that should be returned}
 
 \item{param}{an object defining and (eventually configuring) the file format
 and file name or directory to/from which the data object should be
 exported/imported.}
 
-\item{spectraPath}{For \code{loadMsObject()}: \code{character(1)} optionally allowing to
+\item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing to
 define the (absolute) path where the spectra files (\emph{data storage files})
 can be found. This parameter is passed to the \code{loadResults()} method of
 the \code{\link[=MsBackend]{MsBackend()}}.}
@@ -32,11 +32,11 @@ the \code{\link[=MsBackend]{MsBackend()}}.}
 \value{
 For \code{PlainTextParam()}: a \code{PlainTextParam} class. \code{saveMsObject()}
 does not return anything but saves the object to collections of different
-plain text files to a folder. The \code{loadMsObject()} method returns the
+plain text files to a folder. The \code{readMsObject()} method returns the
 restored data as an instance of the class specified with parameter \code{object}.
 }
 \description{
-The \code{saveMsObject()} and \code{loadMsObject()} methods with the \code{PlainTextParam}
+The \code{saveMsObject()} and \code{readMsObject()} methods with the \code{PlainTextParam}
 option enable users to save/load different type of Ms object as a
 collections of plain text files in/from a specified folder. This folder,
 defined with the \code{path} parameter, will be created by the \code{storeResults()}

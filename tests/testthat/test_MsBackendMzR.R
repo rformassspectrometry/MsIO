@@ -1,4 +1,4 @@
-test_that("saveMsObject,loadMsObject,PlainTextParam,MsBackendMzR works", {
+test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     b <- sciex_mzr
     pth <- file.path(tempdir(), "test")
     param <- PlainTextParam(path = pth)
@@ -6,7 +6,7 @@ test_that("saveMsObject,loadMsObject,PlainTextParam,MsBackendMzR works", {
     expect_true(dir.exists(pth))
     expect_true(file.exists(file.path(param@path, "backend_data.txt")))
     ## Loading data again
-    b_load <- loadMsObject(object = MsBackendMzR(), param)
+    b_load <- readMsObject(object = MsBackendMzR(), param)
     expect_true(inherits(b_load, "MsBackendMzR"))
     b <- dropNaSpectraVariables(b)
     expect_equal(b@spectraData, b_load@spectraData)
@@ -20,10 +20,10 @@ test_that("saveMsObject,loadMsObject,PlainTextParam,MsBackendMzR works", {
     sd$dataStorage <- sub("msdata", "other", sd$dataStorage)
     write.table(sd, file = file.path(param@path, "backend_data.txt"),
                 sep = "\t", quote = FALSE, row.names = FALSE)
-    A <- loadMsObject(MsBackendMzR(), param)
+    A <- readMsObject(MsBackendMzR(), param)
     expect_error(validObject(A), "invalid class")
-    A <- loadMsObject(MsBackendMzR(), param, spectraPath = bp)
+    A <- readMsObject(MsBackendMzR(), param, spectraPath = bp)
     expect_true(validObject(A))
     param <- PlainTextParam(tempdir())
-    expect_error(loadMsObject(MsBackendMzR(), param), "No 'backend_data")
+    expect_error(readMsObject(MsBackendMzR(), param), "No 'backend_data")
 })

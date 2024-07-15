@@ -1,4 +1,4 @@
-#' @include PlainTextParam.R
+#'@include PlainTextParam.R
 #'@title Methods to save and load contents of an MsBackend object.
 #'
 #' @description
@@ -35,7 +35,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
               fl <- file.path(param@path, "backend_data.txt")
               if (file.exists(fl))
                   warning("Overwriting already present 'backend_data.txt' file")
-              writeLines(paste0("# ", class(object)[1L]), con = fl) ##Need to try to switch to use albaster for the DataFrame export
+              writeLines(paste0("# ", class(object)[1L]), con = fl)
               suppressWarnings(
                   write.table(object@spectraData,
                               file = fl, sep = "\t", quote = FALSE,
@@ -43,7 +43,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
           })
 
 #' @rdname PlainTextParam
-setMethod("loadMsObject", signature(object = "MsBackendMzR",
+setMethod("readMsObject", signature(object = "MsBackendMzR",
                                    param = "PlainTextParam"),
           function(object, param, spectraPath = character()) {
               b <- MsBackendMzR()

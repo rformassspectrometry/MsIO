@@ -8,7 +8,7 @@
 #'
 #' @description
 #'
-#' The `saveMsObject()` and `loadMsObject()` methods with the `PlainTextParam`
+#' The `saveMsObject()` and `readMsObject()` methods with the `PlainTextParam`
 #' option enable users to save/load different type of Ms object as a
 #' collections of plain text files in/from a specified folder. This folder,
 #' defined with the `path` parameter, will be created by the `storeResults()`
@@ -25,7 +25,7 @@
 #'   are going to be stored/ should be loaded from. The default is
 #'   `path = tempdir()`.
 #'
-#' @param spectraPath For `loadMsObject()`: `character(1)` optionally allowing to
+#' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing to
 #'   define the (absolute) path where the spectra files (*data storage files*)
 #'   can be found. This parameter is passed to the `loadResults()` method of
 #'   the [MsBackend()].
@@ -34,7 +34,7 @@
 #'
 #' @return For `PlainTextParam()`: a `PlainTextParam` class. `saveMsObject()`
 #' does not return anything but saves the object to collections of different
-#' plain text files to a folder. The `loadMsObject()` method returns the
+#' plain text files to a folder. The `readMsObject()` method returns the
 #' restored data as an instance of the class specified with parameter `object`.
 #'
 #' @author Philippine Louail
