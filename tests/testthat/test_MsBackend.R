@@ -6,8 +6,8 @@ test_that("saveMsObject,MsBackend,ANY fails", {
                  "objects of class 'MsBackendMemory'")
 })
 
-test_that("loadMsObject,MsBackend,ANY fails", {
+test_that("readMsObject,MsBackend,ANY fails", {
     be <- MsBackendMemory()
-    expect_error(loadMsObject(be, param = "A"),
+    expect_error(readMsObject(be, param = "A"),
                  "objects of class 'MsBackendMemory'")
 })

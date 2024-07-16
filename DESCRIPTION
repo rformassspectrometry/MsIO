@@ -24,15 +24,18 @@ Description: The serialization mechanism of R allows to save and load R data
 Depends:
     R (>= 4.2.0)
 Imports:
-    methods
+    methods,
+    MsCoreUtils,
+    S4Vectors,
+    ProtGenerics
 Suggests:
     testthat,
-    Spectra,
     knitr (>= 1.1.0),
     roxygen2,
     BiocStyle (>= 2.5.19),
     msdata,
-    rmarkdown
+    rmarkdown,
+    Spectra
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -40,4 +43,10 @@ BugReports: https://github.com/RforMassSpectrometry/MsIO/issues
 URL: https://github.com/RforMassSpectrometry/MsIO
 biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomics
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
+Collate: 
+    'AllGenerics.R'
+    'MsBackend.R'
+    'PlainTextParam.R'
+    'MsBackendMzR.R'
+    'Spectra.R'
