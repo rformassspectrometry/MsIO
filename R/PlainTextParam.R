@@ -15,7 +15,7 @@
 #' function. Any previous exports eventually present in that folder will be
 #' overwritten.
 #'
-#' The Ms object currently supported for import and export wwith this parameter
+#' The Ms object currently supported for import and export with this parameter
 #' are :
 #'
 #' - `MsBackendMzR` object
