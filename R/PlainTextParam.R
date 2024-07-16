@@ -4,18 +4,18 @@
 #'
 #' @export
 #'
-#' @family Ms object export and import formats.
+#' @family MS object export and import formats.
 #'
 #' @description
 #'
 #' The `saveMsObject()` and `readMsObject()` methods with the `PlainTextParam`
-#' option enable users to save/load different type of Ms object as a
+#' option enable users to save/load different type of MS object as a
 #' collections of plain text files in/from a specified folder. This folder,
 #' defined with the `path` parameter, will be created by the `storeResults()`
 #' function. Any previous exports eventually present in that folder will be
 #' overwritten.
 #'
-#' The Ms object currently supported for import and export with this parameter
+#' The MS object currently supported for import and export with this parameter
 #' are :
 #'
 #' - `MsBackendMzR` object

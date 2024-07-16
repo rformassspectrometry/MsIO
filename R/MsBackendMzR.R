@@ -1,5 +1,5 @@
 #'@include PlainTextParam.R
-#'@title Methods to save and load contents of an MsBackend object.
+#'@title Methods to save and load contents of an MsBackend object
 #'
 #' @description
 #'
@@ -46,21 +46,20 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
 setMethod("readMsObject", signature(object = "MsBackendMzR",
                                    param = "PlainTextParam"),
           function(object, param, spectraPath = character()) {
-              b <- Spectra::MsBackendMzR()
               fl <- file.path(param@path, "backend_data.txt")
               if (!file.exists(fl))
                   stop("No 'backend_data.txt' file found in the provided path.")
               data <- read.table(file = fl, sep = "\t", header = TRUE)
               rownames(data) <- NULL
               data <- DataFrame(data)
-              b@spectraData <- data
+              object@spectraData <- data
               if (length(spectraPath) > 0) {
-                  old <- common_path(dataStorage(b))
-                  dataStoragePaths <- dataStorage(b)
+                  old <- common_path(dataStorage(object))
+                  dataStoragePaths <- dataStorage(object)
                   normalizedDataStoragePaths <- normalizePath(dataStoragePaths,
                                                               winslash = "/")
-                  dataStorage(b) <- sub(old, spectraPath,
+                  dataStorage(object) <- sub(old, spectraPath,
                                         normalizedDataStoragePaths)
               }
-              b
+              object
           })
