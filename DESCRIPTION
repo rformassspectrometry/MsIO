@@ -25,16 +25,17 @@ Depends:
     R (>= 4.2.0)
 Imports:
     methods,
-    Spectra,
     MsCoreUtils,
-    S4Vectors
+    S4Vectors,
+    ProtGenerics
 Suggests:
     testthat,
     knitr (>= 1.1.0),
     roxygen2,
     BiocStyle (>= 2.5.19),
     msdata,
-    rmarkdown
+    rmarkdown,
+    Spectra
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr

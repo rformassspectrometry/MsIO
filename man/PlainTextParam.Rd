@@ -46,8 +46,8 @@ overwritten.
 The Ms object currently supported for import and export wwith this parameter
 are :
 \itemize{
-\item \code{\link{MsBackendMzR}} object
-\item \code{\link{Spectra}} object
+\item \code{MsBackendMzR} object
+\item \code{Spectra} object
 }
 }
 \author{

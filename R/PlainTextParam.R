@@ -18,8 +18,8 @@
 #' The Ms object currently supported for import and export wwith this parameter
 #' are :
 #'
-#' - [`MsBackendMzR`] object
-#' - [`Spectra`] object
+#' - `MsBackendMzR` object
+#' - `Spectra` object
 #'
 #' @param path For `PlainTextParam()`: `character(1)`, defining where the files
 #'   are going to be stored/ should be loaded from. The default is
@@ -28,7 +28,7 @@
 #' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing to
 #'   define the (absolute) path where the spectra files (*data storage files*)
 #'   can be found. This parameter is passed to the `loadResults()` method of
-#'   the [MsBackend()].
+#'   the MsBackend().
 #'
 #' @inheritParams saveMsObject
 #'
@@ -40,6 +40,8 @@
 #' @author Philippine Louail
 #'
 #' @importFrom methods new
+#'
+#' @importClassesFrom ProtGenerics Param
 #'
 NULL
 

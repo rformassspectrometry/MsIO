@@ -13,7 +13,7 @@
 #'
 #' @author Philippine Louail
 #'
-#' @importFrom Spectra dropNaSpectraVariables MsBackendMzR dataStorage dataStorage<-
+#' @importFrom ProtGenerics dataStorage dataStorage<-
 #'
 #' @importFrom utils read.table write.table
 #'
@@ -31,7 +31,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
               dir.create(path = param@path,
                          recursive = TRUE,
                          showWarnings = FALSE)
-              object <-  dropNaSpectraVariables(object)
+              object <-  Spectra::dropNaSpectraVariables(object)
               fl <- file.path(param@path, "backend_data.txt")
               if (file.exists(fl))
                   warning("Overwriting already present 'backend_data.txt' file")
@@ -46,7 +46,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
 setMethod("readMsObject", signature(object = "MsBackendMzR",
                                    param = "PlainTextParam"),
           function(object, param, spectraPath = character()) {
-              b <- MsBackendMzR()
+              b <- Spectra::MsBackendMzR()
               fl <- file.path(param@path, "backend_data.txt")
               if (!file.exists(fl))
                   stop("No 'backend_data.txt' file found in the provided path.")
