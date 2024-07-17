@@ -20,8 +20,8 @@ The *MsIO* package defines generic export/import methods along with *parameter*
 objects that allow to select and configure the file format(s). Where possible,
 it is integrated with other approaches in
 [Bioconductor](https://bioconductor.org) such as the
-[*alabastar.base*](https://doi.org/doi:10.18129/B9.bioc.alabaster.base)
-package. In particular *MsIO* will integrate with *alabastar.base* providing
+[*alabaster.base*](https://doi.org/doi:10.18129/B9.bioc.alabaster.base)
+package. In particular *MsIO* will integrate with *alabaster.base* providing
 `saveObject()` methods for exporting/importing MS specific data objects to JSON
 file formats, but, on top of that, supporting serializing MS data objects in
 additional different formats and thus supporting specific file formats defined
