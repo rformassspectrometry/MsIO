@@ -1,3 +1,13 @@
+library(Spectra)
+
+fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML",
+                  package = "msdata")
+sps_dda <- Spectra(fl)
+## add processingQueueVariables to test export
+sps_dda@processingQueueVariables <- c(sps_dda@processingQueueVariables, "rtime")
+sps_dda <- filterMzRange(sps_dda, c(200,300))
+sps_dda <- filterRt(sps_dda, c(200, 700)) ## to ensure subsetted object would work
+
 test_that("saveMsObject,readMsObject,PlainTextParam,Spectra works", {
     s <- sps_dda
     pth <- file.path(tempdir(), "test_spectra")

@@ -1,4 +1,5 @@
 library(xcms)
+
 xmse <- loadXcmsData()
 xmseg_filt <- filterMzRange(xmse, c(200, 500))
 xmseg_filt <- filterRt(xmseg_filt, c(3000, 4000))

@@ -1,3 +1,9 @@
+library(Spectra)
+
+sciex_file <- normalizePath(
+    dir(system.file("sciex", package = "msdata"), full.names = TRUE))
+sciex_mzr <- backendInitialize(MsBackendMzR(), files = sciex_file)
+
 test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     b <- sciex_mzr
     pth <- file.path(tempdir(), "test_backend")
