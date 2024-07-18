@@ -20,6 +20,8 @@
 #'
 #' - `MsBackendMzR` object
 #' - `Spectra` object
+#' - `MsExperiment` object
+#' - `XcmsExperiment` object
 #'
 #' @param path For `PlainTextParam()`: `character(1)`, defining where the files
 #'   are going to be stored/ should be loaded from. The default is

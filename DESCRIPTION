@@ -24,18 +24,22 @@ Description: The serialization mechanism of R allows to save and load R data
 Depends:
     R (>= 4.2.0)
 Imports:
+    jsonlite,
     methods,
     MsCoreUtils,
-    S4Vectors,
-    ProtGenerics
+    ProtGenerics,
+    S4Vectors
 Suggests:
-    testthat,
-    knitr (>= 1.1.0),
-    roxygen2,
     BiocStyle (>= 2.5.19),
+    faahKO,
+    knitr (>= 1.1.0),
+    MsExperiment,
     msdata,
     rmarkdown,
-    Spectra
+    roxygen2,
+    Spectra,
+    testthat, 
+    xcms
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -49,4 +53,6 @@ Collate:
     'MsBackend.R'
     'PlainTextParam.R'
     'MsBackendMzR.R'
+    'MsExperiment.R'
     'Spectra.R'
+    'XcmsExperiment.R'
