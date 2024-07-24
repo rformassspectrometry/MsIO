@@ -23,6 +23,8 @@
 #' - `MsExperiment` object
 #' - `XcmsExperiment` object
 #'
+#' See their respective section below for a detail of the exported files.
+#'
 #' @param path For `PlainTextParam()`: `character(1)`, defining where the files
 #'   are going to be stored/ should be loaded from. The default is
 #'   `path = tempdir()`.
@@ -38,6 +40,84 @@
 #' does not return anything but saves the object to collections of different
 #' plain text files to a folder. The `readMsObject()` method returns the
 #' restored data as an instance of the class specified with parameter `object`.
+#'
+#' @section On disk storage for `MsBackendMzR` objects:
+#'
+#' For `MsBackendMzR` objects, defined in the `Spectra` package, the following
+#' file is stored:
+#'
+#' - The backend's `spectraData()` is stored in a tabular format in a text file
+#'   named *backend_data.txt*. Each row of this file corresponds to a spectrum
+#'   with its respective metadata in the columns.
+#'
+#' @section On-disk storage for `Spectra` objects:
+#'
+#' For `Spectra` objects, defined in the `Spectra` package, the following files
+#' are stored:
+#'
+#' - The backend data storage depends on its class; refer to its respective
+#'   section for more details.
+#'
+#' - The `processingQueueVariables`, `processing`, `processingChunkSize()`, and
+#'   `backend` class information of the object are stored in a text file named
+#'   *spectra_slots.txt*. Each of these slots is stored such that the name of
+#'   the slot is written, followed by "=" and the content of the slot.
+#'
+#' - The processing queue of the `Spectra` object, ensuring that any spectra
+#'   data modifications are retained, is stored in a `json` file named
+#'   *spectra_processing_queue.json*. The file is written such that each
+#'   processing step is separated by a line and includes all information about
+#'   the parameters and functions used for the step.
+#'
+#' @section On-disk storage for `MsExperiment` objects:
+#'
+#' For `MsExperiment` objects, defined in the `MsExperiment` package, the
+#' exported data and related text files are:
+#'
+#' - The previously defined `Spectra` object-related files. See the respective
+#'   section for more information.
+#'
+#' - The `sampleData()` is stored as a text file named *sample_data.txt*. Each
+#'   row of this file corresponds to a sample with its respective metadata in
+#'   the columns.
+#'
+#' - The links between the sample data and other data are stored in text
+#'   files named *sample_data_links_....txt*, with "..." referring to the data
+#'   type. Each file corresponds to a mapping between the sample data and a
+#'   specific data type (e.g., Spectra). One file is written to map samples to
+#'   each data type. In each file, the first column corresponds to the sample
+#'   number and the second to the other data type number (e.g., spectrum number).
+#'   The table "element_metadata.txt" contains the metadata of each mapping
+#'   files [johannes could you maybe help me explain that one aha]
+#'
+#' @section On-disk storage for `XcmsExperiment` objects:
+#'
+#' For `XcmsExperiment` objects, defined in the `xcms` package, the exported
+#' data and related text files are:
+#'
+#' - The previously defined `MsExperiment` object-related files. See the
+#'   respective section for more information.
+#'
+#' - The `processHistory()` information of the object is stored in a `json`
+#'   file named *process_history.json*. The file is written such that each
+#'   processing step is separated by a line and includes all information about
+#'   the parameters and functions used for that step.
+#'
+#' - The chromatographic peak information obtained with `chromPeaks()` and
+#'   `chromPeaksData()` is stored in tabular format in the text files
+#'   *chrom_peaks.txt* and *chrom_peak_data.txt*, respectively. The first file's
+#'   rows represent single peaks with their respective metadata in the columns.
+#'   The second file contains the same peaks by rows but with processing
+#'   information such as whether they are filled or merged in the columns.
+#'
+#' - The `featureDefinitions()` are stored in a text file named
+#'   *feature_definitions.txt*. Additionally, a second file named
+#'   *feature_peak_index.txt* is generated to connect the features' definitions
+#'   with their names. Each row of the first file corresponds to a feature with
+#'   its respective metadata in the columns. The second file contains the
+#'   mapping of each chromatographic peak (e.g., one peak ID per row) to its
+#'   respective feature ID.
+#'
 #'
 #' @author Philippine Louail
 #'

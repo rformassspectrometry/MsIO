@@ -1,21 +1,6 @@
 #'@include PlainTextParam.R
 #'@title Methods to save and load contents of a Spectra object
 #'
-#' @description
-#'
-#' For `Spectra`, the exported data and related text files are:
-#'
-#' - The backend's [spectraData()] stored in a tabular format in a text file
-#'   named *backend_data.txt*.
-#'
-#' - The `processingQueueVariables`, `processing`, `processingChunkSize()` and
-#'   `backend` class information of the object stored in a text file named
-#'   *spectra_slots.txt*.
-#'
-#' - The processing queue of the `Spectra` object, ensuring that any spectra
-#'   data modifications are retained. It is stored in a `json` file named
-#'   *spectra_processing_queue.json*.
-#'
 #' @author Philippine Louail
 #'
 #' @importFrom jsonlite serializeJSON write_json unserializeJSON read_json

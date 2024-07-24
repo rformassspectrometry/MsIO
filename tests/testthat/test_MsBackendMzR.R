@@ -14,9 +14,9 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     ## Loading data again
     b_load <- readMsObject(object = MsBackendMzR(), param)
     expect_true(inherits(b_load, "MsBackendMzR"))
+    expect_equal(peaksVariables(b), peaksVariables(b_load))
     b <- dropNaSpectraVariables(b)
     expect_equal(b@spectraData, b_load@spectraData)
-    expect_equal(peaksVariables(b), peaksVariables(b_load))
     expect_equal(mz(b[1:20]), mz(b_load[1:20]))
 
     ## Check the spectraPath parameter.

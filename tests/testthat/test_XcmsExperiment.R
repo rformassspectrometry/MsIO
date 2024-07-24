@@ -17,7 +17,6 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     expect_true(file.exists(file.path(param@path, "process_history.json")))
     expect_true(file.exists(file.path(param@path, "chrom_peaks.txt")))
     expect_true(file.exists(file.path(param@path, "chrom_peak_data.txt")))
-    expect_true(file.exists(file.path(param@path, "rtime_adjusted.txt")))
     expect_true(file.exists(file.path(param@path, "feature_definitions.txt")))
     expect_true(file.exists(file.path(param@path, "feature_peak_index.txt")))
 

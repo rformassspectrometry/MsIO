@@ -1,5 +1,6 @@
 library(MsExperiment)
 library(faahKO)
+library(Spectra)
 
 faahko_3_files <- c(system.file('cdf/KO/ko15.CDF', package = "faahKO"),
                     system.file('cdf/KO/ko16.CDF', package = "faahKO"),
@@ -14,7 +15,7 @@ mse_filt <- filterMzRange(mse, c(200, 500))
 mse_filt <- filterRt(mse_filt, c(3000, 3500))
 
 test_that("saveMsObject,readMsObject,PlainTextParam,MsExperiment works", {
-    pth <- file.path(tempdir(), "test_MsExperiment")
+    pth <- file.path( "test_MsExperiment")
     param <- PlainTextParam(path = pth)
     saveMsObject(mse_filt, param = param)
     expect_true(dir.exists(pth))
@@ -22,10 +23,13 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsExperiment works", {
     expect_true(file.exists(file.path(param@path, "backend_data.txt")))
     expect_true(file.exists(file.path(param@path, "spectra_slots.txt")))
     expect_true(file.exists(file.path(param@path, "spectra_processing_queue.json")))
+    pattern <- "sample_data_links_.*\\.txt"
+    expect_true(length(list.files(param@path, pattern = pattern)) > 0)
     ## Loading data again
     load_mse <- readMsObject(object = MsExperiment(), param)
     expect_true(inherits(load_mse, "MsExperiment"))
     expect_equal(sampleData(mse_filt), sampleData(load_mse))
+    expect_equal(mse_filt@sampleDataLinks, load_mse@sampleDataLinks)
     a <- spectra(mse_filt)
     b <- spectra(load_mse)
     expect_equal(length(a@processingQueue), length(b@processingQueue))

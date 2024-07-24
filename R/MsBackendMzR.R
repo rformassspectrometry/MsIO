@@ -1,16 +1,6 @@
 #'@include PlainTextParam.R
 #'@title Methods to save and load contents of an MsBackendMzR object
 #'
-#' @description
-#'
-#' Import/export of the MS data depends on the respective implementation of
-#' the respective `MsBackend` object.
-#'
-#' For `MsBackendMzR`, the exported data and related text files are:
-#'
-#' - The backend's [spectraData()] stored in a tabular format in a text file
-#'   named *backend_data.txt*.
-#'
 #' @author Philippine Louail
 #'
 #' @importFrom ProtGenerics dataStorage dataStorage<-
@@ -41,7 +31,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
               if (nrow(object@spectraData))
                   suppressWarnings(
                       write.table(object@spectraData,
-                                  file = fl, sep = "\t", quote = FALSE,
+                                  file = fl, sep = "\t", quote = TRUE,
                                   append = TRUE, row.names = FALSE))
           })
 
@@ -56,11 +46,10 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
               if (l2[1] != "# MsBackendMzR")
                   stop("Invalid class in 'backend_data.txt' file.",
                   "Should run with object = ", l2[1])
-              if (!is.na(l2[2])) { # or length(l2) > 1 ?
+              if (length(l2) > 1L) {
                   data <- read.table(file = fl, sep = "\t", header = TRUE)
                   rownames(data) <- NULL
-                  data <- DataFrame(data)
-                  object@spectraData <- data
+                  object@spectraData <- DataFrame(data)
                   if (length(spectraPath) > 0) {
                       old <- common_path(dataStorage(object))
                       dataStoragePaths <- dataStorage(object)

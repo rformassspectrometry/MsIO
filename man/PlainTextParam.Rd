@@ -70,7 +70,91 @@ are :
 \item \code{MsExperiment} object
 \item \code{XcmsExperiment} object
 }
+
+See their respective section below for a detail of the exported files.
 }
+\section{On disk storage for \code{MsBackendMzR} objects}{
+
+
+For \code{MsBackendMzR} objects, defined in the \code{Spectra} package, the following
+file is stored:
+\itemize{
+\item The backend's \code{spectraData()} is stored in a tabular format in a text file
+named \emph{backend_data.txt}. Each row of this file corresponds to a spectrum
+with its respective metadata in the columns.
+}
+}
+
+\section{On-disk storage for \code{Spectra} objects}{
+
+
+For \code{Spectra} objects, defined in the \code{Spectra} package, the following files
+are stored:
+\itemize{
+\item The backend data storage depends on its class; refer to its respective
+section for more details.
+\item The \code{processingQueueVariables}, \code{processing}, \code{processingChunkSize()}, and
+\code{backend} class information of the object are stored in a text file named
+\emph{spectra_slots.txt}. Each of these slots is stored such that the name of
+the slot is written, followed by "=" and the content of the slot.
+\item The processing queue of the \code{Spectra} object, ensuring that any spectra
+data modifications are retained, is stored in a \code{json} file named
+\emph{spectra_processing_queue.json}. The file is written such that each
+processing step is separated by a line and includes all information about
+the parameters and functions used for the step.
+}
+}
+
+\section{On-disk storage for \code{MsExperiment} objects}{
+
+
+For \code{MsExperiment} objects, defined in the \code{MsExperiment} package, the
+exported data and related text files are:
+\itemize{
+\item The previously defined \code{Spectra} object-related files. See the respective
+section for more information.
+\item The \code{sampleData()} is stored as a text file named \emph{sample_data.txt}. Each
+row of this file corresponds to a sample with its respective metadata in
+the columns.
+\item The links between the sample data and other data are stored in text
+files named \emph{sample_data_links_....txt}, with "..." referring to the data
+type. Each file corresponds to a mapping between the sample data and a
+specific data type (e.g., Spectra). One file is written to map samples to
+each data type. In each file, the first column corresponds to the sample
+number and the second to the other data type number (e.g., spectrum number).
+The table "element_metadata.txt" contains the metadata of each mapping
+files \link{johannes could you maybe help me explain that one aha}
+}
+}
+
+\section{On-disk storage for \code{XcmsExperiment} objects}{
+
+
+For \code{XcmsExperiment} objects, defined in the \code{xcms} package, the exported
+data and related text files are:
+\itemize{
+\item The previously defined \code{MsExperiment} object-related files. See the
+respective section for more information.
+\item The \code{processHistory()} information of the object is stored in a \code{json}
+file named \emph{process_history.json}. The file is written such that each
+processing step is separated by a line and includes all information about
+the parameters and functions used for that step.
+\item The chromatographic peak information obtained with \code{chromPeaks()} and
+\code{chromPeaksData()} is stored in tabular format in the text files
+\emph{chrom_peaks.txt} and \emph{chrom_peak_data.txt}, respectively. The first file's
+rows represent single peaks with their respective metadata in the columns.
+The second file contains the same peaks by rows but with processing
+information such as whether they are filled or merged in the columns.
+\item The \code{featureDefinitions()} are stored in a text file named
+\emph{feature_definitions.txt}. Additionally, a second file named
+\emph{feature_peak_index.txt} is generated to connect the features' definitions
+with their names. Each row of the first file corresponds to a feature with
+its respective metadata in the columns. The second file contains the
+mapping of each chromatographic peak (e.g., one peak ID per row) to its
+respective feature ID.
+}
+}
+
 \author{
 Philippine Louail
 }
