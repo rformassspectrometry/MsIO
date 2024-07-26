@@ -40,8 +40,9 @@
 #'   the MsBackend().
 #'
 #' @param ... Additional parameters passed down to internal functions. E.g.
-#'   `spectraPath` if a `MsBackendMzR` object is used to represent the MS data
-#'   of a `Spectra` (`MsExperiment`/`XcmsExperiment`) object.
+#'   parameter `spectraPath` if the object that is being saved contains a
+#'   `Spectra` object which uses a `MsBackendMzR` object to represent the MS
+#'   data.
 #'
 #' @inheritParams saveMsObject
 #'
@@ -87,23 +88,35 @@
 #' @section On-disk storage for `MsExperiment` objects:
 #'
 #' For `MsExperiment` objects, defined in the `MsExperiment` package, the
-#' exported data and related text files are:
+#' exported data and related text files are listed below. Any parameter passed
+#' to the `saveMsObject()` through `...` are passed to the `saveMsObject()`
+#' calls of the individual MS data object(s) within the `MsExperiment`.
 #'
-#' - The previously defined `Spectra` object-related files. See the respective
-#'   section for more information.
+#' Note that at present `saveMsObject()` with `PlainTextParam` does **not**
+#' export the full content of the `MsExperiment`, i.e. slots `@experimentFiles`,
+#' `@qdata`, `@otherData` and `@metadata` are currently not saved.
 #'
-#' - The `sampleData()` is stored as a text file named *sample_data.txt*. Each
-#'   row of this file corresponds to a sample with its respective metadata in
-#'   the columns.
+#' - The `sampleData()` is stored as a text file named
+#'   *ms_experiment_sample_data.txt*. Each row of this file corresponds to a
+#'   sample with its respective metadata in the columns.
 #'
-#' - The links between the sample data and other data are stored in text
-#'   files named *sample_data_links_....txt*, with "..." referring to the data
-#'   type. Each file corresponds to a mapping between the sample data and a
-#'   specific data type (e.g., Spectra). One file is written to map samples to
-#'   each data type. In each file, the first column corresponds to the sample
-#'   number and the second to the other data type number (e.g., spectrum number).
-#'   The table "element_metadata.txt" contains the metadata of each mapping
-#'   files [johannes could you maybe help me explain that one aha]
+#' - The links between the sample data and any other data within the
+#'   `MsExperiment` are stored in text files named
+#'   *ms_experiment_sample_data_links_....txt*,
+#'   with "..." referring to the data slot to which samples are linked.
+#'   Each file contains the mapping between the sample data and the elements in
+#'   a specific data slot (e.g., `Spectra`). The files are tabulator delimited
+#'   text files with two columns of integer values, the first representing the
+#'   index of a sample in the objects `sampleData()`, the second the index of
+#'   the assigned element in the respective object slot.
+#'   The table "ms_experiment_element_metadata.txt" contains the metadata of
+#'   each of the available mappings.
+#'
+#' - If the `MsExperiment` contains a `Spectra` object with MS data, it's
+#'   content is exported to the same folder using a `saveMsObject()` call on
+#'   it (see above for details of exporting `Spectra` objects to text files).
+#'
+#'
 #'
 #' @section On-disk storage for `XcmsExperiment` objects:
 #'

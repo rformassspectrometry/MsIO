@@ -21,11 +21,11 @@ PlainTextParam(path = tempdir())
 
 \S4method{saveMsObject}{MsExperiment,PlainTextParam}(object, param)
 
-\S4method{readMsObject}{MsExperiment,PlainTextParam}(object, param, spectraPath = character())
+\S4method{readMsObject}{MsExperiment,PlainTextParam}(object, param, ...)
 
 \S4method{saveMsObject}{Spectra,PlainTextParam}(object, param)
 
-\S4method{readMsObject}{Spectra,PlainTextParam}(object, param, spectraPath = character())
+\S4method{readMsObject}{Spectra,PlainTextParam}(object, param, ...)
 
 \S4method{saveMsObject}{XcmsExperiment,PlainTextParam}(object, param)
 
@@ -47,6 +47,11 @@ exported/imported.}
 define the (absolute) path where the spectra files (\emph{data storage files})
 can be found. This parameter is passed to the \code{loadResults()} method of
 the MsBackend().}
+
+\item{...}{Additional parameters passed down to internal functions. E.g.
+parameter \code{spectraPath} if the object that is being saved contains a
+\code{Spectra} object which uses a \code{MsBackendMzR} object to represent the MS
+data.}
 }
 \value{
 For \code{PlainTextParam()}: a \code{PlainTextParam} class. \code{saveMsObject()}
@@ -56,43 +61,48 @@ restored data as an instance of the class specified with parameter \code{object}
 }
 \description{
 The \code{saveMsObject()} and \code{readMsObject()} methods with the \code{PlainTextParam}
-option enable users to save/load different type of MS object as a
-collections of plain text files in/from a specified folder. This folder,
-defined with the \code{path} parameter, will be created by the \code{storeResults()}
-function. Any previous exports eventually present in that folder will be
-overwritten.
+option enable users to save/load different type of mass spectrometry (MS)
+object as a collections of plain text files in/from a specified folder.
+This folder, defined with the \code{path} parameter, will be created by the
+\code{storeResults()} function. Any previous exports eventually present in that
+folder will be overwritten.
 
 The MS object currently supported for import and export with this parameter
-are :
+are:
 \itemize{
-\item \code{MsBackendMzR} object
-\item \code{Spectra} object
-\item \code{MsExperiment} object
-\item \code{XcmsExperiment} object
+\item \code{MsBackendMzR} object, defined in the
+(\href{https://bioconductor.org/packages/Spectra}{Spectra}) package.
+\item \code{Spectra} object, defined in the
+(\href{https://bioconductor.org/packages/Spectra}{Spectra}) package.
+\item \code{MsExperiment} object, defined in the
+(\href{https://bioconductor.org/packages/MsExperiment}{MsExperiment}) package.
+\item \code{XcmsExperiment} object, defined in the
+(\href{https://bioconductor.org/packages/xcms}{xcms}) package.
 }
 
-See their respective section below for a detail of the exported files.
+See their respective section below for details and formats of the
+exported files.
 }
-\section{On disk storage for \code{MsBackendMzR} objects}{
+\section{On-disk storage for \code{MsBackendMzR} objects}{
 
 
 For \code{MsBackendMzR} objects, defined in the \code{Spectra} package, the following
 file is stored:
 \itemize{
 \item The backend's \code{spectraData()} is stored in a tabular format in a text file
-named \emph{backend_data.txt}. Each row of this file corresponds to a spectrum
-with its respective metadata in the columns.
+named \emph{ms_backend_data.txt}. Each row of this tab-delimited text file
+corresponds to a spectrum with its respective metadata in the columns.
 }
 }
 
 \section{On-disk storage for \code{Spectra} objects}{
 
 
-For \code{Spectra} objects, defined in the \code{Spectra} package, the following files
-are stored:
+For \code{Spectra} objects, defined in the \code{Spectra} package, the files listed
+below are stored. Any parameter passed to the \code{saveMsObject()} method using
+its \code{...} parameter are passed to the \code{saveMsObject()} call of the
+\code{Spectra}'s backend.
 \itemize{
-\item The backend data storage depends on its class; refer to its respective
-section for more details.
 \item The \code{processingQueueVariables}, \code{processing}, \code{processingChunkSize()}, and
 \code{backend} class information of the object are stored in a text file named
 \emph{spectra_slots.txt}. Each of these slots is stored such that the name of
@@ -102,6 +112,10 @@ data modifications are retained, is stored in a \code{json} file named
 \emph{spectra_processing_queue.json}. The file is written such that each
 processing step is separated by a line and includes all information about
 the parameters and functions used for the step.
+\item The \code{Spectra}'s MS data (i.e. it's backend) is stored/exported using
+the \code{saveMsObject()} method of the respective backend type. Currently
+only backends for which the \code{saveMsObject()} method is implemented (see
+above) are supported.
 }
 }
 
@@ -109,21 +123,31 @@ the parameters and functions used for the step.
 
 
 For \code{MsExperiment} objects, defined in the \code{MsExperiment} package, the
-exported data and related text files are:
+exported data and related text files are listed below. Any parameter passed
+to the \code{saveMsObject()} through \code{...} are passed to the \code{saveMsObject()}
+calls of the individual MS data object(s) within the \code{MsExperiment}.
+
+Note that at present \code{saveMsObject()} with \code{PlainTextParam} does \strong{not}
+export the full content of the \code{MsExperiment}, i.e. slots \verb{@experimentFiles},
+\verb{@qdata}, \verb{@otherData} and \verb{@metadata} are currently not saved.
 \itemize{
-\item The previously defined \code{Spectra} object-related files. See the respective
-section for more information.
-\item The \code{sampleData()} is stored as a text file named \emph{sample_data.txt}. Each
-row of this file corresponds to a sample with its respective metadata in
-the columns.
-\item The links between the sample data and other data are stored in text
-files named \emph{sample_data_links_....txt}, with "..." referring to the data
-type. Each file corresponds to a mapping between the sample data and a
-specific data type (e.g., Spectra). One file is written to map samples to
-each data type. In each file, the first column corresponds to the sample
-number and the second to the other data type number (e.g., spectrum number).
-The table "element_metadata.txt" contains the metadata of each mapping
-files \link{johannes could you maybe help me explain that one aha}
+\item The \code{sampleData()} is stored as a text file named
+\emph{ms_experiment_sample_data.txt}. Each row of this file corresponds to a
+sample with its respective metadata in the columns.
+\item The links between the sample data and any other data within the
+\code{MsExperiment} are stored in text files named
+\emph{ms_experiment_sample_data_links_....txt},
+with "..." referring to the data slot to which samples are linked.
+Each file contains the mapping between the sample data and the elements in
+a specific data slot (e.g., \code{Spectra}). The files are tabulator delimited
+text files with two columns of integer values, the first representing the
+index of a sample in the objects \code{sampleData()}, the second the index of
+the assigned element in the respective object slot.
+The table "ms_experiment_element_metadata.txt" contains the metadata of
+each of the available mappings.
+\item If the \code{MsExperiment} contains a \code{Spectra} object with MS data, it's
+content is exported to the same folder using a \code{saveMsObject()} call on
+it (see above for details of exporting \code{Spectra} objects to text files).
 }
 }
 
