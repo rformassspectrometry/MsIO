@@ -27,7 +27,7 @@ exported/imported.}
 \item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing to
 define the (absolute) path where the spectra files (\emph{data storage files})
 can be found. This parameter is passed to the \code{loadResults()} method of
-the \code{\link[=MsBackend]{MsBackend()}}.}
+the MsBackend().}
 }
 \value{
 For \code{PlainTextParam()}: a \code{PlainTextParam} class. \code{saveMsObject()}
@@ -37,13 +37,13 @@ restored data as an instance of the class specified with parameter \code{object}
 }
 \description{
 The \code{saveMsObject()} and \code{readMsObject()} methods with the \code{PlainTextParam}
-option enable users to save/load different type of Ms object as a
+option enable users to save/load different type of MS object as a
 collections of plain text files in/from a specified folder. This folder,
 defined with the \code{path} parameter, will be created by the \code{storeResults()}
 function. Any previous exports eventually present in that folder will be
 overwritten.
 
-The Ms object currently supported for import and export wwith this parameter
+The MS object currently supported for import and export with this parameter
 are :
 \itemize{
 \item \code{MsBackendMzR} object
@@ -53,4 +53,4 @@ are :
 \author{
 Philippine Louail
 }
-\concept{Ms object export and import formats.}
+\concept{MS object export and import formats.}

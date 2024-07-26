@@ -27,3 +27,29 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     param <- PlainTextParam(tempdir())
     expect_error(readMsObject(MsBackendMzR(), param), "No 'backend_data")
 })
+
+test_that("saveObject,readObject,MsBackendMzR works", {
+    b <- sciex_mzr
+    pth <- file.path(tempdir(), "save_object_ms_backend_mz_r")
+    saveObject(b, pth)
+    res <- dir(pth)
+    expect_true(length(res) > 0)
+    expect_true(all(c("OBJECT", "spectra_data", "peaks_variables") %in% res))
+
+    ## validateMzBackendMzR
+    expect_error(MsIO:::validateMzBackendMzR("some_path"), "required directory")
+    expect_silent(MsIO:::validateMzBackendMzR(pth))
+
+    ## readMzBackendMzR
+    expect_error(MsIO:::readMzBackendMzR("some_path"), "required directory")
+    res <- MsIO:::readMzBackendMzR(pth)
+    expect_s4_class(res, "MsBackendMzR")
+    expect_equal(length(b), length(res))
+
+    ## readObject
+    res <- readObject(pth)
+    expect_s4_class(res, "MsBackendMzR")
+    expect_equal(b@peaksVariables, res@peaksVariables)
+    expect_equal(mz(b), mz(res))
+    expect_equal(res@spectraData, b@spectraData[, colnames(res@spectraData)])
+})
