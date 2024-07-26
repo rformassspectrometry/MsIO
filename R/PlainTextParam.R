@@ -9,21 +9,26 @@
 #' @description
 #'
 #' The `saveMsObject()` and `readMsObject()` methods with the `PlainTextParam`
-#' option enable users to save/load different type of MS object as a
-#' collections of plain text files in/from a specified folder. This folder,
-#' defined with the `path` parameter, will be created by the `storeResults()`
-#' function. Any previous exports eventually present in that folder will be
-#' overwritten.
+#' option enable users to save/load different type of mass spectrometry (MS)
+#' object as a collections of plain text files in/from a specified folder.
+#' This folder, defined with the `path` parameter, will be created by the
+#' `storeResults()` function. Any previous exports eventually present in that
+#' folder will be overwritten.
 #'
 #' The MS object currently supported for import and export with this parameter
-#' are :
+#' are:
 #'
-#' - `MsBackendMzR` object
-#' - `Spectra` object
-#' - `MsExperiment` object
-#' - `XcmsExperiment` object
+#' - `MsBackendMzR` object, defined in the
+#'   ([Spectra](https://bioconductor.org/packages/Spectra)) package.
+#' - `Spectra` object, defined in the
+#'   ([Spectra](https://bioconductor.org/packages/Spectra)) package.
+#' - `MsExperiment` object, defined in the
+#'   ([MsExperiment](https://bioconductor.org/packages/MsExperiment)) package.
+#' - `XcmsExperiment` object, defined in the
+#'   ([xcms](https://bioconductor.org/packages/xcms)) package.
 #'
-#' See their respective section below for a detail of the exported files.
+#' See their respective section below for details and formats of the
+#' exported files.
 #'
 #' @param path For `PlainTextParam()`: `character(1)`, defining where the files
 #'   are going to be stored/ should be loaded from. The default is
@@ -34,6 +39,10 @@
 #'   can be found. This parameter is passed to the `loadResults()` method of
 #'   the MsBackend().
 #'
+#' @param ... Additional parameters passed down to internal functions. E.g.
+#'   `spectraPath` if a `MsBackendMzR` object is used to represent the MS data
+#'   of a `Spectra` (`MsExperiment`/`XcmsExperiment`) object.
+#'
 #' @inheritParams saveMsObject
 #'
 #' @return For `PlainTextParam()`: a `PlainTextParam` class. `saveMsObject()`
@@ -41,22 +50,22 @@
 #' plain text files to a folder. The `readMsObject()` method returns the
 #' restored data as an instance of the class specified with parameter `object`.
 #'
-#' @section On disk storage for `MsBackendMzR` objects:
+#'
+#' @section On-disk storage for `MsBackendMzR` objects:
 #'
 #' For `MsBackendMzR` objects, defined in the `Spectra` package, the following
 #' file is stored:
 #'
 #' - The backend's `spectraData()` is stored in a tabular format in a text file
-#'   named *backend_data.txt*. Each row of this file corresponds to a spectrum
-#'   with its respective metadata in the columns.
+#'   named *ms_backend_data.txt*. Each row of this tab-delimited text file
+#'   corresponds to a spectrum with its respective metadata in the columns.
 #'
 #' @section On-disk storage for `Spectra` objects:
 #'
-#' For `Spectra` objects, defined in the `Spectra` package, the following files
-#' are stored:
-#'
-#' - The backend data storage depends on its class; refer to its respective
-#'   section for more details.
+#' For `Spectra` objects, defined in the `Spectra` package, the files listed
+#' below are stored. Any parameter passed to the `saveMsObject()` method using
+#' its `...` parameter are passed to the `saveMsObject()` call of the
+#' `Spectra`'s backend.
 #'
 #' - The `processingQueueVariables`, `processing`, `processingChunkSize()`, and
 #'   `backend` class information of the object are stored in a text file named
@@ -68,6 +77,12 @@
 #'   *spectra_processing_queue.json*. The file is written such that each
 #'   processing step is separated by a line and includes all information about
 #'   the parameters and functions used for the step.
+#'
+#' - The `Spectra`'s MS data (i.e. it's backend) is stored/exported using
+#'   the `saveMsObject()` method of the respective backend type. Currently
+#'   only backends for which the `saveMsObject()` method is implemented (see
+#'   above) are supported.
+#'
 #'
 #' @section On-disk storage for `MsExperiment` objects:
 #'
