@@ -88,11 +88,11 @@ setMethod("readMsObject",
     f <- file.path(path, "xcms_experiment_chrom_peaks.txt")
     if (!file.exists(f))
         stop("No \"xcms_experiment_chrom_peaks.txt\" file found in ", path)
-    pk <- as.matrix(read.table(f, sep = "\t"))
+    pk <- as.matrix(read.table(f, sep = "\t", header = TRUE))
     f <- file.path(path, "xcms_experiment_chrom_peak_data.txt")
     if (!file.exists(f))
         stop("No \"xcms_experiment_chrom_peak_data.txt\" file found in ", path)
-    pkd <- read.table(f, sep = "\t")
+    pkd <- read.table(f, sep = "\t", header = TRUE)
     x@chromPeaks <- pk
     x@chromPeakData <- pkd
     x
@@ -117,12 +117,12 @@ setMethod("readMsObject",
 #' @noRd
 .import_features <- function(x, path = character()) {
     f <- file.path(path, "xcms_experiment_feature_definitions.txt")
-    fts <- read.table(f, sep = "\t")
+    fts <- read.table(f, sep = "\t", header = TRUE)
     f <- file.path(path, "xcms_experiment_feature_peak_index.txt")
     if (!file.exists(f))
         stop("No \"xcms_experiment_feature_peak_index.txt\" file found in ",
              path)
-    pkidx <- read.table(f, sep = "\t")
+    pkidx <- read.table(f, sep = "\t", header = TRUE)
     fts$peakidx <- unname(split(pkidx$peak_index, pkidx$feature_index))
     x@featureDefinitions <- fts
     x

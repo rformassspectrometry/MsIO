@@ -7,7 +7,6 @@ xmseg_filt <- filterRt(xmseg_filt, c(3000, 4000))
 
 test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     pth = file.path(tempdir(), "test_xcmsexp")
-    pth = file.path("/home/jo/tmp", "test_xcmsexp")
     param <- PlainTextParam(path = pth)
     saveMsObject(xmseg_filt, param = param)
     expect_true(dir.exists(pth))
@@ -72,4 +71,17 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     param <- PlainTextParam(tempdir())
     expect_error(readMsObject(XcmsExperiment(), param),
                  "No 'ms_experiment_sample_data")
+
+    ## Export an empty object.
+    a <- XcmsExperiment()
+    pth = file.path(tempdir(), "test_xcmsexp_empty")
+    param <- PlainTextParam(path = pth)
+    saveMsObject(a, param)
+    res <- readMsObject(XcmsExperiment(), param)
+    expect_equal(nrow(chromPeaks(a)), nrow(chromPeaks(res)))
+    expect_equal(colnames(chromPeaks(a)), colnames(chromPeaks(res)))
+    expect_equal(nrow(chromPeakData(a)), nrow(chromPeakData(res)))
+    expect_equal(colnames(chromPeakData(a)), colnames(chromPeakData(res)))
+    expect_equal(a@featureDefinitions, res@featureDefinitions)
+    expect_equal(a@processHistory, res@processHistory)
 })

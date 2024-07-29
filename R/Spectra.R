@@ -16,9 +16,6 @@ NULL
 setMethod("saveMsObject", signature(object = "Spectra",
                                     param = "PlainTextParam"),
           function(object, param) {
-              if (!requireNamespace("Spectra", quietly = TRUE))
-                  stop("Package 'Spectra' missing. Please ",
-                       "install with 'BiocInstaller::install(\"Spectra\")'")
               dir.create(path = param@path,
                          recursive = TRUE,
                          showWarnings = FALSE)
@@ -37,9 +34,6 @@ setMethod("saveMsObject", signature(object = "Spectra",
 setMethod("readMsObject", signature(object = "Spectra",
                                    param = "PlainTextParam"),
           function(object, param, ...) {
-              if (!requireNamespace("Spectra", quietly = TRUE))
-                  stop("Package 'Spectra' missing. Please ",
-                       "install with 'BiocInstaller::install(\"Spectra\")'")
               fl  <- file.path(param@path, "spectra_slots.txt")
               if (!file.exists(fl))
                   stop("No 'spectra_slots.txt' file found in ", param@path)

@@ -52,4 +52,14 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsExperiment works", {
     expect_true(inherits(load_mse, "MsExperiment"))
     expect_equal(sampleData(mse_2), sampleData(load_mse))
     expect_equal(mse_2@sampleDataLinks, load_mse@sampleDataLinks)
+
+    ## Export an empty MsExperiment
+    a <- MsExperiment()
+    pth <- file.path(tempdir(), "text_msexperiment_empty")
+    param <- PlainTextParam(path = pth)
+    saveMsObject(a, param = param)
+    res <- readMsObject(MsExperiment(), param = param)
+    expect_true(nrow(sampleData(res)) == nrow(sampleData(a)))
+    res@sampleData <- a@sampleData
+    expect_equal(res, a)
 })

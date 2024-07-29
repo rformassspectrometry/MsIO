@@ -1,5 +1,5 @@
-#'@include PlainTextParam.R
-#'@title Methods to save and load contents of a MsExperiment object
+#' @include PlainTextParam.R
+#' @title Methods to save and load contents of a MsExperiment object
 #'
 #' @author Philippine Louail
 #'
@@ -19,7 +19,10 @@ setMethod("saveMsObject",
                          recursive = TRUE,
                          showWarnings = FALSE)
               ## sample data
-              write.table(as.data.frame(object@sampleData), sep = "\t",
+              sdata <- object@sampleData
+              if (!length(sdata)) # initialize with empty data frame
+                  sdata <- DataFrame(sample_name = character())
+              write.table(as.data.frame(sdata), sep = "\t",
                           file = file.path(param@path,
                                            "ms_experiment_sample_data.txt"))
 
@@ -39,7 +42,8 @@ setMethod("saveMsObject",
                                        "ms_experiment_link_mcols.txt"))
               }
               ## call export of individual other objects (not MsExperiment data)
-              saveMsObject(spectra(object), param)
+              if (length(spectra(object)))
+                  saveMsObject(spectra(object), param)
               ## at some point also chromatograms, etc.
           }
 )
@@ -56,7 +60,7 @@ setMethod("readMsObject",
               if (!file.exists(fl))
                   stop("No 'ms_experiment_sample_data.txt' file found in ",
                        "the provided path.")
-              sd <- read.table(fl, sep = "\t")
+              sd <- read.table(fl, sep = "\t", header = TRUE)
               object@sampleData <- DataFrame(sd, row.names = NULL)
 
               ## read spectra
