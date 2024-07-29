@@ -34,7 +34,7 @@ setMethod("saveMsObject",
                                   col.names = FALSE, sep = "\t")
                   })
                   write.table(
-                      sdl@elementMetadata, sep = "\t", row.names = FALSE,
+                      sdl@elementMetadata, sep = "\t", quote = TRUE,
                       file = file.path(param@path,
                                        "ms_experiment_link_mcols.txt"))
               }
@@ -60,8 +60,8 @@ setMethod("readMsObject",
               object@sampleData <- DataFrame(sd, row.names = NULL)
 
               ## read spectra
-              object@spectra <- readMsObject(Spectra::Spectra(), param, ...)
-
+              if (file.exists(file.path(param@path, "spectra_slots.txt")))
+                  object@spectra <- readMsObject(Spectra::Spectra(), param, ...)
               ## sample data links
               fl <- list.files(
                   param@path,
@@ -77,7 +77,7 @@ setMethod("readMsObject",
                   object@sampleDataLinks <- SimpleList(sdl)
                   em <- read.table(file.path(param@path,
                                              "ms_experiment_link_mcols.txt"),
-                                   sep = "\t", row.names = NULL, header = TRUE)
+                                   sep = "\t", header = TRUE)
                   mcols(object@sampleDataLinks) <- DataFrame(
                       em, row.names = NULL)
               }

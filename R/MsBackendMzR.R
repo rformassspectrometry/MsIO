@@ -33,7 +33,7 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
                   suppressWarnings(
                       write.table(object@spectraData,
                                   file = fl, sep = "\t", quote = TRUE,
-                                  append = TRUE, row.names = FALSE))
+                                  append = TRUE))
           })
 
 #' @rdname PlainTextParam

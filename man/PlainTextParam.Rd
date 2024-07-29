@@ -29,7 +29,7 @@ PlainTextParam(path = tempdir())
 
 \S4method{saveMsObject}{XcmsExperiment,PlainTextParam}(object, param)
 
-\S4method{readMsObject}{XcmsExperiment,PlainTextParam}(object, param, spectraPath = character())
+\S4method{readMsObject}{XcmsExperiment,PlainTextParam}(object, param, ...)
 }
 \arguments{
 \item{path}{For \code{PlainTextParam()}: \code{character(1)}, defining where the files
@@ -43,15 +43,13 @@ are going to be stored/ should be loaded from. The default is
 and file name or directory to/from which the data object should be
 exported/imported.}
 
-\item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing to
-define the (absolute) path where the spectra files (\emph{data storage files})
-can be found. This parameter is passed to the \code{loadResults()} method of
-the MsBackend().}
+\item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing
+to define the (absolute) path where the spectra files (\emph{data storage
+files}) can be found. This parameter is passed to the \code{loadResults()}
+method of the MsBackend().}
 
 \item{...}{Additional parameters passed down to internal functions. E.g.
-parameter \code{spectraPath} if the object that is being saved contains a
-\code{Spectra} object which uses a \code{MsBackendMzR} object to represent the MS
-data.}
+parameter \code{spectraPath} (see above).}
 }
 \value{
 For \code{PlainTextParam()}: a \code{PlainTextParam} class. \code{saveMsObject()}
@@ -64,8 +62,15 @@ The \code{saveMsObject()} and \code{readMsObject()} methods with the \code{Plain
 option enable users to save/load different type of mass spectrometry (MS)
 object as a collections of plain text files in/from a specified folder.
 This folder, defined with the \code{path} parameter, will be created by the
-\code{storeResults()} function. Any previous exports eventually present in that
-folder will be overwritten.
+\code{storeResults()} function. Writing data to a folder that contains already
+exported data will result in an error.
+
+All data is exported to plain text files, where possible as tabulator
+delimited text files. Data is exported using R's \code{\link[=write.table]{write.table()}} function,
+thus, the text files will also contain row names (first column) as well as
+column names (header). Strings in the text files are quoted. Some
+information, in particular the content of \emph{parameter} classes within the
+objects, is stored in JSON format instead.
 
 The MS object currently supported for import and export with this parameter
 are:
@@ -154,28 +159,30 @@ it (see above for details of exporting \code{Spectra} objects to text files).
 \section{On-disk storage for \code{XcmsExperiment} objects}{
 
 
-For \code{XcmsExperiment} objects, defined in the \code{xcms} package, the exported
-data and related text files are:
+For \code{XcmsExperiment} objects, defined in the \emph{xcms} package, the exported
+data and related text files are listed below. Any parameter passed
+to the \code{saveMsObject()} through \code{...} are passed to the \code{saveMsObject()}
+calls of the individual MS data object(s) within the \code{XcmsExperiment}.
 \itemize{
-\item The previously defined \code{MsExperiment} object-related files. See the
-respective section for more information.
-\item The \code{processHistory()} information of the object is stored in a \code{json}
-file named \emph{process_history.json}. The file is written such that each
-processing step is separated by a line and includes all information about
-the parameters and functions used for that step.
 \item The chromatographic peak information obtained with \code{chromPeaks()} and
 \code{chromPeaksData()} is stored in tabular format in the text files
-\emph{chrom_peaks.txt} and \emph{chrom_peak_data.txt}, respectively. The first file's
-rows represent single peaks with their respective metadata in the columns.
-The second file contains the same peaks by rows but with processing
-information such as whether they are filled or merged in the columns.
+\emph{xcms_experiment_chrom_peaks.txt} and
+\emph{xcms_experiment_chrom_peak_data.txt}, respectively. The first file's
+rows represent single peaks with their respective metadata in the columns
+(only numeric information). The second file contains arbitrary additional
+information/metadata for each peak (each row being one chrom peak).
 \item The \code{featureDefinitions()} are stored in a text file named
-\emph{feature_definitions.txt}. Additionally, a second file named
-\emph{feature_peak_index.txt} is generated to connect the features' definitions
-with their names. Each row of the first file corresponds to a feature with
-its respective metadata in the columns. The second file contains the
-mapping of each chromatographic peak (e.g., one peak ID per row) to its
-respective feature ID.
+\emph{xcms_experiment_feature_definitions.txt}. Additionally, a second file
+named \emph{ms_experiment_feature_peak_index.txt} is generated to connect the
+features with the corresponding chromatographic peaks. Each row of the
+first file corresponds to a feature with its respective metadata in the
+columns. The second file contains the mapping between features and
+chromatographic peaks (one peak ID per row).
+\item The \code{processHistory()} information of the object is stored to a
+file named \emph{xcms_experiment_process_history.json} in JSON format.
+\item The \code{XcmsExperiment} directly extends the \code{MsExperiment} class, thus,
+any MS data is saved using a call to the \code{saveMsObject} of the
+\code{MsExperiment} (see above for more information).
 }
 }
 

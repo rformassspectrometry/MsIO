@@ -27,7 +27,7 @@ setMethod("saveMsObject",
 setMethod("readMsObject",
           signature(object = "XcmsExperiment",
                     param = "PlainTextParam"),
-          function(object, param, spectraPath = character()) {
+          function(object, param, ...) {
               res <- callNextMethod()
               res <- .load_xcmsexperiment(res, path = param@path)
               validObject(res)
@@ -37,24 +37,19 @@ setMethod("readMsObject",
 #' @noRd
 .store_xcmsexperiment <- function(x, path = tempdir()) {
     .export_process_history(x, path = path)
-    if (xcms::hasChromPeaks(x))
-        .export_chrom_peaks(x, path)
+    ## if (xcms::hasChromPeaks(x)) # maybe also export chromPeaks.
+    .export_chrom_peaks(x, path)
     if (xcms::hasFeatures(x))
         .export_features(x, path)
 }
 
-
 #' @noRd
 .load_xcmsexperiment <- function(x, path = character(),
-                                 spectraExport = logical()){
+                                 spectraExport = logical()) {
     x <- as(x, "XcmsExperiment")
-    fl <- file.path(path, "chrom_peaks.txt")
     x <- .import_chrom_peaks(x, path)
-    fl <- file.path(path, "process_history.json")
-    if (file.exists(fl))
-        x <- .import_process_history(x, fl)
-    else stop("No \"process_history.json\" file found in ", path)
-    fl <- file.path(path, "feature_definitions.txt")
+    x <- .import_process_history(x, path)
+    fl <- file.path(path, "xcms_experiment_feature_definitions.txt")
     if (file.exists(fl))
         x <- .import_features(x, path)
     x
@@ -64,12 +59,16 @@ setMethod("readMsObject",
 #' @noRd
 .export_process_history <- function(x, path = character()) {
     ph <- xcms::processHistory(x)
-    write_json(serializeJSON(ph), file.path(path, "process_history.json"))
+    write_json(serializeJSON(ph),
+               file.path(path, "xcms_experiment_process_history.json"))
 }
 
 #' @noRd
-.import_process_history <- function(x, file = character()) {
-    ph <- unserializeJSON(read_json(file)[[1L]])
+.import_process_history <- function(x, path = character()) {
+    fl <- file.path(path, "xcms_experiment_process_history.json")
+    if (!file.exists(fl))
+        stop("No \"xcms_experiment_process_history.json\" file found in ", path)
+    ph <- unserializeJSON(read_json(fl)[[1L]])
     x@processHistory <- ph
     x
 }
@@ -77,19 +76,22 @@ setMethod("readMsObject",
 #' Chromatographic peaks
 #' @noRd
 .export_chrom_peaks <- function(x, path = character()) {
-    write.table(xcms::chromPeaks(x), file = file.path(path, "chrom_peaks.txt"),
+    write.table(xcms::chromPeaks(x),
+                file = file.path(path, "xcms_experiment_chrom_peaks.txt"),
                 sep = "\t")
     write.table(as.data.frame(xcms::chromPeakData(x)), sep = "\t",
-                file = file.path(path, "chrom_peak_data.txt"))
+                file = file.path(path, "xcms_experiment_chrom_peak_data.txt"))
 }
 
 #' @noRd
 .import_chrom_peaks <- function(x, path = character()) {
-    f <- file.path(path, "chrom_peaks.txt")
-    pk <- as.matrix(read.table(f, sep = "\t"))
-    f <- file.path(path, "chrom_peak_data.txt")
+    f <- file.path(path, "xcms_experiment_chrom_peaks.txt")
     if (!file.exists(f))
-        stop("No \"chrom_peak_data.txt\" file found in ", path)
+        stop("No \"xcms_experiment_chrom_peaks.txt\" file found in ", path)
+    pk <- as.matrix(read.table(f, sep = "\t"))
+    f <- file.path(path, "xcms_experiment_chrom_peak_data.txt")
+    if (!file.exists(f))
+        stop("No \"xcms_experiment_chrom_peak_data.txt\" file found in ", path)
     pkd <- read.table(f, sep = "\t")
     x@chromPeaks <- pk
     x@chromPeakData <- pkd
@@ -104,19 +106,22 @@ setMethod("readMsObject",
         feature_index = rep(seq_len(nrow(fts)), lengths(fts$peakidx)),
         peak_index = unlist(fts$peakidx, use.names = FALSE))
     fts$peakidx <- NA
-    write.table(fts, file = file.path(path, "feature_definitions.txt"),
-                sep = "\t")
-    write.table(pkidx, file = file.path(path, "feature_peak_index.txt"),
-                sep = "\t")
+    write.table(
+        fts, file = file.path(path, "xcms_experiment_feature_definitions.txt"),
+        sep = "\t")
+    write.table(
+        pkidx, file = file.path(path, "xcms_experiment_feature_peak_index.txt"),
+        sep = "\t")
 }
 
 #' @noRd
 .import_features <- function(x, path = character()) {
-    f <- file.path(path, "feature_definitions.txt")
+    f <- file.path(path, "xcms_experiment_feature_definitions.txt")
     fts <- read.table(f, sep = "\t")
-    f <- file.path(path, "feature_peak_index.txt")
+    f <- file.path(path, "xcms_experiment_feature_peak_index.txt")
     if (!file.exists(f))
-        stop("No \"feature_peak_index.txt\" file found in ", path)
+        stop("No \"xcms_experiment_feature_peak_index.txt\" file found in ",
+             path)
     pkidx <- read.table(f, sep = "\t")
     fts$peakidx <- unname(split(pkidx$peak_index, pkidx$feature_index))
     x@featureDefinitions <- fts

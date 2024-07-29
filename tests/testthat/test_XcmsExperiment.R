@@ -7,21 +7,34 @@ xmseg_filt <- filterRt(xmseg_filt, c(3000, 4000))
 
 test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     pth = file.path(tempdir(), "test_xcmsexp")
+    pth = file.path("/home/jo/tmp", "test_xcmsexp")
     param <- PlainTextParam(path = pth)
     saveMsObject(xmseg_filt, param = param)
     expect_true(dir.exists(pth))
-    expect_true(file.exists(file.path(param@path, "sample_data.txt")))
-    expect_true(file.exists(file.path(param@path, "backend_data.txt")))
-    expect_true(file.exists(file.path(param@path, "spectra_slots.txt")))
-    expect_true(file.exists(file.path(param@path, "spectra_processing_queue.json")))
-    expect_true(file.exists(file.path(param@path, "process_history.json")))
-    expect_true(file.exists(file.path(param@path, "chrom_peaks.txt")))
-    expect_true(file.exists(file.path(param@path, "chrom_peak_data.txt")))
-    expect_true(file.exists(file.path(param@path, "feature_definitions.txt")))
-    expect_true(file.exists(file.path(param@path, "feature_peak_index.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "ms_experiment_sample_data.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "ms_backend_data.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "spectra_slots.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "spectra_processing_queue.json")))
+    expect_true(file.exists(
+        file.path(param@path, "xcms_experiment_process_history.json")))
+    expect_true(file.exists(
+        file.path(param@path, "xcms_experiment_chrom_peaks.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "xcms_experiment_chrom_peak_data.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "xcms_experiment_feature_definitions.txt")))
+    expect_true(file.exists(
+        file.path(param@path, "xcms_experiment_feature_peak_index.txt")))
 
     ## load data again
-    load_xmse <- readMsObject(object = XcmsExperiment(), param)
+    ## This error is not thrown with rcmdcheck::rcmdcheck()
+    ## expect_error(readMsObject(new("XcmsExperiment"), param), "load the library")
+    ## library(Spectra)
+    load_xmse <- readMsObject(new("XcmsExperiment"), param)
     expect_true(inherits(load_xmse, "XcmsExperiment"))
     expect_equal(xmseg_filt@featureDefinitions,
                  load_xmse@featureDefinitions)
@@ -44,16 +57,19 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     ## Check the spectraPath parameter.
     bp <- dataStorageBasePath(xmseg_filt@spectra)
     ## manually change dataStorage path of backend
-    sd <- read.table(file.path(param@path, "backend_data.txt"), header = TRUE)
+    sd <- read.table(file.path(param@path, "ms_backend_data.txt"),
+                     header = TRUE)
     sd$dataStorage <- sub("faahKO", "other", sd$dataStorage)
-    writeLines("# MsBackendMzR", con = file.path(param@path, "backend_data.txt"))
+    writeLines(
+        "# MsBackendMzR", con = file.path(param@path, "ms_backend_data.txt"))
     write.table(sd,
-                file = file.path(param@path, "backend_data.txt"),
-                sep = "\t", quote = FALSE,
-                append = TRUE, row.names = FALSE)
-    expect_error(readMsObject(XcmsExperiment(), param), "invalid class")
-    expect_no_error(readMsObject(XcmsExperiment(), param, spectraPath = bp))
+                file = file.path(param@path, "ms_backend_data.txt"),
+                sep = "\t", quote = TRUE, append = TRUE)
+    expect_error(readMsObject(new("XcmsExperiment"), param), "invalid class")
+    expect_no_error(readMsObject(XcmsExperiment(),
+                                 param, spectraPath = bp))
 
     param <- PlainTextParam(tempdir())
-    expect_error(readMsObject(XcmsExperiment(), param), "No 'sample_data")
+    expect_error(readMsObject(XcmsExperiment(), param),
+                 "No 'ms_experiment_sample_data")
 })

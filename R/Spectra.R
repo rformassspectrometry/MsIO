@@ -16,6 +16,9 @@ NULL
 setMethod("saveMsObject", signature(object = "Spectra",
                                     param = "PlainTextParam"),
           function(object, param) {
+              if (!requireNamespace("Spectra", quietly = TRUE))
+                  stop("Package 'Spectra' missing. Please ",
+                       "install with 'BiocInstaller::install(\"Spectra\")'")
               dir.create(path = param@path,
                          recursive = TRUE,
                          showWarnings = FALSE)
@@ -29,9 +32,14 @@ setMethod("saveMsObject", signature(object = "Spectra",
           })
 
 #' @rdname PlainTextParam
+#'
+#' @importFrom methods getFunction
 setMethod("readMsObject", signature(object = "Spectra",
                                    param = "PlainTextParam"),
           function(object, param, ...) {
+              if (!requireNamespace("Spectra", quietly = TRUE))
+                  stop("Package 'Spectra' missing. Please ",
+                       "install with 'BiocInstaller::install(\"Spectra\")'")
               fl  <- file.path(param@path, "spectra_slots.txt")
               if (!file.exists(fl))
                   stop("No 'spectra_slots.txt' file found in ", param@path)
@@ -43,9 +51,18 @@ setMethod("readMsObject", signature(object = "Spectra",
                                                  "PlainTextParam")))
                   stop("Can not read a 'Spectra' object with backend '",
                        variables["backend"], "'")
-              b <- readMsObject(
-                  object = do.call(what = variables[["backend"]],
-                                   args = list()), param = param, ...)
+              ## Check if the library to load the backend class is available.
+              ## This should also enable backends that are defined in other
+              ## packages than Spectra. Accessing directly the "globalenv" to
+              ## ensure we can access functions/classes there.
+              fun <- getFunction(variables[["backend"]], mustFind = FALSE,
+                                 where = topenv(globalenv()))
+              if (!length(fun))
+                  stop("Can not create an instance of the MsBackend class \"",
+                       variables[["backend"]], "\". Please first load the ",
+                       "library that provides this class and try again.",
+                       call. = FALSE)
+              b <- readMsObject(fun(), param, ...)
               object@backend <- b
               object@processingQueueVariables <- unlist(
                   strsplit(variables[["processingQueueVariables"]],

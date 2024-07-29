@@ -23,7 +23,7 @@ test_that("saveMsObject,readMsObject,PlainTextParam,Spectra works", {
                                       "spectra_processing_queue.json")))
 
     ## Loading data again
-    s_load <- readMsObject(object = Spectra(), param) # for this test dataset we have error when validating the backend object
+    s_load <- readMsObject(object = Spectra(), param)
     expect_true(inherits(s_load, "Spectra"))
     expect_true(inherits(s_load@backend, "MsBackendMzR"))
     ## Check spectra content

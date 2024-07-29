@@ -12,8 +12,15 @@
 #' option enable users to save/load different type of mass spectrometry (MS)
 #' object as a collections of plain text files in/from a specified folder.
 #' This folder, defined with the `path` parameter, will be created by the
-#' `storeResults()` function. Any previous exports eventually present in that
-#' folder will be overwritten.
+#' `storeResults()` function. Writing data to a folder that contains already
+#' exported data will result in an error.
+#'
+#' All data is exported to plain text files, where possible as tabulator
+#' delimited text files. Data is exported using R's [write.table()] function,
+#' thus, the text files will also contain row names (first column) as well as
+#' column names (header). Strings in the text files are quoted. Some
+#' information, in particular the content of *parameter* classes within the
+#' objects, is stored in JSON format instead.
 #'
 #' The MS object currently supported for import and export with this parameter
 #' are:
@@ -34,15 +41,13 @@
 #'   are going to be stored/ should be loaded from. The default is
 #'   `path = tempdir()`.
 #'
-#' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing to
-#'   define the (absolute) path where the spectra files (*data storage files*)
-#'   can be found. This parameter is passed to the `loadResults()` method of
-#'   the MsBackend().
+#' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing
+#'   to define the (absolute) path where the spectra files (*data storage
+#'   files*) can be found. This parameter is passed to the `loadResults()`
+#'   method of the MsBackend().
 #'
 #' @param ... Additional parameters passed down to internal functions. E.g.
-#'   parameter `spectraPath` if the object that is being saved contains a
-#'   `Spectra` object which uses a `MsBackendMzR` object to represent the MS
-#'   data.
+#'   parameter `spectraPath` (see above).
 #'
 #' @inheritParams saveMsObject
 #'
@@ -120,31 +125,33 @@
 #'
 #' @section On-disk storage for `XcmsExperiment` objects:
 #'
-#' For `XcmsExperiment` objects, defined in the `xcms` package, the exported
-#' data and related text files are:
-#'
-#' - The previously defined `MsExperiment` object-related files. See the
-#'   respective section for more information.
-#'
-#' - The `processHistory()` information of the object is stored in a `json`
-#'   file named *process_history.json*. The file is written such that each
-#'   processing step is separated by a line and includes all information about
-#'   the parameters and functions used for that step.
+#' For `XcmsExperiment` objects, defined in the *xcms* package, the exported
+#' data and related text files are listed below. Any parameter passed
+#' to the `saveMsObject()` through `...` are passed to the `saveMsObject()`
+#' calls of the individual MS data object(s) within the `XcmsExperiment`.
 #'
 #' - The chromatographic peak information obtained with `chromPeaks()` and
 #'   `chromPeaksData()` is stored in tabular format in the text files
-#'   *chrom_peaks.txt* and *chrom_peak_data.txt*, respectively. The first file's
-#'   rows represent single peaks with their respective metadata in the columns.
-#'   The second file contains the same peaks by rows but with processing
-#'   information such as whether they are filled or merged in the columns.
+#'   *xcms_experiment_chrom_peaks.txt* and
+#'   *xcms_experiment_chrom_peak_data.txt*, respectively. The first file's
+#'   rows represent single peaks with their respective metadata in the columns
+#'   (only numeric information). The second file contains arbitrary additional
+#'   information/metadata for each peak (each row being one chrom peak).
 #'
 #' - The `featureDefinitions()` are stored in a text file named
-#'   *feature_definitions.txt*. Additionally, a second file named
-#'   *feature_peak_index.txt* is generated to connect the features' definitions
-#'   with their names. Each row of the first file corresponds to a feature with
-#'   its respective metadata in the columns. The second file contains the
-#'   mapping of each chromatographic peak (e.g., one peak ID per row) to its
-#'   respective feature ID.
+#'   *xcms_experiment_feature_definitions.txt*. Additionally, a second file
+#'   named *ms_experiment_feature_peak_index.txt* is generated to connect the
+#'   features with the corresponding chromatographic peaks. Each row of the
+#'   first file corresponds to a feature with its respective metadata in the
+#'   columns. The second file contains the mapping between features and
+#'   chromatographic peaks (one peak ID per row).
+#'
+#' - The `processHistory()` information of the object is stored to a
+#'   file named *xcms_experiment_process_history.json* in JSON format.
+#'
+#' - The `XcmsExperiment` directly extends the `MsExperiment` class, thus,
+#'   any MS data is saved using a call to the `saveMsObject` of the
+#'   `MsExperiment` (see above for more information).
 #'
 #'
 #' @author Philippine Louail
