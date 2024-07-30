@@ -29,9 +29,11 @@ setMethod("saveMsObject", signature(object = "Spectra",
           })
 
 #' @rdname PlainTextParam
+#'
+#' @importFrom methods getFunction
 setMethod("readMsObject", signature(object = "Spectra",
                                    param = "PlainTextParam"),
-          function(object, param, spectraPath = character()) {
+          function(object, param, ...) {
               fl  <- file.path(param@path, "spectra_slots.txt")
               if (!file.exists(fl))
                   stop("No 'spectra_slots.txt' file found in ", param@path)
@@ -43,15 +45,26 @@ setMethod("readMsObject", signature(object = "Spectra",
                                                  "PlainTextParam")))
                   stop("Can not read a 'Spectra' object with backend '",
                        variables["backend"], "'")
-              b <- readMsObject(object = do.call(what = variables[["backend"]],
-                                                args = list()),
-                               param = param, spectraPath = spectraPath)
+              ## Check if the library to load the backend class is available.
+              ## This should also enable backends that are defined in other
+              ## packages than Spectra. Accessing directly the "globalenv" to
+              ## ensure we can access functions/classes there.
+              fun <- getFunction(variables[["backend"]], mustFind = FALSE,
+                                 where = topenv(globalenv()))
+              if (!length(fun))
+                  stop("Can not create an instance of the MsBackend class \"",
+                       variables[["backend"]], "\". Please first load the ",
+                       "library that provides this class and try again.",
+                       call. = FALSE)
+              b <- readMsObject(fun(), param, ...)
               object@backend <- b
-              object@processingQueueVariables <- unlist(strsplit(variables[["processingQueueVariables"]],
-                                                            "|", fixed = TRUE))
-              object@processing <- unlist(strsplit(variables[["processing"]], "|" ,
-                                              fixed = TRUE))
-              object@processingChunkSize <- as.numeric(variables[["processingChunkSize"]])
+              object@processingQueueVariables <- unlist(
+                  strsplit(variables[["processingQueueVariables"]],
+                           "|", fixed = TRUE))
+              object@processing <- unlist(
+                  strsplit(variables[["processing"]], "|" , fixed = TRUE))
+              object@processingChunkSize <- as.numeric(
+                  variables[["processingChunkSize"]])
               fl <- file.path(param@path, "spectra_processing_queue.json")
               if (file.exists(fl))
                   object <- .import_spectra_processing_queue(object, file = fl)
@@ -77,8 +90,8 @@ setMethod("readMsObject", signature(object = "Spectra",
                con = con)
     p <- x@processing
     writeLines(paste0("processing = ", paste(p, collapse = "|")), con = con)
-    writeLines(paste0("processingChunkSize = ", Spectra::processingChunkSize(x)),
-               con = con)
+    writeLines(paste0("processingChunkSize = ",
+                      Spectra::processingChunkSize(x)), con = con)
     writeLines(paste0("backend = ", class(x@backend)[1L]), con = con)
 }
 
