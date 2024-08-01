@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.3
+Version: 0.0.4
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -24,19 +24,23 @@ Description: The serialization mechanism of R allows to save and load R data
 Depends:
     R (>= 4.2.0)
 Imports:
+    jsonlite,
     methods,
     MsCoreUtils,
     S4Vectors,
     ProtGenerics,
     alabaster.base
 Suggests:
-    testthat,
-    knitr (>= 1.1.0),
-    roxygen2,
     BiocStyle (>= 2.5.19),
+    faahKO,
+    knitr (>= 1.1.0),
+    MsExperiment,
     msdata,
     rmarkdown,
-    Spectra (>= 1.15.6)
+    roxygen2,
+    Spectra (>= 1.15.6),
+    testthat,
+    xcms
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -46,9 +50,12 @@ biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomic
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.3.2
 Collate:
+    'AlabasterParam.R'
     'AllGenerics.R'
     'MsBackend.R'
     'PlainTextParam.R'
     'MsBackendMzR.R'
+    'MsExperiment.R'
     'Spectra.R'
+    'XcmsExperiment.R'
     'zzz.R'
