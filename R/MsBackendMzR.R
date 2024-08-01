@@ -77,7 +77,7 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
 #'
 #' @exportMethod saveObject
 #'
-#' @noRd
+#' @rdname AlabasterParam
 setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
     alabaster.base::saveObjectFile(path, "ms_backend_mz_r",
@@ -104,7 +104,7 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
 
 #' @importFrom alabaster.base registerValidateObjectFunction
 #'
-#' @noRd
+#' @rdname AlabasterParam
 validateMzBackendMzR <- function(path = character(),
                                  metadata = list()) {
     if (!dir.exists(file.path(path, "spectra_data")))
@@ -121,7 +121,7 @@ validateMzBackendMzR <- function(path = character(),
 #'
 #' @importFrom alabaster.base registerReadObjectFunction
 #'
-#' @noRd
+#' @rdname AlabasterParam
 readMzBackendMzR <- function(path = character(), metadata = list()) {
     validateMzBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
