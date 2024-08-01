@@ -217,7 +217,19 @@
 #' dir(d)
 #'
 #' ## Restoring the object again.
-#' sps_in <- readMs
+#' sps_in <- readMsObject(Spectra(), PlainTextParam(d))
+#'
+#' ## Both objects have the same processing history
+#' sps_filt
+#' sps_in
+#'
+#' ## Same number of spectra
+#' length(sps_filt)
+#' length(sps_in)
+#'
+#' ## Same number of mass peaks (after filtering)
+#' lengths(sps_filt[1:3])
+#' lengths(sps_in[1:3])
 NULL
 
 #' @noRd
