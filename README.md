@@ -2,7 +2,7 @@
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![R-CMD-check-bioc](https://github.com/RforMassSpectrometry/MsIO/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RforMassSpectrometry/MsIO/actions?query=workflow%3AR-CMD-check-bioc)
-[![codecov](https://codecov.io/gh/rformassspectrometry/MsIO/branch/main/graph/badge.svg?token=M4yYzef5mK)](https://codecov.io/gh/rformassspectrometry/MsIO)
+[![codecov](https://codecov.io/gh/rformassspectrometry/MsIO/graph/badge.svg?token=M4yYzef5mK)](https://codecov.io/gh/rformassspectrometry/MsIO)
 [![:name status badge](https://rformassspectrometry.r-universe.dev/badges/:name)](https://rformassspectrometry.r-universe.dev/)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
