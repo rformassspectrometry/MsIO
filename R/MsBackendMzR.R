@@ -52,17 +52,24 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
                   rownames(data) <- NULL
                   object@spectraData <- DataFrame(data)
                   if (length(spectraPath) > 0) {
-                      old <- common_path(dataStorage(object))
-                      dataStoragePaths <- dataStorage(object)
-                      normalizedDataStoragePaths <- normalizePath(
-                          dataStoragePaths, winslash = "/", mustWork = FALSE)
-                      dataStorage(object) <- sub(old, spectraPath,
-                                                 normalizedDataStoragePaths)
+                      object <- .mz_backend_mzr_update_storage_path(
+                          object, spectraPath)
                   }
               }
               validObject(object)
               object
           })
+
+.mz_backend_mzr_update_storage_path <- function(x, spectraPath = character()) {
+    if (!length(x)) return(x)
+    old <- common_path(dataStorage(x))
+    dataStoragePaths <- dataStorage(x)
+    normalizedDataStoragePaths <- normalizePath(
+        dataStoragePaths, winslash = "/", mustWork = FALSE)
+    x@spectraData$dataStorage <- sub(old, spectraPath,
+                                     normalizedDataStoragePaths)
+    x
+}
 
 ################################################################################
 ##
@@ -81,8 +88,7 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
 setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
     alabaster.base::saveObjectFile(path, "ms_backend_mz_r",
-                                   list(ms_backend_mz_r = list(version = "1.0")))
-    x <-  Spectra::dropNaSpectraVariables(x)
+                                   list(ms_backend_mz_r =list(version = "1.0")))
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@spectraData, path = file.path(path, "spectra_data")))
@@ -120,12 +126,34 @@ validateMzBackendMzR <- function(path = character(),
 #' @export readObject
 #'
 #' @noRd
-readMzBackendMzR <- function(path = character(), metadata = list()) {
+readMzBackendMzR <- function(path = character(), metadata = list(),
+                             spectraPath = character()) {
     validateMzBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
     pvars <- altReadObject(file.path(path, "peaks_variables"))
     be <- Spectra::MsBackendMzR()
     be@spectraData <- sdata
     be@peaksVariables <- pvars
+    if (length(spectraPath) > 0)
+        be <- .mz_backend_mzr_update_storage_path(be, spectraPath)
+    validObject(be)
     be
 }
+
+#' @rdname AlabasterParam
+setMethod("saveMsObject", signature(object = "MsBackendMzR",
+                                    param = "AlabasterParam"),
+          function(object, param) {
+              if (file.exists(param@path))
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
+              saveObject(object, param@path)
+          })
+
+#' @rdname AlabasterParam
+setMethod("readMsObject", signature(object = "MsBackendMzR",
+                                   param = "AlabasterParam"),
+          function(object, param, spectraPath = character()) {
+              readMzBackendMzR(path = param@path, spectraPath = spectraPath)
+          })

@@ -43,8 +43,10 @@
 #'
 #' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing
 #'   to define the (absolute) path where the spectra files (*data storage
-#'   files*) can be found. This parameter is passed to the `loadResults()`
-#'   method of the MsBackend().
+#'   files*) can be found. This parameter is used for `MsBackendMzR` (see
+#'   descriptions below) and can be passed through `...` also to
+#'   `readMsObject()` functions for other classes (such as `Spectra`,
+#'   `MsExperiment` etc).
 #'
 #' @param ... Additional parameters passed down to internal functions. E.g.
 #'   parameter `spectraPath` (see above).

@@ -50,7 +50,17 @@
 #' @param x MS data object to export. Can be one of the supported classes
 #'     listed below.
 #'
-#' @param ... optional additional parameters passed to the downstream functions.
+#' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing
+#'   to define the (absolute) path where the spectra files (*data storage
+#'   files*) can be found. This parameter is used for `MsBackendMzR` (see
+#'   descriptions below) and can be passed through `...` also to
+#'   `readMsObject()` functions for other classes (such as `Spectra`,
+#'   `MsExperiment` etc).
+#'
+#' @param ... optional additional parameters passed to the downstream
+#'     functions, such as for example `spectraPath` described above.
+#'
+#' @inheritParams saveMsObject
 #'
 #' @return For `AlabasterParam()`: an instance of `AlabasterParam` class. For
 #'     `readObject()` the exported object in the specified path (depending on
@@ -64,7 +74,11 @@
 #' `MsBackendMzR` objects can be exported or imported using the
 #' `saveMsObject()` or `readMsObject()` functions to and from *alabaster*-based
 #' storage modes using the `AlabasterParam` parameter object. Alternatively
-#' *alabaster*'s `saveObject()` and `readObject()` can be used.
+#' *alabaster*'s `saveObject()` and `readObject()` can be used. The parameter
+#' `spectraPath` allows to define an alternative path to the original
+#' data files (in case these were moved). This parameter can be passed as
+#' additional parameter to both the `readObject()` as well as the
+#' `readMsObject()` methods.
 #'
 #' The format of the folder contents follows the *alabaster* format: a file
 #' *OBJECT* (in JSON format) defines the type of object that was stored in the
@@ -87,7 +101,9 @@
 #' be <- backendInitialize(MsBackendMzR(), fl)
 #' be
 #'
-#' ## Export the object to a temporary directory using the alabaster framework
+#' ## Export the object to a temporary directory using the alabaster framework;
+#' ## the equivalent command using the parameter object would be
+#' ## `saveMsObject(be, AlabasterParam(d))`.
 #' d <- file.path(tempdir(), "ms_backend_mzr_example")
 #' saveObject(be, d)
 #'
@@ -97,6 +113,9 @@
 #' ## The data can be imported again using alabaster's readObject() function
 #' be_in <- readObject(d)
 #' be_in
+#'
+#' ## Alternatively, the data could be restored also using
+#' be_in <- readMsObject(MsBackendMzR(), AlabasterParam(d))
 #'
 #' all.equal(mz(be), mz(be_in))
 NULL

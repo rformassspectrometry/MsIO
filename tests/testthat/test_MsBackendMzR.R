@@ -73,4 +73,51 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     expect_equal(b@peaksVariables, res@peaksVariables)
     expect_equal(mz(b), mz(res))
     expect_equal(res@spectraData, b@spectraData[, colnames(res@spectraData)])
+
+    ## specifying the spectra path
+    pth <- file.path(tempdir(), "mzml_file")
+    dir.create(pth)
+    newf <- file.path(pth, basename(sciex_file[1L]))
+    if (file.copy(sciex_file[1L], newf)) {
+        b <- backendInitialize(MsBackendMzR(), newf)
+        pth <- file.path(tempdir(), "save_object_ms_backend_mz_r_2")
+        saveObject(b, pth)
+        ref <- readObject(pth)
+        ## Move the original data file
+        newpath <- file.path(tempdir(), "mzml_file_2")
+        dir.create(newpath)
+        newf2 <- file.path(newpath, basename(sciex_file[1L]))
+        file.copy(newf, newf2)
+        if (file.remove(newf)) {
+            expect_error(readObject(pth), "not found")
+            expect_error(validObject(ref), "not found")
+            res <- readObject(pth, spectraPath = newpath)
+            expect_equal(rtime(res), rtime(ref))
+            expect_equal(mz(res[1:10]), mz(sciex_mzr[1:10]))
+        }
+    }
+})
+
+test_that(".mz_backend_mzr_update_storage_path works", {
+    x <- sciex_mzr
+    res <- .mz_backend_mzr_update_storage_path(x, "/new/path")
+    expect_true(all(grepl("^/new/path", res$dataStorage)))
+    expect_error(validObject(res), "not found")
+})
+
+test_that("saveMsObject,readMsObject,MsBackendMzR,AlabasterParam works", {
+    x <- backendInitialize(MsBackendMzR(), sciex_file[2L])
+    pth <- tempdir()
+    expect_error(saveMsObject(x, AlabasterParam(pth)), "Overwriting")
+
+    pth <- file.path(pth, "save_object_ms_backend_mz_r")
+    if (file.exists(pth))
+        unlink(pth, recursive = TRUE)
+    saveMsObject(x, AlabasterParam(pth))
+    expect_true(all(c("OBJECT", "peaks_variables", "spectra_data") %in%
+                    dir(pth)))
+    res <- readMsObject(MsBackendMzR(), AlabasterParam(pth))
+    expect_equal(res@spectraData, x@spectraData)
+    expect_equal(spectraData(res), spectraData(x))
+    expect_equal(res@peaksVariables, x@peaksVariables)
 })

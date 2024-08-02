@@ -111,3 +111,14 @@ setMethod("readMsObject", signature(object = "Spectra",
     x@processingQueue <- unserializeJSON(read_json(file)[[1L]])
     x
 }
+
+################################################################################
+##
+## alabaster saveObject/readObject
+##
+################################################################################
+## setMethod("saveObject", "Spectra", function(x, path, ...) {
+##     ## Check if there is a `saveObject` method for the backend.
+##     ## export the backend.
+##     ## save the data/processing queue to JSON.
+## })

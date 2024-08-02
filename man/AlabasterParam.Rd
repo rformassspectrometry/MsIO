@@ -4,11 +4,17 @@
 \alias{AlabasterParam}
 \alias{readObject}
 \alias{saveObject,MsBackendMzR-method}
+\alias{saveMsObject,MsBackendMzR,AlabasterParam-method}
+\alias{readMsObject,MsBackendMzR,AlabasterParam-method}
 \title{Store MS data objects using the alabaster framework}
 \usage{
 AlabasterParam(path = tempdir())
 
 \S4method{saveObject}{MsBackendMzR}(x, path, ...)
+
+\S4method{saveMsObject}{MsBackendMzR,AlabasterParam}(object, param)
+
+\S4method{readMsObject}{MsBackendMzR,AlabasterParam}(object, param, spectraPath = character())
 }
 \arguments{
 \item{path}{\code{character(1)} with the name of the directory where the MS data
@@ -19,7 +25,22 @@ that \strong{does not already exist}.}
 \item{x}{MS data object to export. Can be one of the supported classes
 listed below.}
 
-\item{...}{optional additional parameters passed to the downstream functions.}
+\item{...}{optional additional parameters passed to the downstream
+functions, such as for example \code{spectraPath} described above.}
+
+\item{object}{for \code{saveMsObject()}: the MS data object to save, for
+\code{readMsObject()}: the MS data object that should be returned}
+
+\item{param}{an object defining and (eventually configuring) the file format
+and file name or directory to/from which the data object should be
+exported/imported.}
+
+\item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing
+to define the (absolute) path where the spectra files (\emph{data storage
+files}) can be found. This parameter is used for \code{MsBackendMzR} (see
+descriptions below) and can be passed through \code{...} also to
+\code{readMsObject()} functions for other classes (such as \code{Spectra},
+\code{MsExperiment} etc).}
 }
 \value{
 For \code{AlabasterParam()}: an instance of \code{AlabasterParam} class. For
@@ -69,7 +90,11 @@ various supported MS data objects are listed in the following sections.
 \code{MsBackendMzR} objects can be exported or imported using the
 \code{saveMsObject()} or \code{readMsObject()} functions to and from \emph{alabaster}-based
 storage modes using the \code{AlabasterParam} parameter object. Alternatively
-\emph{alabaster}'s \code{saveObject()} and \code{readObject()} can be used.
+\emph{alabaster}'s \code{saveObject()} and \code{readObject()} can be used. The parameter
+\code{spectraPath} allows to define an alternative path to the original
+data files (in case these were moved). This parameter can be passed as
+additional parameter to both the \code{readObject()} as well as the
+\code{readMsObject()} methods.
 
 The format of the folder contents follows the \emph{alabaster} format: a file
 \emph{OBJECT} (in JSON format) defines the type of object that was stored in the
@@ -91,7 +116,9 @@ fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
 be <- backendInitialize(MsBackendMzR(), fl)
 be
 
-## Export the object to a temporary directory using the alabaster framework
+## Export the object to a temporary directory using the alabaster framework;
+## the equivalent command using the parameter object would be
+## `saveMsObject(be, AlabasterParam(d))`.
 d <- file.path(tempdir(), "ms_backend_mzr_example")
 saveObject(be, d)
 
@@ -101,6 +128,9 @@ dir(d, recursive = TRUE)
 ## The data can be imported again using alabaster's readObject() function
 be_in <- readObject(d)
 be_in
+
+## Alternatively, the data could be restored also using
+be_in <- readMsObject(MsBackendMzR(), AlabasterParam(d))
 
 all.equal(mz(be), mz(be_in))
 }

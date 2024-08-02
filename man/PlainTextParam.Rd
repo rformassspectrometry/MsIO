@@ -45,8 +45,10 @@ exported/imported.}
 
 \item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing
 to define the (absolute) path where the spectra files (\emph{data storage
-files}) can be found. This parameter is passed to the \code{loadResults()}
-method of the MsBackend().}
+files}) can be found. This parameter is used for \code{MsBackendMzR} (see
+descriptions below) and can be passed through \code{...} also to
+\code{readMsObject()} functions for other classes (such as \code{Spectra},
+\code{MsExperiment} etc).}
 
 \item{...}{Additional parameters passed down to internal functions. E.g.
 parameter \code{spectraPath} (see above).}

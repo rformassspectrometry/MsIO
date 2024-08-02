@@ -26,7 +26,7 @@ Depends:
 Imports:
     jsonlite,
     methods,
-    MsCoreUtils,
+    MsCoreUtils (>= 1.17.1),
     S4Vectors,
     ProtGenerics,
     alabaster.base
