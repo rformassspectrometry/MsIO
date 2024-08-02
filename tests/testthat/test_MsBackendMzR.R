@@ -58,11 +58,13 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     expect_true(all(c("OBJECT", "spectra_data", "peaks_variables") %in% res))
 
     ## validateMzBackendMzR
-    expect_error(MsIO:::validateMzBackendMzR("some_path"), "required directory")
+    expect_error(MsIO:::validateMzBackendMzR("some_path"),
+                 "required file/directory")
     expect_silent(MsIO:::validateMzBackendMzR(pth))
 
     ## readMzBackendMzR
-    expect_error(MsIO:::readMzBackendMzR("some_path"), "required directory")
+    expect_error(MsIO:::readMzBackendMzR("some_path"),
+                 "required file/directory")
     res <- MsIO:::readMzBackendMzR(pth)
     expect_s4_class(res, "MsBackendMzR")
     expect_equal(length(b), length(res))

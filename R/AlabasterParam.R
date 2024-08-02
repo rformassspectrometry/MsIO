@@ -25,6 +25,8 @@
 #'
 #' - `MsBackendMzR`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `Spectra`, defined in the
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #'
 #' In addition, the *MsIO* package defines the `AlabasterParam` which can be
 #' used to write or read MS objects using the `saveMsObject()` and
@@ -89,6 +91,25 @@
 #' and an additional file (in HDF5 format) containing the data. See examples
 #' below for details.
 #'
+#'
+#' @section On-disk storage for `Spectra` objects:
+#'
+#' `Spectra` objects can be exported/imported using `saveMsObject()` and
+#' `readMsObject()` with an `AlabasterParam`, or using the `saveObject()`
+#' and `readObject()` functions. Both read functions allow to pass additional
+#' parameters (such as `spectraPath`) to the function to read the backend.
+#'
+#' The content of the folder with the stored `Spectra` data contains the
+#' *OBJECT* file defining the type of the object stored in that directory and
+#' the *spectra_processing_queue.json* file that contains the *processing queue*
+#' of the `Spectra` objects. All other slots of the object are saved in
+#' *alabaster* format into their respective sub-directories: *backend* for the
+#' `MsBackend` (see also `MsBackendMzR` above), *metadata* for the metadata
+#' slot, *processing* for the processing log, *processing_chunk_size* with
+#' the size for chunk-wise processing and *processing_queue_variables* for
+#' spectra/peaks variables that are needed for the processing queue.
+#'
+#'
 #' @author Johannes Rainer, Philippine Louail
 #'
 #' @examples
@@ -118,6 +139,28 @@
 #' be_in <- readMsObject(MsBackendMzR(), AlabasterParam(d))
 #'
 #' all.equal(mz(be), mz(be_in))
+#'
+#'
+#' ## Export and import of `Spectra` objects:
+#'
+#' ## Create a `Spectra` object with a `MsBackendMzR` backend.
+#' s <- Spectra(fl)
+#'
+#' ## Define the folder to which to export and export the object
+#' d <- file.path(tempdir(), "spectra_example")
+#' saveMsObject(s, AlabasterParam(d))
+#'
+#' ## List the content of the directory
+#' dir(d, recursive = TRUE)
+#'
+#' ## Restore the `Spectra` object again
+#' s_in <- readMsObject(Spectra(), AlabasterParam(d))
+#' s_in
+#'
+#' ## Alternatively, it would also be possible to just import the
+#' ## `MsBackendMzR` of the `Spectra`:
+#' be_in <- readMsObject(MsBackendMzR(), AlabasterParam(file.path(d, "backend")))
+#' be_in
 NULL
 
 #' @noRd

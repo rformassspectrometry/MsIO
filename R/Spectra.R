@@ -101,9 +101,8 @@ setMethod("readMsObject", signature(object = "Spectra",
 #' @noRd
 .export_spectra_processing_queue <- function(x, path = character()) {
     pq <- x@processingQueue
-    if (length(pq))
-        write_json(serializeJSON(pq),
-                   file.path(path, "spectra_processing_queue.json"))
+    write_json(serializeJSON(pq),
+               file.path(path, "spectra_processing_queue.json"))
 }
 
 #' @noRd
@@ -117,8 +116,69 @@ setMethod("readMsObject", signature(object = "Spectra",
 ## alabaster saveObject/readObject
 ##
 ################################################################################
-## setMethod("saveObject", "Spectra", function(x, path, ...) {
-##     ## Check if there is a `saveObject` method for the backend.
-##     ## export the backend.
-##     ## save the data/processing queue to JSON.
-## })
+#' @rdname AlabasterParam
+setMethod("saveObject", "Spectra", function(x, path, ...) {
+    if (!existsMethod("saveObject", class(x@backend)[1L]))
+        stop("No method to save a backend of type \"", class(x@backend)[1L],
+             "\" available yet")
+    dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
+    alabaster.base::saveObjectFile(path, "spectra",
+                                   list(spectra =list(version = "1.0")))
+    tryCatch({
+        do.call(altSaveObject,
+                list(x = x@backend, path = file.path(path, "backend")))
+    }, error = function(e) {
+        stop("failed to save 'backend' of ", class(x)[1L], "\n - ",
+             e$message, call. = FALSE)
+    })
+    .export_spectra_processing_queue(x, path = path)
+    altSaveObject(x@processingQueueVariables,
+                  path = file.path(path, "processing_queue_variables"))
+    altSaveObject(x@processing, path = file.path(path, "processing"))
+    altSaveObject(x@metadata, path = file.path(path, "metadata"))
+    altSaveObject(x@processingChunkSize,
+                  path = file.path(path, "processing_chunk_size"))
+})
+
+validateSpectra <- function(path = character(),
+                            metadata = list()) {
+    .check_directory_content(path, c("backend", "processing_queue_variables",
+                                     "spectra_processing_queue.json",
+                                     "processing", "metadata",
+                                     "processing_chunk_size"))
+}
+
+readSpectra <- function(path = character(), metadata = list(),
+                        ...) {
+    validateSpectra(path, metadata)
+    s <- Spectra::Spectra()
+    s@backend <- altReadObject(file.path(path, "backend"), ...)
+    s <- .import_spectra_processing_queue(
+        s, file.path(path, "spectra_processing_queue.json"))
+    s@processingQueueVariables <- altReadObject(file.path(
+        path, "processing_queue_variables"))
+    s@processing <- altReadObject(file.path(path, "processing"))
+    s@metadata <- altReadObject(file.path(path, "metadata"))
+    s@processingChunkSize <- altReadObject(
+        file.path(path, "processing_chunk_size"))
+    validObject(s)
+    s
+}
+
+#' @rdname AlabasterParam
+setMethod("saveMsObject", signature(object = "Spectra",
+                                    param = "AlabasterParam"),
+          function(object, param) {
+              if (file.exists(param@path))
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
+              saveObject(object, param@path)
+          })
+
+#' @rdname AlabasterParam
+setMethod("readMsObject", signature(object = "Spectra",
+                                    param = "AlabasterParam"),
+          function(object, param, spectraPath = character()) {
+              readSpectra(path = param@path, spectraPath = spectraPath)
+          })

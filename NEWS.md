@@ -2,7 +2,9 @@
 
 ## Changes in 0.0.4
 
-- Add *alabaster* `saveObject()` and `readObject()` methods for `MsBackendMzR`.
+- Add *alabaster* `saveObject()` and `readObject()` methods as well as
+  `saveMsObject()` and `readMsObject()` methods with `AlabasterParam` param for
+  `MsBackendMzR`, `Spectra`, `MsExperiment` and `XcmsExperiment` objects.
 
 ## Changes in 0.0.3
 

@@ -111,10 +111,7 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
 #' @noRd
 validateMzBackendMzR <- function(path = character(),
                                  metadata = list()) {
-    if (!dir.exists(file.path(path, "spectra_data")))
-        stop("required directory 'spectra_data' not found in \"", path, "\"")
-    if (!dir.exists(file.path(path, "peaks_variables")))
-        stop("required directory 'peaks_variables' not found in \"", path, "\"")
+    .check_directory_content(path, c("spectra_data", "peaks_variables"))
 }
 
 #' @importFrom alabaster.base altReadObject

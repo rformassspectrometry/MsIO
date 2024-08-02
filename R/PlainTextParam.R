@@ -253,3 +253,11 @@ setClass("PlainTextParam",
 PlainTextParam <- function(path = tempdir()) {
     new("PlainTextParam", path = path)
 }
+
+.check_directory_content <- function(path, x) {
+    for (f in x) {
+        if (!file.exists(file.path(path, f)))
+            stop("required file/directory '", f, "' not found in \"",
+                 path, "\"")
+    }
+}
