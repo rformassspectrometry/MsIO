@@ -50,10 +50,10 @@ biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomic
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.3.2
 Collate:
+    'PlainTextParam.R'
     'AlabasterParam.R'
     'AllGenerics.R'
     'MsBackend.R'
-    'PlainTextParam.R'
     'MsBackendMzR.R'
     'MsExperiment.R'
     'Spectra.R'

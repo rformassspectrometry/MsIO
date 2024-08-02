@@ -82,9 +82,7 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
     alabaster.base::saveObjectFile(path, "ms_backend_mz_r",
                                    list(ms_backend_mz_r = list(version = "1.0")))
-    message("length peaksVariables ", length(x@peaksVariables))
     x <-  Spectra::dropNaSpectraVariables(x)
-    message("length peaksVariables ", length(x@peaksVariables))
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@spectraData, path = file.path(path, "spectra_data")))
@@ -104,7 +102,7 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
 
 #' @importFrom alabaster.base registerValidateObjectFunction
 #'
-#' @rdname AlabasterParam
+#' @noRd
 validateMzBackendMzR <- function(path = character(),
                                  metadata = list()) {
     if (!dir.exists(file.path(path, "spectra_data")))
@@ -117,16 +115,15 @@ validateMzBackendMzR <- function(path = character(),
 #'
 #' @importFrom alabaster.base readObject
 #'
-#' @export readObject
-#'
 #' @importFrom alabaster.base registerReadObjectFunction
 #'
-#' @rdname AlabasterParam
+#' @export readObject
+#'
+#' @noRd
 readMzBackendMzR <- function(path = character(), metadata = list()) {
     validateMzBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
     pvars <- altReadObject(file.path(path, "peaks_variables"))
-    message("length pvars ", length(pvars))
     be <- Spectra::MsBackendMzR()
     be@spectraData <- sdata
     be@peaksVariables <- pvars

@@ -1,6 +1,12 @@
+#' @include PlainTextParam.R
+#'
 #' @title Store MS data objects using the alabaster framework
 #'
+#' @aliases readObject
+#'
 #' @name AlabasterParam
+#'
+#' @family MS object export and import formats.
 #'
 #' @description
 #'
@@ -29,5 +35,79 @@
 #' object even if either the object or the original MS data files have been
 #' moved to a different directory or file system.
 #'
+#' Importantly, it is only possible to save **one object in one directory**. To
+#' overwrite an existing stored object in a folder, that folder has to be
+#' deleted beforehand.
+#'
+#' Details and properties for the *alabaster*-based storage modes for the
+#' various supported MS data objects are listed in the following sections.
+#'
+#' @param path `character(1)` with the name of the directory where the MS data
+#'     object should be saved to or from which it should be restored.
+#'     Importantly, path should point to a **new** folder, i.e. a directory
+#'     that **does not already exist**.
+#'
+#' @param x MS data object to export. Can be one of the supported classes
+#'     listed below.
+#'
+#' @param ... optional additional parameters passed to the downstream functions.
+#'
+#' @return For `AlabasterParam()`: an instance of `AlabasterParam` class. For
+#'     `readObject()` the exported object in the specified path (depending on
+#'     the type of object defined in the *OBJECT* file in the path. For
+#'     `readMsObject()` the exported data object, defined with the function's
+#'     first parameter, from the specified path. `saveObject()` and
+#'     `saveMsObject()` don't return anything.
+#'
+#' @section On-disk storage for `MsBackendMzR` objects:
+#'
+#' `MsBackendMzR` objects can be exported or imported using the
+#' `saveMsObject()` or `readMsObject()` functions to and from *alabaster*-based
+#' storage modes using the `AlabasterParam` parameter object. Alternatively
+#' *alabaster*'s `saveObject()` and `readObject()` can be used.
+#'
+#' The format of the folder contents follows the *alabaster* format: a file
+#' *OBJECT* (in JSON format) defines the type of object that was stored in the
+#' directory while the object's data, for `MsBackendMzR`, is stored in
+#' sub-folders *peaks_variables* (a `character` with the names of the peaks
+#' variables of the object) and *spectra_data* (the metadata for all spectra).
+#' Each sub-folder contains also an *OBJECT* file defining the object's type
+#' and an additional file (in HDF5 format) containing the data. See examples
+#' below for details.
+#'
 #' @author Johannes Rainer, Philippine Louail
+#'
+#' @examples
+#'
+#' ## Export and import a `MsBackendMzR` object:
+#'
+#' library(Spectra)
+#' library(msdata)
+#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' be <- backendInitialize(MsBackendMzR(), fl)
+#' be
+#'
+#' ## Export the object to a temporary directory using the alabaster framework
+#' d <- file.path(tempdir(), "ms_backend_mzr_example")
+#' saveObject(be, d)
+#'
+#' ## List the content of the folder
+#' dir(d, recursive = TRUE)
+#'
+#' ## The data can be imported again using alabaster's readObject() function
+#' be_in <- readObject(d)
+#' be_in
+#'
+#' all.equal(mz(be), mz(be_in))
 NULL
+
+#' @noRd
+setClass("AlabasterParam",
+         contains = "PlainTextParam")
+
+#' @rdname AlabasterParam
+#'
+#' @export
+AlabasterParam <- function(path = tempdir()) {
+    new("AlabasterParam", path = path)
+}
