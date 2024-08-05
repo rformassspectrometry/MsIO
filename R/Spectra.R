@@ -140,17 +140,17 @@ setMethod("saveObject", "Spectra", function(x, path, ...) {
                   path = file.path(path, "processing_chunk_size"))
 })
 
-validateSpectra <- function(path = character(),
-                            metadata = list()) {
+validateAlabasterSpectra <- function(path = character(),
+                                     metadata = list()) {
     .check_directory_content(path, c("backend", "processing_queue_variables",
                                      "spectra_processing_queue.json",
                                      "processing", "metadata",
                                      "processing_chunk_size"))
 }
 
-readSpectra <- function(path = character(), metadata = list(),
-                        ...) {
-    validateSpectra(path, metadata)
+readAlabasterSpectra <- function(path = character(), metadata = list(),
+                                 ...) {
+    validateAlabasterSpectra(path, metadata)
     s <- Spectra::Spectra()
     s@backend <- altReadObject(file.path(path, "backend"), ...)
     s <- .import_spectra_processing_queue(
@@ -180,5 +180,5 @@ setMethod("saveMsObject", signature(object = "Spectra",
 setMethod("readMsObject", signature(object = "Spectra",
                                     param = "AlabasterParam"),
           function(object, param, spectraPath = character()) {
-              readSpectra(path = param@path, spectraPath = spectraPath)
+              readAlabasterSpectra(path = param@path, spectraPath = spectraPath)
           })

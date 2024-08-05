@@ -72,11 +72,12 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
     ## save/load real object
     s <- sps_dda
     saveObject(s, pth)
+    expect_silent(validateAlabasterSpectra(pth))
     expect_error(saveMsObject(s, AlabasterParam(pth)), "Overwriting or saving")
     expect_true(all(c("OBJECT", "backend", "metadata", "processing",
                       "processing_chunk_size", "processing_queue_variables",
                       "spectra_processing_queue.json") %in% dir(pth)))
-    res <- readObject(pth)
+    res <- readAlabasterSpectra(pth)
     expect_s4_class(res, "Spectra")
     expect_equal(length(res), length(s))
     expect_equal(res@backend, s@backend)
@@ -86,6 +87,8 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
     expect_equal(length(res@processingQueue), length(s@processingQueue))
     expect_equal(res@processingQueueVariables, s@processingQueueVariables)
     expect_equal(mz(res[1:3]), mz(s[1:3]))
+    res_2 <- readObject(pth)
+    expect_equal(res, res_2)
 
     ## save/load empty object
     unlink(pth, recursive = TRUE)

@@ -109,8 +109,8 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
 #' @importFrom alabaster.base registerValidateObjectFunction
 #'
 #' @noRd
-validateMzBackendMzR <- function(path = character(),
-                                 metadata = list()) {
+validateAlabasterMzBackendMzR <- function(path = character(),
+                                          metadata = list()) {
     .check_directory_content(path, c("spectra_data", "peaks_variables"))
 }
 
@@ -123,9 +123,9 @@ validateMzBackendMzR <- function(path = character(),
 #' @export readObject
 #'
 #' @noRd
-readMzBackendMzR <- function(path = character(), metadata = list(),
-                             spectraPath = character()) {
-    validateMzBackendMzR(path, metadata)
+readAlabasterMzBackendMzR <- function(path = character(), metadata = list(),
+                                      spectraPath = character()) {
+    validateAlabasterMzBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
     pvars <- altReadObject(file.path(path, "peaks_variables"))
     be <- Spectra::MsBackendMzR()
@@ -152,5 +152,6 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
 setMethod("readMsObject", signature(object = "MsBackendMzR",
                                    param = "AlabasterParam"),
           function(object, param, spectraPath = character()) {
-              readMzBackendMzR(path = param@path, spectraPath = spectraPath)
+              readAlabasterMzBackendMzR(path = param@path,
+                                        spectraPath = spectraPath)
           })
