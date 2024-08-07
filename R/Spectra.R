@@ -183,6 +183,6 @@ setMethod("saveMsObject", signature(object = "Spectra",
 #' @rdname AlabasterParam
 setMethod("readMsObject", signature(object = "Spectra",
                                     param = "AlabasterParam"),
-          function(object, param, spectraPath = character()) {
-              readAlabasterSpectra(path = param@path, spectraPath = spectraPath)
+          function(object, param, ...) {
+              readAlabasterSpectra(path = param@path, ...)
           })

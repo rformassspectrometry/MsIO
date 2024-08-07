@@ -156,7 +156,7 @@ readAlabasterMsExperiment <- function(path = character(), metadata = list(),
     res <- MsExperiment::MsExperiment()
     ## @spectra
     if (file.exists(file.path(path, "spectra")))
-        res@spectra <- altReadObject(file.path(path, "spectra"))
+        res@spectra <- altReadObject(file.path(path, "spectra"), ...)
     else res@spectra <- NULL
     ## @sampleData
     i <- altReadObject(file.path(path, "sample_data"))
@@ -191,3 +191,21 @@ readAlabasterMsExperiment <- function(path = character(), metadata = list(),
     validObject(res)
     res
 }
+
+#' @rdname AlabasterParam
+setMethod("saveMsObject", signature(object = "MsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param) {
+              if (file.exists(param@path))
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
+              saveObject(object, param@path)
+          })
+
+#' @rdname AlabasterParam
+setMethod("readMsObject", signature(object = "MsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param, ...) {
+              readAlabasterMsExperiment(path = param@path, ...)
+          })

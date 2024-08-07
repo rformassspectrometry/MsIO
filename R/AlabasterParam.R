@@ -99,7 +99,8 @@
 #' `Spectra` objects can be exported/imported using `saveMsObject()` and
 #' `readMsObject()` with an `AlabasterParam`, or using the `saveObject()`
 #' and `readObject()` functions. Both read functions allow to pass additional
-#' parameters (such as `spectraPath`) to the function to read the backend.
+#' parameters (such as `spectraPath`) to the import function for the
+#' `Spectra`'s backend.
 #'
 #' The content of the folder with the stored `Spectra` data contains the
 #' *OBJECT* file defining the type of the object stored in that directory and
@@ -124,7 +125,10 @@
 #' all other objects listed here, `MsExperiment` can be stored using either
 #' `saveObject()` or `saveMsObject` (with `AlabasterParam`) and *restored*
 #' using `readObject()` or `readMsObject()` (with `MsExperiment()` passed as
-#' the first parameter and `AlabasterParam` as second).
+#' the first parameter and `AlabasterParam` as second). The read functions
+#' support passing additional parameters to the import function(s) for object's
+#' MS data object(s), such as the `spectraPath` parameter described above
+#' through `...`.
 #'
 #' The content of the folder with the stored `MsExperiment` data contains a
 #' file `OBJECT` (in JSON format, with the type of class defined as

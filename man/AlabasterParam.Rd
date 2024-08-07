@@ -9,6 +9,8 @@
 \alias{saveMsObject,MsBackendMzR,AlabasterParam-method}
 \alias{readMsObject,MsBackendMzR,AlabasterParam-method}
 \alias{saveObject,MsExperiment-method}
+\alias{saveMsObject,MsExperiment,AlabasterParam-method}
+\alias{readMsObject,MsExperiment,AlabasterParam-method}
 \alias{saveObject,Spectra-method}
 \alias{saveMsObject,Spectra,AlabasterParam-method}
 \alias{readMsObject,Spectra,AlabasterParam-method}
@@ -24,11 +26,15 @@ AlabasterParam(path = tempdir())
 
 \S4method{saveObject}{MsExperiment}(x, path, ...)
 
+\S4method{saveMsObject}{MsExperiment,AlabasterParam}(object, param)
+
+\S4method{readMsObject}{MsExperiment,AlabasterParam}(object, param, ...)
+
 \S4method{saveObject}{Spectra}(x, path, ...)
 
 \S4method{saveMsObject}{Spectra,AlabasterParam}(object, param)
 
-\S4method{readMsObject}{Spectra,AlabasterParam}(object, param, spectraPath = character())
+\S4method{readMsObject}{Spectra,AlabasterParam}(object, param, ...)
 }
 \arguments{
 \item{path}{\code{character(1)} with the name of the directory where the MS data
@@ -128,7 +134,8 @@ below for details.
 \code{Spectra} objects can be exported/imported using \code{saveMsObject()} and
 \code{readMsObject()} with an \code{AlabasterParam}, or using the \code{saveObject()}
 and \code{readObject()} functions. Both read functions allow to pass additional
-parameters (such as \code{spectraPath}) to the function to read the backend.
+parameters (such as \code{spectraPath}) to the import function for the
+\code{Spectra}'s backend.
 
 The content of the folder with the stored \code{Spectra} data contains the
 \emph{OBJECT} file defining the type of the object stored in that directory and
@@ -154,7 +161,10 @@ individual slots, the respective \code{saveObject()} method is used. Similar to
 all other objects listed here, \code{MsExperiment} can be stored using either
 \code{saveObject()} or \code{saveMsObject} (with \code{AlabasterParam}) and \emph{restored}
 using \code{readObject()} or \code{readMsObject()} (with \code{MsExperiment()} passed as
-the first parameter and \code{AlabasterParam} as second).
+the first parameter and \code{AlabasterParam} as second). The read functions
+support passing additional parameters to the import function(s) for object's
+MS data object(s), such as the \code{spectraPath} parameter described above
+through \code{...}.
 
 The content of the folder with the stored \code{MsExperiment} data contains a
 file \code{OBJECT} (in JSON format, with the type of class defined as

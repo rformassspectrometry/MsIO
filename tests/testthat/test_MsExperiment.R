@@ -137,3 +137,29 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     expect_equal(dim(assay(res@otherData[[1L]])), dim(assay(se)))
     expect_equal(as.numeric(assay(res@otherData[[1L]])), as.numeric(assay(se)))
 })
+
+test_that("saveObject,MsExperiment,AlabasterParam works", {
+    expect_error(saveMsObject(MsExperiment(), AlabasterParam(tempdir())),
+                 "Overwriting")
+    pth <- file.path(tempdir(), "ms_experiment_alabaster")
+    if (file.exists(pth))
+        unlink(pth, recursive = TRUE)
+
+    fl <- system.file('cdf/KO/ko15.CDF', package = "faahKO")
+    fl_new <- tempfile()
+    file.copy(fl, fl_new)
+    m <- readMsExperiment(
+        fl_new, sampleData = data.frame(name = "a", index = 1))
+    saveMsObject(m, AlabasterParam(pth))
+    ## move the data file to a new location.
+    d_new <- file.path(tempdir(), "temp_file_location")
+    dir.create(d_new, recursive = TRUE)
+    file.copy(fl_new, file.path(d_new, basename(fl_new)))
+    unlink(fl_new)
+    expect_error(validObject(m@spectra@backend), "not found")
+    expect_error(readMsObject(MsExperiment(), AlabasterParam(pth)), "not found")
+    m_in <- readMsObject(MsExperiment(), AlabasterParam(pth),
+                         spectraPath = d_new)
+    expect_s4_class(m_in, "MsExperiment")
+    expect_equal(mz(spectra(m_in)[1:10]), mz(spectra(mse[1L])[1:10]))
+})
