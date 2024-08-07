@@ -40,7 +40,9 @@ Suggests:
     roxygen2,
     Spectra (>= 1.15.6),
     testthat,
-    xcms
+    xcms,
+    alabaster.se,
+    alabaster.matrix
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -56,6 +58,7 @@ Collate:
     'MsBackend.R'
     'MsBackendMzR.R'
     'MsExperiment.R'
+    'MsExperimentFiles.R'
     'Spectra.R'
     'XcmsExperiment.R'
     'zzz.R'

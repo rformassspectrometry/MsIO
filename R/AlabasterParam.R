@@ -4,6 +4,8 @@
 #'
 #' @aliases readObject
 #'
+#' @aliases saveObject,MsExperimentFiles-method
+#'
 #' @name AlabasterParam
 #'
 #' @family MS object export and import formats.
@@ -110,6 +112,48 @@
 #' spectra/peaks variables that are needed for the processing queue.
 #'
 #'
+#' @section On-disk storage for `MsExperiment` objects:
+#'
+#' `MsExperiment` is a container for various (different) MS data objects
+#' related to the same *experiment*. It is a very flexible object that can, but
+#' does not must contain actual MS data in form of e.g. a `Spectra` object.
+#' For the alabaster-based disk storage of an `MsExperiment`, each of the
+#' object's slots gets exported separately into its own subfolder within the
+#' object's directory (defined with parameter `path`). For the export of the
+#' individual slots, the respective `saveObject()` method is used. Similar to
+#' all other objects listed here, `MsExperiment` can be stored using either
+#' `saveObject()` or `saveMsObject` (with `AlabasterParam`) and *restored*
+#' using `readObject()` or `readMsObject()` (with `MsExperiment()` passed as
+#' the first parameter and `AlabasterParam` as second).
+#'
+#' The content of the folder with the stored `MsExperiment` data contains a
+#' file `OBJECT` (in JSON format, with the type of class defined as
+#' `"ms_experiment"`) and subfolders for the various slots, each saved to disk
+#' using the data type-specific `saveObject()` function:
+#'
+#' - `@sampleData`: `DataFrame` stored into a folder named *sample_data*.
+#' - `@sampleDataLinks`: the `List` is stored into a folder named
+#'   *sample_data_links*, its *metadata columns* `DataFrame` (i.e. `mcols()`
+#'   of the `List`) into a folder named *sample_data_links_mcols*.
+#' - `@spectra`: if not `NULL, a `Spectra` object stored into a folder with
+#'   the name *spectra* (using `saveObject()` of `Spectra` objects described
+#'   above). This requires the *alabaster.se* package to be installed.
+#'   If the value of the `@spectra` slot is `NULL` no directory *spectra* is
+#'   created.
+#' - `@experimentFiles`: `MsExperimentFiles` object saved using `saveObject()`
+#'   into a folder named *experiment_files*. `MsExperimentFiles` are saved as
+#'   a named list of `character` strings.
+#' - `@qdata`: if not `NULL`, the object in this slot (either a `QFeatures` or
+#'   `SummarizedExperiment`) is stored into a folder with the name *qdata*
+#'   using the `saveObject()` method of the respective object. If the value for
+#'   the `@qdata` slot is `NULL` the folder *qdata* is not created. At present,
+#'   export of `QFeatures` objects is not supported!
+#' - `@otherData`: `List` data is saved into a folder named *other_data*.
+#' - `@metadata`: `List` data is saved into a filder named *metadata*.
+#'
+#' Note that the data type of the `assays` of imported (previously stored)
+#' `SummarizedExperiment` objects are of type `ReloadedMatrix`.
+#'
 #' @author Johannes Rainer, Philippine Louail
 #'
 #' @examples
@@ -161,6 +205,29 @@
 #' ## `MsBackendMzR` of the `Spectra`:
 #' be_in <- readMsObject(MsBackendMzR(), AlabasterParam(file.path(d, "backend")))
 #' be_in
+#'
+#'
+#'
+#' ## Export and import of `MsExperiment` objects:
+#' library(MsExperiment)
+#'
+#' ## Create a new `MsExperiment` with sample data and our previously defined
+#' ## `Spectra` as its MS data
+#' m <- MsExperiment(
+#'     sampleData = data.frame(name = c("a", "b"), index = 1:2),
+#'     spectra = s)
+#' m
+#'
+#' d <- file.path(tempdir(), "ms_experiment_example")
+#' saveObject(m, d)
+#'
+#' ## List directory content
+#' dir(d)
+#'
+#' ## Restore the stored object
+#' m_in <- readObject(d)
+#'
+#' m_in
 NULL
 
 #' @noRd

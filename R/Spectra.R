@@ -122,8 +122,8 @@ setMethod("saveObject", "Spectra", function(x, path, ...) {
         stop("No method to save a backend of type \"", class(x@backend)[1L],
              "\" available yet")
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
-    alabaster.base::saveObjectFile(path, "spectra",
-                                   list(spectra =list(version = "1.0")))
+    saveObjectFile(path, "spectra",
+                   list(spectra =list(version = "1.0")))
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@backend, path = file.path(path, "backend")))
@@ -150,6 +150,10 @@ validateAlabasterSpectra <- function(path = character(),
 
 readAlabasterSpectra <- function(path = character(), metadata = list(),
                                  ...) {
+    if (!requireNamespace("Spectra", quietly = TRUE))
+        stop("Required package 'Spectra' missing. Please install ",
+             "and try again.", call. = FALSE)
+
     validateAlabasterSpectra(path, metadata)
     s <- Spectra::Spectra()
     s@backend <- altReadObject(file.path(path, "backend"), ...)

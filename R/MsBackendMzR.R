@@ -87,8 +87,8 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
 #' @rdname AlabasterParam
 setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
-    alabaster.base::saveObjectFile(path, "ms_backend_mz_r",
-                                   list(ms_backend_mz_r =list(version = "1.0")))
+    saveObjectFile(path, "ms_backend_mz_r",
+                   list(ms_backend_mz_r =list(version = "1.0")))
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@spectraData, path = file.path(path, "spectra_data")))
@@ -125,6 +125,9 @@ validateAlabasterMzBackendMzR <- function(path = character(),
 #' @noRd
 readAlabasterMzBackendMzR <- function(path = character(), metadata = list(),
                                       spectraPath = character()) {
+    if (!requireNamespace("Spectra", quietly = TRUE))
+        stop("Required package 'Spectra' missing. Please install ",
+             "and try again.", call. = FALSE)
     validateAlabasterMzBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
     pvars <- altReadObject(file.path(path, "peaks_variables"))
