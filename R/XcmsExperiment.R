@@ -1,4 +1,5 @@
-#'@title Methods to save and load contents of a XcmsExperiment object
+#' @include PlainTextParam.R
+#' @title Methods to save and load contents of a XcmsExperiment object
 #'
 #' @author Philippine Louail
 #'
@@ -127,3 +128,77 @@ setMethod("readMsObject",
     x@featureDefinitions <- fts
     x
 }
+
+################################################################################
+##
+## alabaster saveObject/readObject
+##
+################################################################################
+#' @rdname AlabasterParam
+setMethod("saveObject", "XcmsExperiment", function(x, path, ...) {
+    if(!requireNamespace("alabaster.matrix", quietly = TRUE))
+        stop("Required package 'alabaster.matrix' missing. Please install and ",
+             "try again.", call. = FALSE)
+    ## Save the MsExperiment part
+    altSaveObject(as(x, "MsExperiment"), path, ...)
+    altSaveObject(x@chromPeaks, file.path(path, "chrom_peaks"))
+    ## It's a bit odd, but we can only export DataFrame, but not data.frame
+    altSaveObject(as(x@chromPeakData, "DataFrame"),
+                  file.path(path, "chrom_peak_data"))
+    altSaveObject(as(x@featureDefinitions, "DataFrame"),
+                  file.path(path, "feature_definitions"))
+    .export_process_history(x, path)
+    info <- readObjectFile(path)
+    info$xcms_experiment <- list(version = "1.0")
+    saveObjectFile(path, "xcms_experiment", info)
+})
+
+validateAlabasterXcmsExperiment <- function(path = character(),
+                                            metadata = list()) {
+    validateAlabasterMsExperiment(path)
+    .check_directory_content(
+        path, c("chrom_peaks", "chrom_peak_data", "feature_definitions",
+                "xcms_experiment_process_history.json"))
+}
+
+readAlabasterXcmsExperiment <- function(path = character(), metadata = list(),
+                                      ...) {
+    if (!requireNamespace("xcms", quietly = TRUE))
+        stop("Required package 'xcms' missing. Please install ",
+             "and try again.", call. = FALSE)
+    if (!requireNamespace("MsExperiment", quietly = TRUE))
+        stop("Required package 'MsExperiment' missing. Please install ",
+             "and try again.", call. = FALSE)
+    validateAlabasterXcmsExperiment(path, metadata)
+
+    metadata$type <- "ms_experiment"
+    res <- altReadObject(path, metadata = metadata, ...)
+    res <- as(res, "XcmsExperiment")
+    res <- .import_process_history(res, path)
+    x <- altReadObject(file.path(path, "chrom_peaks"))
+    res@chromPeaks <- as.matrix(x)
+    x <- altReadObject(file.path(path, "chrom_peak_data"))
+    res@chromPeakData <- as(x, "data.frame")
+    x <- altReadObject(file.path(path, "feature_definitions"))
+    res@featureDefinitions <- as(x, "data.frame")
+    validObject(res)
+    res
+}
+
+#' @rdname AlabasterParam
+setMethod("saveMsObject", signature(object = "XcmsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param) {
+              if (file.exists(param@path))
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
+              saveObject(object, param@path)
+          })
+
+#' @rdname AlabasterParam
+setMethod("readMsObject", signature(object = "XcmsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param, ...) {
+              readAlabasterXcmsExperiment(path = param@path, ...)
+          })

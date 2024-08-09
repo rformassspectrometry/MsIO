@@ -85,3 +85,78 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
     expect_equal(a@featureDefinitions, res@featureDefinitions)
     expect_equal(a@processHistory, res@processHistory)
 })
+
+test_that("saveObject,readObject,XcmsExperiment works", {
+    pth <- file.path(tempdir(), "xcms_experiment_alabaster")
+
+    ## Empty object.
+    m <- XcmsExperiment()
+    saveObject(m, pth)
+    expect_true(all(c("sample_data", "sample_data_links",
+                      "sample_data_links_mcols", "metadata",
+                      "experiment_files", "other_data", "chrom_peaks",
+                      "chrom_peak_data", "feature_definitions") %in% dir(pth)))
+    expect_true(!any(dir(pth) %in% c("spectra", "qdata")))
+    expect_silent(MsIO:::validateAlabasterXcmsExperiment(pth))
+    res <- MsIO:::readAlabasterXcmsExperiment(pth)
+    expect_equal(res, m)
+
+    ## Real object
+    m <- xmseg_filt
+    expect_error(saveObject(m, pth), "existing path")
+
+    unlink(pth, recursive = TRUE)
+    saveObject(m, pth)
+    expect_silent(MsIO:::validateAlabasterXcmsExperiment(pth))
+    res <- MsIO:::readAlabasterXcmsExperiment(pth)
+    expect_s4_class(res, "XcmsExperiment")
+    expect_equal(res@chromPeaks, m@chromPeaks)
+    expect_equal(res@chromPeakData, m@chromPeakData)
+    expect_equal(res@featureDefinitions, m@featureDefinitions)
+    expect_equal(length(res@processHistory), length(m@processHistory))
+    expect_equal(res@processHistory[[1L]], m@processHistory[[1L]])
+    expect_equal(res@processHistory[[2L]], m@processHistory[[2L]])
+    expect_equal(res@processHistory[[3L]], m@processHistory[[3L]])
+    expect_equal(res@processHistory[[4L]], m@processHistory[[4L]])
+    expect_equal(res@processHistory[[5L]], m@processHistory[[5L]])
+    expect_equal(class(res@processHistory[[6L]]), class(m@processHistory[[6L]]))
+
+    expect_equal(mz(spectra(res)[1:10]), mz(spectra(m)[1:10]))
+})
+
+test_that("saveMsObject,XcmsExperiment,AlabasterParam works", {
+    expect_error(saveMsObject(XcmsExperiment(), AlabasterParam(tempdir())),
+                 "Overwriting")
+    pth <- file.path(tempdir(), "xcms_experiment_alabaster")
+    if (file.exists(pth))
+        unlink(pth, recursive = TRUE)
+
+    ## Simulate moving data files.
+    fl <- system.file('cdf/KO/ko15.CDF', package = "faahKO")
+    fl_new <- tempfile()
+    file.copy(fl, fl_new)
+    library(MsExperiment)
+    m <- readMsExperiment(
+        fl_new, sampleData = data.frame(name = "a", index = 1))
+    m <- findChromPeaks(m, param = CentWaveParam())
+    expect_true(hasChromPeaks(m))
+    saveMsObject(m, AlabasterParam(pth))
+    ref <- readMsObject(XcmsExperiment(), AlabasterParam(pth))
+    expect_equal(m, ref)
+
+    ## move the data file to a new location.
+    d_new <- file.path(tempdir(), "temp_file_location")
+    dir.create(d_new, recursive = TRUE)
+    file.copy(fl_new, file.path(d_new, basename(fl_new)))
+    unlink(fl_new)
+    expect_error(validObject(m@spectra@backend), "not found")
+
+    expect_error(readMsObject(XcmsExperiment(),
+                              AlabasterParam(pth)), "not found")
+    m_in <- readMsObject(XcmsExperiment(), AlabasterParam(pth),
+                         spectraPath = d_new)
+    expect_s4_class(m_in, "XcmsExperiment")
+    expect_equal(chromPeaks(m_in), chromPeaks(m))
+    ## Check that access to MS data works
+    expect_true(length(mz(spectra(m_in)[1L])) > 0)
+})

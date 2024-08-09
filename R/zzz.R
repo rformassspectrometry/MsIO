@@ -13,4 +13,8 @@
                                    validateAlabasterMsExperiment)
     registerReadObjectFunction("ms_experiment",
                                readAlabasterMsExperiment)
+    registerValidateObjectFunction("xcms_experiment",
+                                   validateAlabasterXcmsExperiment)
+    registerReadObjectFunction("xcms_experiment",
+                               readAlabasterXcmsExperiment)
 }

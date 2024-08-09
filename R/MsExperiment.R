@@ -154,23 +154,18 @@ readAlabasterMsExperiment <- function(path = character(), metadata = list(),
              "and try again.", call. = FALSE)
     validateAlabasterMsExperiment(path, metadata)
     res <- MsExperiment::MsExperiment()
-    ## @spectra
     if (file.exists(file.path(path, "spectra")))
         res@spectra <- altReadObject(file.path(path, "spectra"), ...)
     else res@spectra <- NULL
-    ## @sampleData
     i <- altReadObject(file.path(path, "sample_data"))
     res@sampleData <- i
-    ## @sampleDataLinks
     i <- as(lapply(altReadObject(file.path(path, "sample_data_links")),
                    as.matrix), "SimpleList")
     i@elementMetadata <- altReadObject(
         file.path(path, "sample_data_links_mcols"))
     res@sampleDataLinks <- i
-    ## @metadata
     i <- altReadObject(file.path(path, "metadata"))
     res@metadata <- i
-    ## @qdata
     if (file.exists(file.path(path, "qdata"))) {
         qdata_obj <- readObjectFile(file.path(path, "qdata"))
         if (qdata_obj$type[1L] == "summarized_experiment") {
@@ -182,10 +177,8 @@ readAlabasterMsExperiment <- function(path = character(), metadata = list(),
                     "be imported.")
         res@qdata <- i
     } else res@qdata <- NULL
-    ## @experimentFiles
     i <- altReadObject(file.path(path, "experiment_files"))
     res@experimentFiles <- i
-    ## @otherData
     i <- as(altReadObject(file.path(path, "other_data")), "SimpleList")
     res@otherData <- i
     validObject(res)

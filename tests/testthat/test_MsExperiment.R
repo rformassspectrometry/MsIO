@@ -138,7 +138,7 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     expect_equal(as.numeric(assay(res@otherData[[1L]])), as.numeric(assay(se)))
 })
 
-test_that("saveObject,MsExperiment,AlabasterParam works", {
+test_that("saveMsObject,MsExperiment,AlabasterParam works", {
     expect_error(saveMsObject(MsExperiment(), AlabasterParam(tempdir())),
                  "Overwriting")
     pth <- file.path(tempdir(), "ms_experiment_alabaster")

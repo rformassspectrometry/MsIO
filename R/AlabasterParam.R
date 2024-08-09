@@ -158,6 +158,33 @@
 #' Note that the data type of the `assays` of imported (previously stored)
 #' `SummarizedExperiment` objects are of type `ReloadedMatrix`.
 #'
+#'
+#' @section On-disk storage for `XcmsExperiment` objects:
+#'
+#' `XcmsExperiment` objects extend the `MsExperiment` object and contain in
+#' addition the results of a preprocessing of the MS data using the *xcms*
+#' package. These objects can be exported/imported in the formats used for
+#' *alabaster*-based storage using the `saveObject()` and `readObject()`
+#' functions as well as using `saveMsObject()` and `readMsObject()` with
+#' an `AlabasterParam` parameter object. As with all other methods, additional
+#' parameters can be passed with the `...` parameter (such as the
+#' `spectraData` parameter for import of a `MsBackendMzR` discussed above).
+#' The storage directory contains all files and folders created by the export
+#' of the `MsExperiment` (see above) and in addition the specific results
+#' of *xcms* from the respective slots of the object:
+#'
+#' - `@chromPeaks`: this numeric matrix is stored in a folder names
+#'   *chrom_peaks*.
+#' - `@chromPeakData`: this `data.frame` is first converted to a `DataFrame`
+#'   and then stored to a folder *chrom_peak_data* (in the *alabaster* format
+#'   for `DataFrame`).
+#' - `@featureDefinitions`: this `data.frame` is first converted to a
+#'   `DataFrame` and then stored to a folder *feature_definitions* (also in
+#'   *alabaster* format for `DataFrame`).
+#' - `@processHistory`: the list of `ProcessHistory` objects is stored in JSON
+#'   format to a file *xcms_experiment_process_history.json*.
+#'
+#'
 #' @author Johannes Rainer, Philippine Louail
 #'
 #' @examples
@@ -232,6 +259,31 @@
 #' m_in <- readObject(d)
 #'
 #' m_in
+#'
+#'
+#'
+#' ## Export and import of `XcmsExperiment` objects:
+#' ## `XcmsExperiment` objects extend `MsExperiment` to represent all
+#' ## data of an MS experiment and contain in addition the results
+#' ## of the preprocessing of the data with the *xcms* package. Below
+#' ## we load the *xcms* package and load an example result object from that
+#' ## package.
+#' library(xcms)
+#' x <- loadXcmsData()
+#' x
+#'
+#' ## Store this result object to a folder
+#' d <- file.path(tempdir(), "xcms_experiment_example")
+#' saveMsObject(x, AlabasterParam(d))
+#'
+#' dir(d)
+#'
+#' ## Restore the data; eventually needed additional parameters, such as
+#' ## `spectraPath` to restore a `MsBackendMzR` if the original data files
+#' ## have been moved, could be passed with the `...` parameter of
+#' ## `readMsExperiment()`.
+#' x_in <- readMsObject(XcmsExperiment(), AlabasterParam(d))
+#' x_in
 NULL
 
 #' @noRd

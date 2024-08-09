@@ -15,12 +15,14 @@ Authors@R:
 	     role = "ctb",
 	     comment = c(ORCID = "0000-0002-1520-2268")))
 Description: The serialization mechanism of R allows to save and load R data
-             objects in a binary format, that can however not read by other
+             objects in a binary format, that can however not be read by other
 	     programming languages or software. The MsIO package supports
 	     serializing and restoring or importing mass spectrometry data
-	     objects to and from language agnostic file formats. The file type
-	     can be defined and configured through a second argument `param`
-	     of the export/import methods.
+	     objects to and from language agnostic file formats. A variety
+	     of different file types, including HDF5 and JSON-based formats
+	     defined by the Bioconductor *alabaster* package are supported. The
+	     file type can be defined and configured through a second argument
+	     `param` of the export/import methods.
 Depends:
     R (>= 4.2.0)
 Imports:
