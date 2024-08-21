@@ -66,6 +66,7 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
     dataStoragePaths <- dataStorage(x)
     normalizedDataStoragePaths <- normalizePath(
         dataStoragePaths, winslash = "/", mustWork = FALSE)
+    spectraPath <- normalizePath(spectraPath, winslash = "/", mustWork = FALSE)
     x@spectraData$dataStorage <- sub(old, spectraPath,
                                      normalizedDataStoragePaths)
     x
