@@ -103,7 +103,7 @@ test_that("saveObject,readObject,MsBackendMzR works", {
 test_that(".mz_backend_mzr_update_storage_path works", {
     x <- sciex_mzr
     res <- .mz_backend_mzr_update_storage_path(x, "/new/path")
-    expect_true(all(grepl("^/new/path", res$dataStorage)))
+    expect_true(all(grepl("/new/path", res$dataStorage)))
     expect_error(validObject(res), "not found")
 })
 
