@@ -41,23 +41,21 @@ setMethod("readMsObject", signature(object = "Spectra",
               var_names <- sub(" =.*", "", fls)
               var_values <- sub(".* = ", "", fls)
               variables <- setNames(var_values, var_names)
+              message("backend ", variables[["backend"]])
               if (!existsMethod("readMsObject", c(variables[["backend"]],
                                                  "PlainTextParam")))
                   stop("Can not read a 'Spectra' object with backend '",
                        variables["backend"], "'")
-              ## Check if the library to load the backend class is available.
-              ## This should also enable backends that are defined in other
-              ## packages than Spectra. Accessing directly the "globalenv" to
-              ## ensure we can access functions/classes there.
-              fun <- getFunction(variables[["backend"]], mustFind = FALSE,
-                                 where = topenv(globalenv()))
-              if (!length(fun))
-                  stop("Can not create an instance of the MsBackend class \"",
-                       variables[["backend"]], "\". Please first load the ",
-                       "library that provides this class and try again.",
+              tryCatch({
+                  object@backend <- readMsObject(
+                      do.call(variables[["backend"]], list()), param, ...)
+              }, error = function(e) {
+                  stop("Failed to load a backend of type '",
+                       variables[["backend"]],
+                       "'. Please load the package defining this type",
+                       " of class and try again.\n - ", e$message,
                        call. = FALSE)
-              b <- readMsObject(fun(), param, ...)
-              object@backend <- b
+              })
               object@processingQueueVariables <- unlist(
                   strsplit(variables[["processingQueueVariables"]],
                            "|", fixed = TRUE))
