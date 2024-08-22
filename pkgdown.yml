@@ -1,8 +1,9 @@
-pandoc: '3.2'
+pandoc: '3.3'
 pkgdown: 2.1.0.9000
-pkgdown_sha: 6f01c9267a1cee263216cec38eea10017d751dd8
-articles: {}
-last_built: 2024-08-01T13:34Z
+pkgdown_sha: 020dc44c138193ad0a63a9778bb832ac7afed1f1
+articles:
+  MsIO: MsIO.html
+last_built: 2024-08-22T14:07Z
 urls:
   reference: https://rformassspectrometry.github.io/MsIO/reference
   article: https://rformassspectrometry.github.io/MsIO/articles

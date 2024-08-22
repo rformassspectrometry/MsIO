@@ -1,8 +1,11 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://rformassspectrometry.github.io/MsIO/404.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MsIO/articles/MsIO.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MsIO/articles/index.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/authors.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/index.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/news/index.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MsIO/reference/AlabasterParam.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/reference/PlainTextParam.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/reference/index.html</loc></url>
 <url><loc>https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.html</loc></url>
