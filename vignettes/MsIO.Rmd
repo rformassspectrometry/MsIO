@@ -1,0 +1,258 @@
+---
+title: "Storage Modes of MS Data Objects"
+output:
+    BiocStyle::html_document:
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Storage Modes of MS Data Objects}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    %\VignettePackage{MsIO}
+    %\VignetteDepends{MsIO,BiocStyle,msdata,MsExperiment,Spectra}
+---
+
+```{r style, echo = FALSE, results = 'asis', message=FALSE}
+BiocStyle::markdown()
+```
+
+**Package**: `r Biocpkg("MsIO")`<br />
+**Authors**: `r packageDescription("MsIO")[["Author"]] `<br />
+**Compiled**: `r date()`
+
+```{r, echo = FALSE, message = FALSE}
+library(MsIO)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+library(BiocStyle)
+```
+
+# Introduction
+
+Data objects in R can be serialized to disk in R's *Rds* format using the base R
+`save()` function and re-imported using the `load()` function. This R-specific
+binary data format can however not be used or read by other programming
+languages preventing thus the exchange of R data objects between software or
+programming languages. The *MsIO* package provides functionality to export and
+import mass spectrometry data objects in various storage formats aiming to
+facilitate data exchange between software. This includes, among other formats,
+also storage of data objects using Bioconductor's `r Biocpkg("alabaster.base")`
+package.
+
+For export or import of MS data objects, the `saveMsObject()` and
+`readMsObject()` functions can be used. For `saveMsObject()`, the first
+parameter is the MS data object that should be stored, for `readMsObject()` it
+defines type of MS object that should be restored (returned). The second
+parameter `param` defines and configures the storage format of the MS data. The
+currently supported formats and the respective parameter objects are:
+
+- `PlainTextParam`: storage of data in plain text file format.
+- `AlabasterParam`: storage of MS data using Bioconductor's
+  `r Biocpkg("alabaster.base")` framework based files in HDF5 and JSON format.
+
+These storage formats are described in more details in the following sections.
+
+An example use of these functions and parameters: `saveMsObject(x, param =
+PlainTextParam(storage_path))` to store an MS data object assigned to a variable
+`x` to a directory `storage_path` using the plain text file format. To restore
+the data (assuming `x` was an instance of a `MsExperiment` class):
+`readMsObject(MsExperiment(), param = PlainTextParam(storage_path))`.
+
+
+# Installation
+
+The package can be installed with the *BiocManager* package. To install
+*BiocManager* use `install.packages("BiocManager")` and, after that,
+`BiocManager::install("RforMassSpectrometry/MsIO")` to install this package.
+
+For import or export of MS data objects installation of additional Bioconductor
+packages might be needed:
+
+- `r Biocpkg("Spectra")` (with `BiocManager::install("Spectra")`) for import or
+  export of `Spectra` or `MsBackendMzR` objects.
+- `r Biocpkg("MsExperiment")` (with `BiocManager::install("MsExperiment")`) for
+  import or export of `MsExperiment` objects.
+- `r Biocpkg("xcms")` (with `BiocManager::install("xcms")`) for import or export
+  of `XcmsExperiment` objects (result objects of *xcms*-based preprocessing).
+
+
+# Plain text file format
+
+Storage of MS data objects in *plain* text format aims to support an easy
+exchange of data, and in particular analysis results, with external software,
+such as [MS-DIAL](https://systemsomicslab.github.io/compms/msdial/main.html) or
+[mzmine3](http://mzmine.github.io/download.html). In most cases, the data is
+stored as tabulator delimited text files simplifying the use of the data and
+results across multiple programming languages, or their import into spreadsheet
+applications. MS data objects stored in plain text format can also be fully
+re-imported into R providing thus an alternative, and more flexible, object
+serialization approach than the R internal *Rds*/*RData* format.
+
+Below we create a MS data object (`MsExperiment`) representing the data from two
+raw MS data files and assign sample annotation information to these data files.
+
+```{r}
+library(MsIO)
+library(MsExperiment)
+
+fls <- dir(system.file("TripleTOF-SWATH", package = "msdata"),
+           full.names = TRUE)
+mse <- readMsExperiment(
+    fls,
+    sampleData = data.frame(name = c("Pestmix1 DDA", "Pestmix SWATH"),
+                            mode = c("DDA", "SWATH")))
+mse
+```
+
+We can export this data object to plain text files using *MsIO*'s
+`saveMsObject()` function in combination with the `PlainTextParam` parameter
+object. The path to the directory to which the data should be stored can be
+defined with the `path` parameter of `PlainTextParam`. With the call below we
+store the MS data object to a temporary directory.
+
+```{r}
+d <- file.path(tempdir(), "ms_experiment_export")
+saveMsObject(mse, PlainTextParam(path = d))
+```
+
+The data was exported to a set of text files that we list below:
+
+```{r}
+dir(d)
+```
+
+Each text file contains information about one particular *slot* of the MS data
+object. See the `?PlainTextParam` help for a description of the files and their
+respective formats. We can restore the MS data object again using the
+`readMsObject()` function, specifying the type of object we want to restore (and
+which was stored to the respective directory) with the first parameter of the
+function and the data storage format with the second. In our example we use
+`MsExperiment()` as first parameter and `PlainTextParam` as second. The MS data
+of our `MsExperiment` data object was represented by a `Spectra` object, thus,
+to import the data we need in addition to load the `r Biocpkg("Spectra")`
+package.
+
+```{r}
+library(Spectra)
+mse_in <- readMsObject(MsExperiment(), PlainTextParam(d))
+mse_in
+```
+
+Note that at present *MsIO* does **not** support storage of the full MS data
+(i.e. the individual mass peaks' *m/z* and intensity values) to plain text
+file. *MsIO* supports storage of *on-disk* data objects/representations (such as
+the `MsBackendMzR` object) to plain text formats. The `Spectra` object that is
+used to represent the MS data of our example `MsExperiment` object uses a
+`MsBackendMzR` backend and thus we were able to export and import its data. Due
+to its on-disk data mode, this type of backend retrieves the MS data on-the-fly
+from the original data files and hence we only need to store the MS metadata and
+the location of the original data files. Thus, also with the restored MS data
+object we have full access to the MS data:
+
+```{r}
+spectra(mse_in) |>
+    head() |>
+    intensity()
+```
+
+However, ff the location of the original MS data files was changed (e.g. if the
+files or the stored object was moved to a different location or file system),
+the new location of these files would be needed to be specified with parameter
+`spectraPath` (e.g. `readMsObject(MsExperiment(), PlainTextParam(d), spectraPath
+= <path to new location>)`).
+
+Generally, `saveMsData()` stores the MS data objects in a modular way, i.e. the
+content of each component or slot is exported to its own data file. The storage
+directory of our example `MsExperiment` contains thus multiple data files:
+
+```{r}
+dir(d)
+```
+
+This modularity allows also to load only parts of the original data. We can for
+example also load only the `Spectra` object representing the MS experiment's MS
+data.
+
+```{r}
+s <- readMsObject(Spectra(), PlainTextParam(d))
+s
+```
+
+Or even only the `MsBackendMzR` that is used by the `Spectra` object to
+represent the MS data.
+
+```{r}
+be <- readMsObject(MsBackendMzR(), PlainTextParam(d))
+be
+```
+
+
+
+# *alabaster*-based formats
+
+The [alabaster framework](https://github.com/ArtifactDB/alabaster.base) and
+related Bioconductor package `r Biocpkg("alabaster.base")` implements methods to
+save a variety of R/Bioconductor objects to on-disk representations based on
+standard file formats like HDF5 and JSON. This ensures that Bioconductor objects
+can be easily read from other languages like Python and Javascript. With
+`AlabasterParam`, *MsIO* supports export of MS data objects into these storage
+formats. Below we export our example `MsExperiment` to a storage directory using
+the alabaster format.
+
+```{r}
+d <- file.path(tempdir(), "ms_experiment_export_alabaster")
+saveMsObject(mse, AlabasterParam(path = d))
+```
+
+The contents of the storage folder is listed below:
+
+```{r}
+dir(d, recursive = TRUE)
+```
+
+In contrast to the plain text format described in the previous section, that
+stores all data files into a single directory, the alabaster export is
+structured hierarchically into sub-folders by the MS data object's
+slots/components.
+
+To restore the object we use the `readMsObject()` function with an
+`AlabasterParam` parameter objects to define the used data storage format.
+
+```{r}
+mse_in <- readMsObject(MsExperiment(), AlabasterParam(d))
+mse_in
+
+```
+
+Also for this format, we can load parts of the data separately. We can load the
+MS data as a `Spectra` object from the respective subfolder of the data storage
+directory:
+
+```{r}
+s <- readMsObject(Spectra(), AlabasterParam(file.path(d, "spectra")))
+s
+```
+
+The import/export functionality is completely compatible with Bioconductor's
+alabaster framework and hence allows also to read the whole, or parts of the
+data directly using alabaster's `readObject()` method. The full `MsExperiment`
+is restored importing the full directory (i.e. providing the path to the
+directory containing the full export with the function's `path` parameter).
+
+```{r}
+mse_in <- readObject(path = d)
+mse_in
+```
+
+Alternatively, by providing a path to one of the MS object's components, it is
+possible to read only specific parts of the data. Below we read the sample
+annotation information as a `DataFrame` from the *sample_data* subfolder:
+
+```{r}
+readObject(path = file.path(d, "sample_data"))
+```
+
+
+# Session information
+
+```{r}
+sessionInfo()
+```

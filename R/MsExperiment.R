@@ -89,3 +89,116 @@ setMethod("readMsObject",
               validObject(object)
               object
           })
+
+################################################################################
+##
+## alabaster saveObject/readObject
+##
+################################################################################
+#' @rdname AlabasterParam
+setMethod("saveObject", "MsExperiment", function(x, path, ...) {
+    ## Check requirements before saving
+    if (inherits(x@qdata, "QFeatures"))
+        stop("Saving of an 'MsExperiment' with an object of type 'QFeatures'",
+             " in the qdata slot is currently not supported.", call. = FALSE)
+    if (inherits(x@qdata, "SummarizedExperiment") &&
+        !requireNamespace("alabaster.se", quietly = TRUE))
+        stop("Required package 'alabaster.se' for export of ",
+             "'SummarizedExperiment' objects missing. Please install and ",
+             "try again.", call. = FALSE)
+    if (length(x@sampleDataLinks) > 0 &&
+        !requireNamespace("alabaster.matrix", quietly = TRUE))
+        stop("Required package 'alabaster.matrix' missing. Please install and ",
+             "try again.", call. = FALSE)
+    dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
+    saveObjectFile(path, "ms_experiment",
+                   list(spectra = list(version = "1.0")))
+    if (length(x@spectra))
+        tryCatch({
+            do.call(altSaveObject,
+                    list(x = x@spectra, path = file.path(path, "spectra")))
+        }, error = function(e) {
+            stop("failed to save '@spectra' of ", class(x)[1L], "\n - ",
+                 e$message, call. = FALSE)
+        })
+    altSaveObject(x@sampleData, path = file.path(path, "sample_data"))
+    altSaveObject(x@sampleDataLinks,path = file.path(path, "sample_data_links"))
+    altSaveObject(x@sampleDataLinks@elementMetadata,
+                  path = file.path(path, "sample_data_links_mcols"))
+    altSaveObject(x@metadata, path = file.path(path, "metadata"))
+    if (length(x@qdata))
+        altSaveObject(x@qdata, path = file.path(path, "qdata"))
+    altSaveObject(x@experimentFiles, path = file.path(path, "experiment_files"))
+    ## - otherData: call saveObject and hope for the best.
+    tryCatch({
+        do.call(altSaveObject,
+                list(x = x@otherData, path = file.path(path, "other_data")))
+    }, error = function(e) {
+        stop("failed to save '@otherData' of ", class(x)[1L], "\n - ",
+             e$message, call. = FALSE)
+    })
+})
+
+validateAlabasterMsExperiment <- function(path = character(),
+                                          metadata = list()) {
+    .check_directory_content(path, c("sample_data", "sample_data_links",
+                                     "sample_data_links_mcols", "metadata",
+                                     "experiment_files", "other_data"))
+}
+
+#' @importFrom alabaster.base readObjectFile
+readAlabasterMsExperiment <- function(path = character(), metadata = list(),
+                                      ...) {
+    if (!requireNamespace("MsExperiment", quietly = TRUE))
+        stop("Required package 'MsExperiment' missing. Please install ",
+             "and try again.", call. = FALSE)
+    validateAlabasterMsExperiment(path, metadata)
+    res <- MsExperiment::MsExperiment()
+    if (file.exists(file.path(path, "spectra")))
+        res@spectra <- altReadObject(file.path(path, "spectra"), ...)
+    else res@spectra <- NULL
+    i <- altReadObject(file.path(path, "sample_data"))
+    res@sampleData <- i
+    i <- as(lapply(altReadObject(file.path(path, "sample_data_links")),
+                   as.matrix), "SimpleList")
+    i@elementMetadata <- altReadObject(
+        file.path(path, "sample_data_links_mcols"))
+    res@sampleDataLinks <- i
+    i <- altReadObject(file.path(path, "metadata"))
+    res@metadata <- i
+    if (file.exists(file.path(path, "qdata"))) {
+        qdata_obj <- readObjectFile(file.path(path, "qdata"))
+        if (qdata_obj$type[1L] == "summarized_experiment") {
+            if (!requireNamespace("alabaster.se", quietly = TRUE))
+                stop("Required package 'alabaster.se' not available. Please ",
+                     "install and try again.", call. = FALSE)
+            i <- altReadObject(file.path(path, "qdata"))
+        } else stop("Data of type \"", qdata_obj$type, "\" can currently not ",
+                    "be imported.")
+        res@qdata <- i
+    } else res@qdata <- NULL
+    i <- altReadObject(file.path(path, "experiment_files"))
+    res@experimentFiles <- i
+    i <- as(altReadObject(file.path(path, "other_data")), "SimpleList")
+    res@otherData <- i
+    validObject(res)
+    res
+}
+
+#' @rdname AlabasterParam
+setMethod("saveMsObject", signature(object = "MsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param) {
+              if (file.exists(param@path))
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
+              saveObject(object, param@path)
+          })
+
+#' @rdname AlabasterParam
+setMethod("readMsObject", signature(object = "MsExperiment",
+                                    param = "AlabasterParam"),
+          function(object, param, ...) {
+              readAlabasterMsExperiment(path = param@path, ...)
+          })

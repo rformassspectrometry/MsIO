@@ -63,3 +63,80 @@ test_that("saveMsObject,readMsObject,PlainTextParam,Spectra works", {
     s_load <- readMsObject(object = Spectra(), param)
     expect_equal(length(s), length(s_load))
 })
+
+test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
+    pth <- file.path(tempdir(), "spectra_alabaster")
+
+    expect_error(saveObject(Spectra(), path = pth), "available yet")
+
+    ## save/load real object
+    s <- sps_dda
+    saveObject(s, pth)
+    expect_silent(validateAlabasterSpectra(pth))
+    expect_error(saveMsObject(s, AlabasterParam(pth)), "Overwriting or saving")
+    expect_true(all(c("OBJECT", "backend", "metadata", "processing",
+                      "processing_chunk_size", "processing_queue_variables",
+                      "spectra_processing_queue.json") %in% dir(pth)))
+    res <- readAlabasterSpectra(pth)
+    expect_s4_class(res, "Spectra")
+    expect_equal(length(res), length(s))
+    expect_equal(res@backend, s@backend)
+    expect_equal(res@metadata, s@metadata)
+    expect_equal(res@processing, s@processing)
+    expect_equal(res@processingChunkSize, s@processingChunkSize)
+    expect_equal(length(res@processingQueue), length(s@processingQueue))
+    expect_equal(res@processingQueueVariables, s@processingQueueVariables)
+    expect_equal(mz(res[1:3]), mz(s[1:3]))
+    res_2 <- readObject(pth)
+    expect_equal(res, res_2)
+
+    ## save/load empty object
+    unlink(pth, recursive = TRUE)
+    s <- sps_dda[integer()]
+    saveObject(s, pth)
+    expect_true(all(c("OBJECT", "backend", "metadata", "processing",
+                      "processing_chunk_size", "processing_queue_variables",
+                      "spectra_processing_queue.json") %in% dir(pth)))
+    res <- readObject(pth)
+    expect_s4_class(res, "Spectra")
+    expect_equal(length(res), length(s))
+    expect_equal(res@backend, s@backend)
+    expect_equal(res@metadata, s@metadata)
+    expect_equal(res@processing, s@processing)
+    expect_equal(res@processingChunkSize, s@processingChunkSize)
+    expect_equal(length(res@processingQueue), length(s@processingQueue))
+    expect_equal(res@processingQueueVariables, s@processingQueueVariables)
+
+    ## move data file
+    newp <- file.path(tempdir(), "temp_mzml")
+    dir.create(newp)
+    newf <- file.path(newp, "a.mzML")
+    file.copy(fl, newf)
+    s <- Spectra(newf)
+    unlink(pth, recursive = TRUE)
+    saveObject(s, pth)
+    res <- readObject(pth)
+    expect_equal(s, res)
+    ## move data file.
+    newp <- file.path(tempdir(), "temp_mzml2")
+    dir.create(newp)
+    file.copy(newf, file.path(newp, "a.mzML"))
+    unlink(newf)
+
+    expect_error(readObject(pth), "not found")
+    res <- readObject(pth, spectraPath = newp)
+    res_2 <- readMsObject(Spectra(), AlabasterParam(pth), spectraPath = newp)
+    expect_s4_class(res, "Spectra")
+    expect_s4_class(res_2, "Spectra")
+    expect_true(validObject(res@backend))
+    expect_true(validObject(res_2@backend))
+    ref <- Spectra(fl)
+    expect_equal(length(res), length(ref))
+    expect_equal(res@metadata, ref@metadata)
+    expect_equal(res@processing, ref@processing)
+    expect_equal(res@processingChunkSize, ref@processingChunkSize)
+    expect_equal(res@processingQueue, ref@processingQueue)
+    expect_equal(res@processingQueueVariables, ref@processingQueueVariables)
+    expect_equal(rtime(res), rtime(ref))
+    expect_equal(mz(res[1:3]), mz(ref[1:3]))
+})

@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.2
+Version: 0.0.4
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -15,20 +15,23 @@ Authors@R:
 	     role = "ctb",
 	     comment = c(ORCID = "0000-0002-1520-2268")))
 Description: The serialization mechanism of R allows to save and load R data
-             objects in a binary format, that can however not read by other
+             objects in a binary format, that can however not be read by other
 	     programming languages or software. The MsIO package supports
 	     serializing and restoring or importing mass spectrometry data
-	     objects to and from language agnostic file formats. The file type
-	     can be defined and configured through a second argument `param`
-	     of the export/import methods.
+	     objects to and from language agnostic file formats. A variety
+	     of different file types, including HDF5 and JSON-based formats
+	     defined by the Bioconductor *alabaster* package are supported. The
+	     file type can be defined and configured through a second argument
+	     `param` of the export/import methods.
 Depends:
     R (>= 4.2.0)
 Imports:
     jsonlite,
     methods,
-    MsCoreUtils,
+    MsCoreUtils (>= 1.17.1),
+    S4Vectors,
     ProtGenerics,
-    S4Vectors
+    alabaster.base
 Suggests:
     BiocStyle (>= 2.5.19),
     faahKO,
@@ -37,9 +40,11 @@ Suggests:
     msdata,
     rmarkdown,
     roxygen2,
-    Spectra,
+    Spectra (>= 1.15.6),
     testthat,
-    xcms
+    xcms,
+    alabaster.se,
+    alabaster.matrix
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -49,10 +54,13 @@ biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomic
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.3.2
 Collate:
+    'PlainTextParam.R'
+    'AlabasterParam.R'
     'AllGenerics.R'
     'MsBackend.R'
-    'PlainTextParam.R'
     'MsBackendMzR.R'
     'MsExperiment.R'
+    'MsExperimentFiles.R'
     'Spectra.R'
     'XcmsExperiment.R'
+    'zzz.R'

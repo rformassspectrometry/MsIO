@@ -45,8 +45,10 @@ exported/imported.}
 
 \item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing
 to define the (absolute) path where the spectra files (\emph{data storage
-files}) can be found. This parameter is passed to the \code{loadResults()}
-method of the MsBackend().}
+files}) can be found. This parameter is used for \code{MsBackendMzR} (see
+descriptions below) and can be passed through \code{...} also to
+\code{readMsObject()} functions for other classes (such as \code{Spectra},
+\code{MsExperiment} etc).}
 
 \item{...}{Additional parameters passed down to internal functions. E.g.
 parameter \code{spectraPath} (see above).}
@@ -186,6 +188,81 @@ any MS data is saved using a call to the \code{saveMsObject} of the
 }
 }
 
+\examples{
+
+## Export and import a `Spectra` object:
+
+library(Spectra)
+library(msdata)
+fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+sps <- Spectra(fl)
+
+## Export the object to a temporary directory
+d <- file.path(tempdir(), "spectra_example")
+saveMsObject(sps, PlainTextParam(d))
+
+## List the exported plain text files:
+dir(d)
+
+## - ms_backend_data.txt contains the metadata for the MS backend used (a
+##   'MsBackendMzR`.
+## - spectra_slots.txt contains general information from the Spectra object.
+
+## Import the data again. By using `Spectra()` as first parameter we ensure
+## the result is returned as a `Spectra` object.
+sps_in <- readMsObject(Spectra(), PlainTextParam(d))
+sps_in
+
+## Check that the data is the same
+all.equal(rtime(sps), rtime(sps_in))
+all.equal(intensity(sps), intensity(sps_in))
+
+## The data got exported *by module*, thus we could also load only a part of
+## the exported data, such as just the `MsBackend` used by the `Spectra`:
+be <- readMsObject(MsBackendMzR(), PlainTextParam(d))
+be
+
+## The export functionality also ensures that the data/object can be
+## completely restored, i.e., for `Spectra` objects also their
+## *processing queue* is preserved/stored. To show this we below first
+## filter the spectra object by retention time and m/z:
+
+sps_filt <- sps |>
+    filterRt(c(400, 600)) |>
+    filterMzRange(c(200, 300))
+## The filtered object has less spectra
+length(sps_filt)
+length(sps)
+## And also less mass peaks per spectrum
+lengths(sps_filt[1:3])
+lengths(sps[1:3])
+
+d <- file.path(tempdir(), "spectra_example2")
+saveMsObject(sps_filt, PlainTextParam(d))
+
+## The directory contains now an additional file with the processing
+## queue of the `Spectra`.
+dir(d)
+
+## Restoring the object again.
+sps_in <- readMsObject(Spectra(), PlainTextParam(d))
+
+## Both objects have the same processing history
+sps_filt
+sps_in
+
+## Same number of spectra
+length(sps_filt)
+length(sps_in)
+
+## Same number of mass peaks (after filtering)
+lengths(sps_filt[1:3])
+lengths(sps_in[1:3])
+}
+\seealso{
+Other MS object export and import formats.: 
+\code{\link{AlabasterParam}}
+}
 \author{
 Philippine Louail
 }
