@@ -189,7 +189,9 @@
 #'
 #' @examples
 #'
+#' ########
 #' ## Export and import a `MsBackendMzR` object:
+#' ####
 #'
 #' library(Spectra)
 #' library(msdata)
@@ -216,7 +218,9 @@
 #' all.equal(mz(be), mz(be_in))
 #'
 #'
+#' ########
 #' ## Export and import of `Spectra` objects:
+#' ####
 #'
 #' ## Create a `Spectra` object with a `MsBackendMzR` backend.
 #' s <- Spectra(fl)
@@ -238,8 +242,10 @@
 #' be_in
 #'
 #'
-#'
+#' ########
 #' ## Export and import of `MsExperiment` objects:
+#' ####
+#'
 #' library(MsExperiment)
 #'
 #' ## Create a new `MsExperiment` with sample data and our previously defined
@@ -261,8 +267,10 @@
 #' m_in
 #'
 #'
-#'
+#' ########
 #' ## Export and import of `XcmsExperiment` objects:
+#' ####
+#'
 #' ## `XcmsExperiment` objects extend `MsExperiment` to represent all
 #' ## data of an MS experiment and contain in addition the results
 #' ## of the preprocessing of the data with the *xcms* package. Below

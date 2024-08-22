@@ -57,15 +57,15 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     expect_true(length(res) > 0)
     expect_true(all(c("OBJECT", "spectra_data", "peaks_variables") %in% res))
 
-    ## validateAlabasterMzBackendMzR
-    expect_error(validateAlabasterMzBackendMzR("some_path"),
+    ## validateAlabasterMsBackendMzR
+    expect_error(validateAlabasterMsBackendMzR("some_path"),
                  "required file/directory")
-    expect_silent(validateAlabasterMzBackendMzR(pth))
+    expect_silent(validateAlabasterMsBackendMzR(pth))
 
-    ## readAlabasterMzBackendMzR
-    expect_error(readAlabasterMzBackendMzR("some_path"),
+    ## readAlabasterMsBackendMzR
+    expect_error(readAlabasterMsBackendMzR("some_path"),
                  "required file/directory")
-    res <- readAlabasterMzBackendMzR(pth)
+    res <- readAlabasterMsBackendMzR(pth)
     expect_s4_class(res, "MsBackendMzR")
     expect_equal(length(b), length(res))
 
@@ -100,9 +100,9 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     }
 })
 
-test_that(".mz_backend_mzr_update_storage_path works", {
+test_that(".ms_backend_mzr_update_storage_path works", {
     x <- sciex_mzr
-    res <- .mz_backend_mzr_update_storage_path(x, "/new/path")
+    res <- .ms_backend_mzr_update_storage_path(x, "/new/path")
     expect_true(all(grepl("/new/path", res$dataStorage)))
     expect_error(validObject(res), "not found")
 })

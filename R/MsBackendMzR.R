@@ -52,7 +52,7 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
                   rownames(data) <- NULL
                   object@spectraData <- DataFrame(data)
                   if (length(spectraPath) > 0) {
-                      object <- .mz_backend_mzr_update_storage_path(
+                      object <- .ms_backend_mzr_update_storage_path(
                           object, spectraPath)
                   }
               }
@@ -60,7 +60,7 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
               object
           })
 
-.mz_backend_mzr_update_storage_path <- function(x, spectraPath = character()) {
+.ms_backend_mzr_update_storage_path <- function(x, spectraPath = character()) {
     if (!length(x)) return(x)
     old <- common_path(dataStorage(x))
     dataStoragePaths <- dataStorage(x)
@@ -110,7 +110,7 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
 #' @importFrom alabaster.base registerValidateObjectFunction
 #'
 #' @noRd
-validateAlabasterMzBackendMzR <- function(path = character(),
+validateAlabasterMsBackendMzR <- function(path = character(),
                                           metadata = list()) {
     .check_directory_content(path, c("spectra_data", "peaks_variables"))
 }
@@ -124,19 +124,19 @@ validateAlabasterMzBackendMzR <- function(path = character(),
 #' @export readObject
 #'
 #' @noRd
-readAlabasterMzBackendMzR <- function(path = character(), metadata = list(),
+readAlabasterMsBackendMzR <- function(path = character(), metadata = list(),
                                       spectraPath = character()) {
     if (!requireNamespace("Spectra", quietly = TRUE))
         stop("Required package 'Spectra' missing. Please install ",
              "and try again.", call. = FALSE)
-    validateAlabasterMzBackendMzR(path, metadata)
+    validateAlabasterMsBackendMzR(path, metadata)
     sdata <- altReadObject(file.path(path, "spectra_data"))
     pvars <- altReadObject(file.path(path, "peaks_variables"))
     be <- Spectra::MsBackendMzR()
     be@spectraData <- sdata
     be@peaksVariables <- pvars
     if (length(spectraPath) > 0)
-        be <- .mz_backend_mzr_update_storage_path(be, spectraPath)
+        be <- .ms_backend_mzr_update_storage_path(be, spectraPath)
     validObject(be)
     be
 }
@@ -156,6 +156,6 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
 setMethod("readMsObject", signature(object = "MsBackendMzR",
                                    param = "AlabasterParam"),
           function(object, param, spectraPath = character()) {
-              readAlabasterMzBackendMzR(path = param@path,
+              readAlabasterMsBackendMzR(path = param@path,
                                         spectraPath = spectraPath)
           })
