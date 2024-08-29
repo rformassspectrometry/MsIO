@@ -261,7 +261,8 @@ lengths(sps_in[1:3])
 }
 \seealso{
 Other MS object export and import formats.: 
-\code{\link{AlabasterParam}}
+\code{\link{AlabasterParam}},
+\code{\link{MzTabParam}}
 }
 \author{
 Philippine Louail

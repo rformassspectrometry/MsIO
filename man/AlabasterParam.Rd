@@ -338,6 +338,7 @@ x_in
 }
 \seealso{
 Other MS object export and import formats.: 
+\code{\link{MzTabParam}},
 \code{\link{PlainTextParam}}
 }
 \author{
