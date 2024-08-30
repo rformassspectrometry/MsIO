@@ -57,6 +57,7 @@ Collate:
     'PlainTextParam.R'
     'AlabasterParam.R'
     'AllGenerics.R'
+    'MetaboLightsParam.R'
     'MsBackend.R'
     'MsBackendMzR.R'
     'MsExperiment.R'

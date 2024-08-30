@@ -202,3 +202,60 @@ setMethod("readMsObject", signature(object = "MsExperiment",
           function(object, param, ...) {
               readAlabasterMsExperiment(path = param@path, ...)
           })
+
+
+################################################################################
+##
+## MetaboLights readMsObject
+##
+################################################################################
+#' @rdname MetaboLightsParam
+#' @importFrom utils menu
+setMethod("readMsObject",
+          signature(object = "MsExperiment",
+                    param = "MetaboLightsParam"),
+          function(object, param, ...) {
+              url <- file.path(
+                  "https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/",
+                  param@studyId, "/")
+              ## Retrieve the HTML content using curl system command
+              html_content <- system(paste("curl -s", url), intern = TRUE) ##idk if that works for all OS
+              if (all(grepl("The requested URL was not found on this server",
+                       html_content)))
+                  stop("Study not found. Please check the study ID and try again.")
+              files <- regmatches(html_content,
+                                  gregexpr("href=\"([^\"]+\\.txt|[^\"]+\\.tsv)\"",
+                                           html_content))
+              files <- unlist(files)
+              files <- gsub("href=\"|\"", "", files)
+
+              ## check assay files
+              assays <- grep("a_", files, value = TRUE)
+              if (length(assays) > 1) {
+                  cat("Multiple assay files found:\n")
+                  selection <- menu(assays,
+                                    title = paste("Please choose the assay",
+                                    "file you want to use:"))
+                  selected_assay <- assays[selection]
+              } else if (length(assays) == 1) {
+                  selected_assay <- assays[1]
+                  cat("Only one assay file found:", selected_assay, "\n")
+              } else stop("No assay files found.") ## i don't think that would happen...
+
+              assay_data <- read.table(file.path(url, selected_assay),
+                                       header = TRUE, sep = "\t")
+              assay_data$injection_index <- seq_len(nrow(assay_data))
+
+              ## Extract and read sample info files
+              sample_info_files <- grep("s_", files, value = TRUE)
+              sample_info <- read.table(file.path(url, sample_info_files),
+                                        header = TRUE, sep = "\t")
+              merged_data <- merge(assay_data, sample_info, by = "Sample.Name")
+              merged_data <- merged_data[order(merged_data$injection_index), ]
+              merged_data <- merged_data[, colSums(is.na(merged_data)) <
+                                             nrow(merged_data)]
+
+              object@sampleData <- DataFrame(merged_data)
+              validObject(object)
+              object
+          })
