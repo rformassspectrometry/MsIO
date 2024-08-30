@@ -1,5 +1,3 @@
-library(testthat)
-library(MsIO)
 library(MsExperiment)
 test_that("Param is defined properly", {
     expect_error(MetaboLightsParam(studyId = ")Qn"), "must start")
