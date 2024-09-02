@@ -9,7 +9,7 @@ test_that("Param is defined properly", {
     expect_is(res@sampleData, "DataFrame")
 
     #also test a ID that does not work MTBLXXXX
-    param_test <- MetaboLightsParam(studyId = "MTBLXXXX")
+    param_test <- MetaboLightsParam(studyId = "MTBLSXXXX")
     expect_error(readMsObject(MsExperiment(), param_test), "No assay files")
 
     # testing interactive sesh
