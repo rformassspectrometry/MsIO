@@ -13,7 +13,9 @@
 #' MetaboLights database (https://www.ebi.ac.uk/metabolights/index) by
 #' providing its unique study `studyId`. This function is particularly useful
 #' for importing metabolomics data into an `MsExperiment` object for further
-#' analysis within the R environment.
+#' analysis within the R environment. It's important to note that this method
+#' can *only* be used for import into an R environement using `readMsObject()`.
+#' It cannot be used with the `saveMsObject()` method.
 #'
 #' If the study contains multiple assays, the user will be prompted to select
 #' which assay to load. The resulting `MsExperiment` object will include a
@@ -59,8 +61,8 @@ setClass("MetaboLightsParam",
          ),
          validity = function(object) {
              msg <- NULL
-             if (!grepl("^MTBL", object@studyId))
-                 msg <- c("'studyId' must start with 'MTBL'")
+             if (!grepl("^MTBLS", object@studyId))
+                 msg <- c("'studyId' must start with 'MTBLS'")
              msg
          })
 
