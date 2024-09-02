@@ -10,8 +10,8 @@ MetaboLightsParam(studyId = character(1))
 \S4method{readMsObject}{MsExperiment,MetaboLightsParam}(object, param, ...)
 }
 \arguments{
-\item{studyId}{\code{character(1)} The MetaboLights study studyId, which should start with
-"MTBL". This identifier uniquely specifies the study within the
+\item{studyId}{\code{character(1)} The MetaboLights study studyId, which should
+start with "MTBL". This identifier uniquely specifies the study within the
 MetaboLights database.}
 
 \item{object}{for \code{saveMsObject()}: the MS data object to save, for
@@ -25,16 +25,18 @@ exported/imported.}
 method for more information.}
 }
 \value{
-(for now ?) A MsExperiemtn object with only the sampleData slots
+(for now ?) A \code{MsExperiment} object with only the sampleData slots
 filled (will be updated when MetaboLightsBackend available ?).
 }
 \description{
 The \code{MetaboLightsParam} class and the associated \code{readMsObject()} method
 allow users to load an \code{MsExperiment} object from a study in the
 MetaboLights database (https://www.ebi.ac.uk/metabolights/index) by
-providing its unique study \code{studyId}. This function is particularly useful for
-importing metabolomics data into an \code{MsExperiment} object for further
-analysis within the R environment.
+providing its unique study \code{studyId}. This function is particularly useful
+for importing metabolomics data into an \code{MsExperiment} object for further
+analysis within the R environment. It's important to note that this method
+can \emph{only} be used for import into an R environement using \code{readMsObject()}.
+It cannot be used with the \code{saveMsObject()} method.
 
 If the study contains multiple assays, the user will be prompted to select
 which assay to load. The resulting \code{MsExperiment} object will include a
