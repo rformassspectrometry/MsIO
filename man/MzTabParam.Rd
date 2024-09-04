@@ -3,7 +3,7 @@
 \name{MzTabParam}
 \alias{MzTabParam}
 \alias{saveMsObject,XcmsExperiment,MzTabParam-method}
-\title{Store contents of an \code{XcmsExperiment} objects as a .mztabm file}
+\title{Store xcms preprocessing results to a file in mzTab-M format.}
 \usage{
 MzTabParam(
   studyId = character(),
@@ -31,8 +31,8 @@ different \emph{variables} of the experiment, for example it could be
 \item{path}{\code{character(1)} Define where the file is going to be stored. The
 default will be \code{tempdir()}.}
 
-\item{optionalFeatureColumns}{Optional columns from \code{featureDefinitions}
-that should be exported too. For example it could be \emph{"peakidx},
+\item{optionalFeatureColumns}{Optional columns from \code{featureDefinitions()}
+that should be exported too. For example it could be \emph{"ms_level"},
 \emph{"npeaks"}, etc...}
 
 \item{...}{additional optional arguments. See documentation of respective
@@ -47,23 +47,33 @@ exported/imported.}
 }
 \description{
 The \code{saveMsObject()} and \code{readMsObject()} methods with the \code{MzTabParam}
-option enable users to save/load \code{XcmsExperiment} objects in/from a .mztabm
+option enable users to save/load \code{XcmsExperiment} objects in Mz-Tab-m
 file format. Mainly the metadata (MTD) and Small molecule feature (SMF)
-tables will represent the \code{XcmsExperiment}. The small molecule summary
-section (SML) will be filled with \code{null} values as no annotation and
-identification of compound is performed in \code{xcms}. Writing data to a folder
-that contains already exported data will result in an error.
+tables will represent the \code{XcmsExperiment}. More specifically, \code{sampleData()}
+of the object will be stored in the metadata section (MTD) along with the
+user-inputed \code{studyId}  and \code{polarity}. The \code{featureDefinitions()} will be
+stored in the small molecule feature (SMF) section but by default only the
+\code{mzmed}, \code{rtmed}, \code{rtmin} and \code{rtmax} are exported. More info avaialble in
+\code{featureDefinitions()} can be exported by specifying the
+\code{optionalFeatureColumns} parameter. The \code{featureValues()} will also be
+stored in the small molecule feature (SMF) section.
+
+The small molecule summary section (SML) will be filled with \code{null} values
+as no annotation and identification of compound is performed in \code{xcms}.
+
+Writing data to a folder that contains already exported data will result in
+an error.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{dots}}{\code{list} Correspond to any optional parameters to be passed
-to the \code{featureValues} function. (e.g. parameters \code{method} or \code{value}).}
+\item{\code{dots}}{Correspond to any optional parameters to be passed
+to the \code{featureValues()} function. (e.g. parameters \code{method} or \code{value}).}
 }}
 
 \note{
-This function was build so that the output fit the recommendation of mztab-m
-file format. These can be found here:
+This function was build so that the output fit the recommendation of
+Mz-Tab-m file format version 2.0. These can be found here:
 (http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html)
 }
 \examples{

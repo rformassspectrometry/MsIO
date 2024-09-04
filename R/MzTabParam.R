@@ -1,4 +1,4 @@
-#' @title Store contents of an `XcmsExperiment` objects as a .mztabm file
+#' @title Store xcms preprocessing results to a file in mzTab-M format.
 #'
 #' @name MzTabParam
 #'
@@ -10,12 +10,22 @@
 #'
 #' @description
 #' The `saveMsObject()` and `readMsObject()` methods with the `MzTabParam`
-#' option enable users to save/load `XcmsExperiment` objects in/from a .mztabm
+#' option enable users to save/load `XcmsExperiment` objects in Mz-Tab-m
 #' file format. Mainly the metadata (MTD) and Small molecule feature (SMF)
-#' tables will represent the `XcmsExperiment`. The small molecule summary
-#' section (SML) will be filled with `null` values as no annotation and
-#' identification of compound is performed in `xcms`. Writing data to a folder
-#' that contains already exported data will result in an error.
+#' tables will represent the `XcmsExperiment`. More specifically, `sampleData()`
+#' of the object will be stored in the metadata section (MTD) along with the
+#' user-inputed `studyId`  and `polarity`. The `featureDefinitions()` will be
+#' stored in the small molecule feature (SMF) section but by default only the
+#' `mzmed`, `rtmed`, `rtmin` and `rtmax` are exported. More info avaialble in
+#' `featureDefinitions()` can be exported by specifying the
+#' `optionalFeatureColumns` parameter. The `featureValues()` will also be
+#' stored in the small molecule feature (SMF) section.
+#'
+#' The small molecule summary section (SML) will be filled with `null` values
+#' as no annotation and identification of compound is performed in `xcms`.
+#'
+#' Writing data to a folder that contains already exported data will result in
+#' an error.
 #'
 #' @param studyId `character(1)` Will be both the `filename` of the object
 #' saved in .mztabm format and the `mzTab-ID` in the file.
@@ -31,17 +41,17 @@
 #' @param path `character(1)` Define where the file is going to be stored. The
 #' default will be `tempdir()`.
 #'
-#' @param optionalFeatureColumns Optional columns from `featureDefinitions`
-#' that should be exported too. For example it could be *"peakidx*,
+#' @param optionalFeatureColumns Optional columns from `featureDefinitions()`
+#' that should be exported too. For example it could be *"ms_level"*,
 #' *"npeaks"*, etc...
 #'
-#' @slot dots `list` Correspond to any optional parameters to be passed
-#' to the `featureValues` function. (e.g. parameters `method` or `value`).
+#' @slot dots Correspond to any optional parameters to be passed
+#' to the `featureValues()` function. (e.g. parameters `method` or `value`).
 #'
 #'
 #' @note
-#' This function was build so that the output fit the recommendation of mztab-m
-#' file format. These can be found here:
+#' This function was build so that the output fit the recommendation of
+#' Mz-Tab-m file format version 2.0. These can be found here:
 #' (http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html)
 #'
 #' @references

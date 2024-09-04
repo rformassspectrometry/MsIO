@@ -224,11 +224,8 @@ setMethod("saveMsObject",
               var_list <- unique(.mztab_study_variables(object@sampleData,
                                                         param@sampleDataColumn))
               fl <- file.path(param@path, paste0(param@studyId, ".mztab"))
-              if (file.exists(fl)) {
-                  warning("File ", basename(fl), " already exists. ",
-                          "Will overwrite.")
-                  file.remove(fl)
-              }
+              if (file.exists(fl))
+                  stop("File ", basename(fl), " already exists. ")
               con <- file(fl, open = "at")
               on.exit(close(con))
 
