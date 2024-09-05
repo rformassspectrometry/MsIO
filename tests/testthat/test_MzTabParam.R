@@ -78,9 +78,9 @@ test_that(".mztab_study_variable_entries works", {
     expect_true(length(res2) > length(res))
 })
 
-test_that("saveMsObject,MzTabParam works", {
+test_that("saveMsObject,mzTabParam works", {
     d <- tempdir()
-    p <- MzTabParam(studyId = "test_study", path = d,
+    p <- mzTabParam(studyId = "test_study", path = d,
                     sampleDataColumn = "sample_index",
                     optionalFeatureColumns = "peakidx")
     saveMsObject(faahko, p)

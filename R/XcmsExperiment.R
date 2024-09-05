@@ -1,4 +1,5 @@
 #' @include PlainTextParam.R
+#' @include mzTabParam.R
 #' @title Methods to save and load contents of a XcmsExperiment object
 #'
 #' @author Philippine Louail
@@ -136,7 +137,7 @@ setMethod("readMsObject",
 ################################################################################
 #' @rdname AlabasterParam
 setMethod("saveObject", "XcmsExperiment", function(x, path, ...) {
-    if(!requireNamespace("alabaster.matrix", quietly = TRUE))
+    if (!requireNamespace("alabaster.matrix", quietly = TRUE))
         stop("Required package 'alabaster.matrix' missing. Please install and ",
              "try again.", call. = FALSE)
     ## Save the MsExperiment part
@@ -190,6 +191,7 @@ setMethod("saveMsObject", signature(object = "XcmsExperiment",
                                     param = "AlabasterParam"),
           function(object, param) {
               if (file.exists(param@path))
+
                   stop("Overwriting or saving to an existing directory is not",
                        " supported. Please remove the directory defined with",
                        " parameter `path` first.")
@@ -205,19 +207,19 @@ setMethod("readMsObject", signature(object = "XcmsExperiment",
 
 ################################################################################
 ##
-## MzTabParam
+## mzTabParam
 ##
 ################################################################################
-#' @rdname MzTabParam
+#' @rdname mzTabParam
 setMethod("saveMsObject",
           signature(object = "XcmsExperiment",
-                    param = "MzTabParam"),
+                    param = "mzTabParam"),
           function(object, param){
-              if(!param@sampleDataColumn %in% colnames(object@sampleData))
+              if (!param@sampleDataColumn %in% colnames(object@sampleData))
                   stop("'sampleDataColumn' has to correspond to column names",
                        "of the sampleData() table")
-              if(length(param@optionalFeatureColumns) != 0)
-                  if(!param@optionalFeatureColumns %in% colnames(object@featureDefinitions))
+              if (length(param@optionalFeatureColumns) != 0)
+                  if (!param@optionalFeatureColumns %in% colnames(object@featureDefinitions))
                       stop("'optionalFeatureColumns' have to correspond to",
                            "column names of the featureDefinitions() table")
 

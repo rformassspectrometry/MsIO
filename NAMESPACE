@@ -2,8 +2,8 @@
 
 export(AlabasterParam)
 export(MetaboLightsParam)
-export(MzTabParam)
 export(PlainTextParam)
+export(mzTabParam)
 export(readObject)
 exportMethods(readMsObject)
 exportMethods(saveMsObject)

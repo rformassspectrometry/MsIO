@@ -1,6 +1,6 @@
 #' @title Store xcms preprocessing results to a file in mzTab-M format.
 #'
-#' @name MzTabParam
+#' @name mzTabParam
 #'
 #' @export
 #'
@@ -9,7 +9,7 @@
 #' @family MS object export and import formats.
 #'
 #' @description
-#' The `saveMsObject()` and `readMsObject()` methods with the `MzTabParam`
+#' The `saveMsObject()` and `readMsObject()` methods with the `mzTabParam`
 #' option enable users to save/load `XcmsExperiment` objects in Mz-Tab-m
 #' file format. Mainly the metadata (MTD) and Small molecule feature (SMF)
 #' tables will represent the `XcmsExperiment`. More specifically, `sampleData()`
@@ -28,7 +28,7 @@
 #' an error.
 #'
 #' @param studyId `character(1)` Will be both the `filename` of the object
-#' saved in .mztabm format and the `mzTab-ID` in the file.
+#' saved in mzTab-M format and the `mzTab-ID` in the file.
 #'
 #' @param polarity `character(1)` Describes the polarity of the experiment. Two
 #' inputs are possible, "positive" (default) or "negative".
@@ -51,7 +51,7 @@
 #'
 #' @note
 #' This function was build so that the output fit the recommendation of
-#' Mz-Tab-m file format version 2.0. These can be found here:
+#' mzTab-M file format version 2.0. These can be found here:
 #' (http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html)
 #'
 #' @references
@@ -75,17 +75,17 @@
 #' test_xcms <- loadXcmsData()
 #'
 #' ## Define param
-#' param <- MzTabParam(studyId = "test",
+#' param <- mzTabParam(studyId = "test",
 #'                     polarity = "positive",
 #'                     sampleDataColumn = "sample_type")
 #'
-#' ## Save as a .mzTabm file
+#' ## Save as a mzTab-M file
 #' saveMsObject(test_xcms, param)
 #'
 NULL
 
 #' @noRd
-setClass("MzTabParam",
+setClass("mzTabParam",
          slots = c(studyId = "character",
                    polarity = "character",
                    sampleDataColumn = "character",
@@ -104,12 +104,12 @@ setClass("MzTabParam",
          ),
          validity = function(object) {
              msg <- NULL
-             if(length(object@studyId) != 1)
+             if (length(object@studyId) != 1)
                  msg <- c("'studyId' has to be a character string of length 1")
-             if(length(object@polarity) != 1)
+             if (length(object@polarity) != 1)
                  msg <- c(msg, "'polarity' has to be a character string ",
                  "of length 1")
-             if(length(object@sampleDataColumn) == 0)
+             if (length(object@sampleDataColumn) == 0)
                  msg <- c(msg, "'sampleDataColumn' cannot be empty")
              if (length(object@path) != 1)
                  msg <- c(msg, "'path' has to be a character string of ",
@@ -117,16 +117,16 @@ setClass("MzTabParam",
              msg
          })
 
-#' @rdname MzTabParam
+#' @rdname mzTabParam
 #'
 #' @export
-MzTabParam <- function(studyId = character(),
+mzTabParam <- function(studyId = character(),
                        polarity = c("positive", "negative"),
                        sampleDataColumn = character(),
                        path = tempdir(),
                        optionalFeatureColumns = character(), ...) {
     polarity <- match.arg(polarity)
-    new("MzTabParam", studyId = studyId, polarity = polarity,
+    new("mzTabParam", studyId = studyId, polarity = polarity,
         sampleDataColumn = sampleDataColumn, path = path,
         optionalFeatureColumns = optionalFeatureColumns, dots = list(...))
 }

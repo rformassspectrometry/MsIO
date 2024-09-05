@@ -62,7 +62,7 @@ Collate:
     'MsBackendMzR.R'
     'MsExperiment.R'
     'MsExperimentFiles.R'
-    'MzTabParam.R'
     'Spectra.R'
+    'mzTabParam.R'
     'XcmsExperiment.R'
     'zzz.R'
