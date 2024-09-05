@@ -63,5 +63,6 @@ Collate:
     'MsExperiment.R'
     'MsExperimentFiles.R'
     'Spectra.R'
+    'mzTabParam.R'
     'XcmsExperiment.R'
     'zzz.R'
