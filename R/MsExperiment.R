@@ -214,48 +214,99 @@ setMethod("readMsObject", signature(object = "MsExperiment",
 setMethod("readMsObject",
           signature(object = "MsExperiment",
                     param = "MetaboLightsParam"),
-          function(object, param, ...) {
-              url <- file.path(
-                  "https://ftp.ebi.ac.uk/pub/databases/metabolights/studies/public/",
-                  param@studyId, "/")
-              ## Retrieve the HTML content using curl system command
-              html_content <- system(paste("curl -s", url), intern = TRUE) ##idk if that works for all OS
-              if (all(grepl("The requested URL was not found on this server",
-                       html_content)))
-                  stop("Study not found. Please check the study ID and try again.")
-              files <- regmatches(html_content,
-                                  gregexpr("href=\"([^\"]+\\.txt|[^\"]+\\.tsv)\"",
-                                           html_content))
-              files <- unlist(files)
-              files <- gsub("href=\"|\"", "", files)
+          function(object, param, keepOntology = TRUE, keepProtocol = TRUE,
+                   simplify = TRUE, ...) {
+              if (!requireNamespace("MsBackendMetaboLights", quietly = TRUE)) {
+                  stop("Required package 'MsBackendMetaboLights' is missing. ",
+                       "Please install it and try again.", call. = FALSE)
+              }
+              pth <- MsBackendMetaboLights::mtbls_ftp_path(param@mtblsId)
+              all_fls <- MsBackendMetaboLights::mtbls_list_files(param@mtblsId)
 
-              ## check assay files
-              assays <- grep("a_", files, value = TRUE)
-              if (length(assays) > 1) {
+              ## Extract and read assay files
+              assays <- all_fls[grepl("^a_", all_fls)]
+              if (length(param@assayName) > 0) selected_assay <- param@assayName
+              else if (length(assays) > 1 && length(param@assayName) == 0) {
                   cat("Multiple assay files found:\n")
                   selection <- menu(assays,
                                     title = paste("Please choose the assay",
                                     "file you want to use:"))
                   selected_assay <- assays[selection]
               } else if (length(assays) == 1) {
-                  selected_assay <- assays[1]
+                  selected_assay <- assays
                   cat("Only one assay file found:", selected_assay, "\n")
-              } else stop("No assay files found.") ## i don't think that would happen...
-
-              assay_data <- read.table(file.path(url, selected_assay),
-                                       header = TRUE, sep = "\t")
-              assay_data$injection_index <- seq_len(nrow(assay_data))
+              }
+              assay_data <- read.table(paste0(pth, selected_assay),
+                                       header = TRUE, sep = "\t",
+                                       check.names = FALSE)
 
               ## Extract and read sample info files
-              sample_info_files <- grep("s_", files, value = TRUE)
-              sample_info <- read.table(file.path(url, sample_info_files),
-                                        header = TRUE, sep = "\t")
-              merged_data <- merge(assay_data, sample_info, by = "Sample.Name")
-              merged_data <- merged_data[order(merged_data$injection_index), ]
-              merged_data <- merged_data[, colSums(is.na(merged_data)) <
-                                             nrow(merged_data)]
+              s_files <- all_fls[grepl("^s_", all_fls)]
+              sample_info <- read.table(paste0(pth, s_files),
+                                        header = TRUE, sep = "\t",
+                                        check.names = FALSE)
+
+              # merging
+              ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
+              merged_data <- cbind(assay_data, sample_info[ord, ])
+              names(merged_data) <- gsub(" ", "_", names(merged_data))
+              if (keepProtocol || keepOntology || simplify)
+                  merged_data <- .clean_merged(x = merged_data,
+                                               keepProtocol = keepProtocol,
+                                               keepOntology = keepOntology,
+                                               simplify = simplify)
+
+              ## Assemble object
+              object@spectra <- Spectra::Spectra(mtblsId = param@mtblsId,
+                                                 source = MsBackendMetaboLights::MsBackendMetaboLights(),
+                                                 assayName = selected_assay,
+                                                 filePattern = param@filePattern)
+
+              ## sample to spectra link
+              fl <- object@spectra@backend@spectraData[1, "derived_spectral_data_file"]
+              nme <- colnames(merged_data)[which(merged_data[1, ] == fl)]
+              merged_data <- merged_data[grepl(param@filePattern,
+                                               merged_data[, nme]), ]
 
               object@sampleData <- DataFrame(merged_data)
+              object <- MsExperiment::linkSampleData(object,
+                                                     with = paste0("sampleData.",
+                                                                nme,
+                                                                "= spectra.derived_spectral_data_file"))
               validObject(object)
               object
           })
+
+
+#####HELPERS
+
+#' function that takes the extra parameters and clean the metadata if asked by
+#' the user.
+#'
+#' Note:  the subsetting of the merged data is done here, which WILL rename the
+#' duplicated columns. I could fix that by first transforming the data.frame into
+#' a list but I am not sure that it is useful.. The user might do some
+#' subsetting too later and then the same thing will happen. Might as well have
+#' it from the beginning.
+#'
+#' Note2: I would move that function later, keeping it her for review to help
+#' clarity
+#'
+#' @noRd
+.clean_merged <- function(x, keepProtocol, keepOntology, simplify) {
+    # remove ontology
+    if (!keepOntology)
+        x <- x[, -which(grepl("Term", names(x)))]
+
+    # remove protocol
+    if (!keepProtocol)
+        x <- x[, -which(grepl("Protocol|Parameter", names(x)))]
+
+    # remove duplicated columns contents and NAs
+    if (simplify) {
+        x <- x[, !duplicated(as.list(x))]
+        x <- x[, colSums(is.na(x)) != nrow(x)]
+    }
+    return(x)
+}
+

@@ -44,7 +44,8 @@ Suggests:
     testthat,
     xcms,
     alabaster.se,
-    alabaster.matrix
+    alabaster.matrix, 
+    MsBackendMetaboLights
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr

@@ -5,14 +5,34 @@
 \alias{readMsObject,MsExperiment,MetaboLightsParam-method}
 \title{Load content from a MetaboLights study}
 \usage{
-MetaboLightsParam(studyId = character(1))
+MetaboLightsParam(
+  mtblsId = character(),
+  assayName = character(),
+  filePattern = "mzML$|CDF$|cdf$|mzXML$"
+)
 
-\S4method{readMsObject}{MsExperiment,MetaboLightsParam}(object, param, ...)
+\S4method{readMsObject}{MsExperiment,MetaboLightsParam}(
+  object,
+  param,
+  keepOntology = TRUE,
+  keepProtocol = TRUE,
+  simplify = TRUE,
+  ...
+)
 }
 \arguments{
-\item{studyId}{\code{character(1)} The MetaboLights study studyId, which should
+\item{mtblsId}{\code{character(1)} The MetaboLights study ID, which should
 start with "MTBL". This identifier uniquely specifies the study within the
 MetaboLights database.}
+
+\item{assayName}{\code{character(1)} The name of the assay to load. If the study
+contains multiple assays and this parameter is not specified, the user will
+be prompted to select which assay to load.}
+
+\item{filePattern}{\code{character(1)} A regular expression pattern to filter the
+raw data files associated with the selected assay. The default value is
+\code{"mzML$|CDF$|cdf$|mzXML$"}, corresponding to the supported raw data file
+types.}
 
 \item{object}{for \code{saveMsObject()}: the MS data object to save, for
 \code{readMsObject()}: the MS data object that should be returned}
@@ -21,45 +41,78 @@ MetaboLights database.}
 and file name or directory to/from which the data object should be
 exported/imported.}
 
+\item{keepOntology}{\code{logical(1)} Whether to keep columns related to ontology
+in the \code{sampleData} slot. Default is \code{TRUE}.}
+
+\item{keepProtocol}{\code{logical(1)} Whether to keep columns related to protocols
+information in the \code{sampleData} slot. Default is \code{TRUE}.}
+
+\item{simplify}{\code{logical(1)} Whether to simplify the \code{sampleData} table by
+removing columns filled with NAs or duplicated content. Default is \code{TRUE}.}
+
 \item{...}{additional optional arguments. See documentation of respective
 method for more information.}
 }
 \value{
-(for now ?) A \code{MsExperiment} object with only the sampleData slots
-filled (will be updated when MetaboLightsBackend available ?).
+An \code{MsExperiment} object with the \code{sampleData} slot populated using
+MetaboLights sample and assay information. The spectra data is represented
+as a \code{MsBackendMetabolights} object, generated from the raw data files
+associated with the selected assay of the specified MetaboLights ID
+(\code{mtblsId}).
 }
 \description{
 The \code{MetaboLightsParam} class and the associated \code{readMsObject()} method
 allow users to load an \code{MsExperiment} object from a study in the
 MetaboLights database (https://www.ebi.ac.uk/metabolights/index) by
-providing its unique study \code{studyId}. This function is particularly useful
+providing its unique study \code{mtblsId}. This function is particularly useful
 for importing metabolomics data into an \code{MsExperiment} object for further
-analysis within the R environment. It's important to note that this method
-can \emph{only} be used for import into an R environement using \code{readMsObject()}.
+analysis in the R environment. It is important to note that this method
+can \emph{only} be used for importing into an R environment via \code{readMsObject()}.
 It cannot be used with the \code{saveMsObject()} method.
 
 If the study contains multiple assays, the user will be prompted to select
 which assay to load. The resulting \code{MsExperiment} object will include a
 \code{sampleData} slot populated with data extracted from the selected assay.
-Columns in the \code{sampleData} that contain only \code{NA} values are automatically
-removed, and an additional column is added to track the injection index.
+
+Users can define how to filter this \code{sampleData} table by specifying a few
+parameters. The \code{keepOntology} parameter is set to \code{TRUE} by default, meaning
+that all columns related to ontology are retained. If set to \code{FALSE}, they are
+removed. If ontology columns are kept, some column names may be duplicated and
+therefore numbered. The order of these columns is important, as it reflects the
+assay and sample information available in MetaboLights.
+
+The \code{keepProtocol} parameter is also set to \code{TRUE} by default, meaning that
+all columns related to protocols are kept. If set to \code{FALSE}, they are removed.
+The \code{simplify} parameter, defaulted to \code{TRUE}, means that columns filled with
+NAs or duplicated content will be removed. In the case of duplicated content,
+only the first occurring column will be retained.
+
+Further filtering can be performed using the \code{filePattern} slot of the
+\code{MetaboLightsParam} object. The default for this slot is
+\code{"mzML$|CDF$|cdf$|mzXML$"}, which corresponds to the supported raw data file
+types.
 }
 \examples{
 library(MsExperiment)
-# Load a study with the studyId "MTBLS10035"
-param <- MetaboLightsParam(studyId = "MTBLS10035")
-ms_experiment <- readMsObject(MsExperiment(), param)
+# Load a study with the mtblsId "MTBLS39" and selecting specific file pattern
+# as well as removing ontology and protocol information in the metadata.
+param <- MetaboLightsParam(mtblsId = "MTBLS39", filePattern = "63A.cdf")
+ms_experiment <- readMsObject(MsExperiment(), param , keepOntology = FALSE,
+                              keepProtocol = FALSE)
 
 }
 \seealso{
 \itemize{
 \item \code{MsExperiment} object, defined in the
 (\href{https://bioconductor.org/packages/MsExperiment}{MsExperiment}) package.
+\item \code{MsBackendMetaboLights} object, defined in the
+(\href{https://github.com/rformassspectrometry/MsBackendMetaboLights}{MsBackendMetaboLights})
+repository.
 \item \href{https://www.ebi.ac.uk/metabolights/index}{MetaboLights} for accessing
 the MetaboLights database.
 }
 }
 \author{
-Philippine Louail
+Philippine Louail,Johannes Rainer
 }
 \concept{MS object export and import formats}
