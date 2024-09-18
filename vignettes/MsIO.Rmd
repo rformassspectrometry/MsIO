@@ -250,6 +250,65 @@ annotation information as a `DataFrame` from the *sample_data* subfolder:
 readObject(path = file.path(d, "sample_data"))
 ```
 
+# Loading data from *MetaboLights*
+
+# Loading data from *MetaboLights*
+
+The *MetaboLights* database contains a large collection of metabolomics datasets.
+By creating a `MetaboLightsParam` object, you can load data from this database
+by providing the desired MetaboLights ID. The dataset will be loaded as an
+`MsExperiment` object. This object will have a `sampleData` slot that contains
+the sample information combined with the selected assay's information.
+One `MsExperiment` object can be created from one assay. The spectra information
+in the `MsExperiment` object will be populated from the derived files available
+in the database. For more details on how the spectral data is handled, refer to
+this [vignette](https://rformassspectrometry.github.io/MsBackendMetaboLights/articles/MsBackendMetaboLights.html)
+
+Below, we demonstrate how to load the *small* dataset with the ID: *MTBLS575*.
+We also use the `assayName` parameter to specify which assay we want to load,
+and the `filePattern` parameter to indicate which assay files to load.
+It is recommended to adjust these settings according to your specific study.
+
+```{r}
+library(MsExperiment())
+# Prepare parameter
+param <- MetaboLightsParam(mtblsIs = "MTBLS575", 
+                           assayName = paste0("a_MTBLS575_POS_INFEST_CTRL_",
+                                              "mass_spectrometry.txt"), 
+                           filePattern = "1.cdf$|2.cdf$|7.cdf$|8.cdf$|9.cdf$")
+
+# Load MsExperiment object
+mse <- readMsObject(MsExperiment(), param)
+```
+
+Next, we examine the `sampleData()` of our `mse` object:
+
+```{r}
+sampleData(mse)
+```
+
+We observe that a large number of columns are present. Several parameters are 
+available in the `readMsObject()` function to simplify the `sampleData`. 
+Setting `keepOntology = FALSE` will remove columns related to ontology terms, 
+while `keepProtocol = FALSE` will remove columns related to protocol information. 
+The `simplify = TRUE` option (the default) removes NAs and merges columns 
+with different names but duplicate contents. You can set `simplify = FALSE` 
+to retain all columns. Below, we load the object again, this time simplifying 
+the `sampleData`:
+
+```{r}
+mse <- readMsObject(MsExperiment(), param, keepOntology = FALSE, 
+                    keepProtocol = FALSE, simplify = TRUE)
+```
+
+Now, if we examine the `sampleData` information:
+
+```{r}
+sampleData(mse)
+```
+
+We can see that it is much simpler.
+
 
 # Session information
 
