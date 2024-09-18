@@ -272,10 +272,10 @@ It is recommended to adjust these settings according to your specific study.
 ```{r}
 library(MsExperiment())
 # Prepare parameter
-param <- MetaboLightsParam(mtblsIs = "MTBLS575", 
+param <- MetaboLightsParam(mtblsId = "MTBLS575", 
                            assayName = paste0("a_MTBLS575_POS_INFEST_CTRL_",
                                               "mass_spectrometry.txt"), 
-                           filePattern = "1.cdf$|2.cdf$|7.cdf$|8.cdf$|9.cdf$")
+                           filePattern = "cdf$")
 
 # Load MsExperiment object
 mse <- readMsObject(MsExperiment(), param)
