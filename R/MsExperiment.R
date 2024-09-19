@@ -225,17 +225,21 @@ setMethod("readMsObject",
 
               ## Extract and read assay files
               assays <- all_fls[grepl("^a_", all_fls)]
-              if (length(param@assayName) > 0) selected_assay <- param@assayName
-              else if (length(assays) > 1 && length(param@assayName) == 0) {
-                  cat("Multiple assay files found:\n")
-                  selection <- menu(assays,
-                                    title = paste("Please choose the assay",
-                                    "file you want to use:"))
-                  selected_assay <- assays[selection]
-              } else if (length(assays) == 1) {
-                  selected_assay <- assays
-                  cat("Only one assay file found:", selected_assay, "\n")
+              if (length(param@assayName) > 0)
+                  selected_assay <- param@assayName
+              else {
+                  if (length(assays) == 1) {
+                      selected_assay <- assays
+                      message("Only one assay file found:", selected_assay, "\n")
+                  } else {
+                      message("Multiple assay files found:\n")
+                      selection <- menu(assays,
+                                        title = paste("Please choose the assay",
+                                                      "file you want to use:"))
+                      selected_assay <- assays[selection]
+                  }
               }
+
               assay_data <- read.table(paste0(pth, selected_assay),
                                        header = TRUE, sep = "\t",
                                        check.names = FALSE)
@@ -267,8 +271,8 @@ setMethod("readMsObject",
               nme <- colnames(merged_data)[which(merged_data[1, ] == fl)]
               merged_data <- merged_data[grepl(param@filePattern,
                                                merged_data[, nme]), ]
-
-              object@sampleData <- DataFrame(merged_data)
+              nme <- gsub(" ", "_", nme) #use concatenate instead ?
+              object@sampleData <- DataFrame(merged_data, check.names = FALSE)
               object <- MsExperiment::linkSampleData(object,
                                                      with = paste0("sampleData.",
                                                                 nme,

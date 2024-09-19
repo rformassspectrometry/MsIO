@@ -13,9 +13,9 @@
 #' MetaboLights database (https://www.ebi.ac.uk/metabolights/index) by
 #' providing its unique study `mtblsId`. This function is particularly useful
 #' for importing metabolomics data into an `MsExperiment` object for further
-#' analysis in the R environment. It is important to note that this method
-#' can *only* be used for importing into an R environment via `readMsObject()`.
-#' It cannot be used with the `saveMsObject()` method.
+#' analysis in the R environment.
+#' It is important to note that at present it is only possible to *read*
+#' (import) data from MetaboLights, but not to *save* data to MetaboLights.
 #'
 #' If the study contains multiple assays, the user will be prompted to select
 #' which assay to load. The resulting `MsExperiment` object will include a
@@ -23,19 +23,20 @@
 #'
 #' Users can define how to filter this `sampleData` table by specifying a few
 #' parameters. The `keepOntology` parameter is set to `TRUE` by default, meaning
-#' that all columns related to ontology are retained. If set to `FALSE`, they are
+#' that all ontology-related columns are retained. If set to `FALSE`, they are
 #' removed. If ontology columns are kept, some column names may be duplicated and
 #' therefore numbered. The order of these columns is important, as it reflects the
 #' assay and sample information available in MetaboLights.
 #'
 #' The `keepProtocol` parameter is also set to `TRUE` by default, meaning that
 #' all columns related to protocols are kept. If set to `FALSE`, they are removed.
-#' The `simplify` parameter, defaulted to `TRUE`, means that columns filled with
-#' NAs or duplicated content will be removed. In the case of duplicated content,
-#' only the first occurring column will be retained.
+#' The `simplify` parameter (default `simplify = TRUE`) allows to define
+#' whether duplicated columns or columns containing only missing values should
+#' be removed. In the case of duplicated content, only the first occurring
+#' column will be retained.
 #'
-#' Further filtering can be performed using the `filePattern` slot of the
-#' `MetaboLightsParam` object. The default for this slot is
+#' Further filtering can be performed using the `filePattern` parameter of the
+#' `MetaboLightsParam` object. The default for this parameter is
 #' `"mzML$|CDF$|cdf$|mzXML$"`, which corresponds to the supported raw data file
 #' types.
 #'
@@ -53,23 +54,23 @@
 #' types.
 #'
 #' @param keepOntology `logical(1)` Whether to keep columns related to ontology
-#' in the `sampleData` slot. Default is `TRUE`.
+#' in the `sampleData` parameter. Default is `TRUE`.
 #'
 #' @param keepProtocol `logical(1)` Whether to keep columns related to protocols
-#' information in the `sampleData` slot. Default is `TRUE`.
+#' information in the `sampleData` parameter. Default is `TRUE`.
 #'
 #' @param simplify `logical(1)` Whether to simplify the `sampleData` table by
 #' removing columns filled with NAs or duplicated content. Default is `TRUE`.
 #'
 #' @inheritParams saveMsObject
 #'
-#' @returns An `MsExperiment` object with the `sampleData` slot populated using
+#' @returns An `MsExperiment` object with the `sampleData` parameter populated using
 #' MetaboLights sample and assay information. The spectra data is represented
 #' as a `MsBackendMetabolights` object, generated from the raw data files
 #' associated with the selected assay of the specified MetaboLights ID
 #' (`mtblsId`).
 #'
-#' @author Philippine Louail,Johannes Rainer
+#' @author Philippine Louail
 #'
 #' @importFrom methods new
 #'

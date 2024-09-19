@@ -250,7 +250,6 @@ annotation information as a `DataFrame` from the *sample_data* subfolder:
 readObject(path = file.path(d, "sample_data"))
 ```
 
-# Loading data from *MetaboLights*
 
 # Loading data from *MetaboLights*
 
