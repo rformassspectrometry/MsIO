@@ -300,16 +300,16 @@ setMethod("readMsObject",
 .clean_merged <- function(x, keepProtocol, keepOntology, simplify) {
     # remove ontology
     if (!keepOntology)
-        x <- x[, -which(grepl("Term", names(x)))]
+        x <- x[, -which(grepl("Term", names(x))), drop = FALSE]
 
     # remove protocol
     if (!keepProtocol)
-        x <- x[, -which(grepl("Protocol|Parameter", names(x)))]
+        x <- x[, -which(grepl("Protocol|Parameter", names(x))),  drop = FALSE]
 
     # remove duplicated columns contents and NAs
     if (simplify) {
-        x <- x[, !duplicated(as.list(x))]
-        x <- x[, colSums(is.na(x)) != nrow(x)]
+        x <- x[, !duplicated(as.list(x)), drop = FALSE]
+        x <- x[, colSums(is.na(x)) != nrow(x), drop = FALSE]
     }
     return(x)
 }
