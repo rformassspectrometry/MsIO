@@ -1,8 +1,12 @@
-# Version 0.0.5
+# Version 0.0
+
+## Changes in 0.0.6
+
+- Expand unit tests.
 
 ## Changes in 0.0.5
 
-- Add *MetaboLights* `readMsObject()` method for `MsExpriment()` objects. 
+- Add *MetaboLights* `readMsObject()` method for `MsExpriment()` objects.
 
 ## Changes in 0.0.4
 

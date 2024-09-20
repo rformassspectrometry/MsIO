@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.5
+Version: 0.0.6
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -44,8 +44,9 @@ Suggests:
     testthat,
     xcms,
     alabaster.se,
-    alabaster.matrix, 
-    MsBackendMetaboLights
+    alabaster.matrix,
+    MsBackendMetaboLights,
+    QFeatures
 License: Artistic-2.0
 Encoding: UTF-8
 VignetteBuilder: knitr
@@ -66,4 +67,5 @@ Collate:
     'Spectra.R'
     'mzTabParam.R'
     'XcmsExperiment.R'
+    'utils.R'
     'zzz.R'

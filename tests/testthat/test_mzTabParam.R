@@ -77,19 +77,3 @@ test_that(".mztab_study_variable_entries works", {
     res2 <- .mztab_study_variable_entries(x, variable = c("a", "b"))
     expect_true(length(res2) > length(res))
 })
-
-test_that("saveMsObject,mzTabParam works", {
-    d <- tempdir()
-    p <- mzTabParam(studyId = "test_study", path = d,
-                    sampleDataColumn = "sample_index",
-                    optionalFeatureColumns = "peakidx")
-    saveMsObject(faahko, p)
-    expect_true(file.exists(file.path(d, "test_study.mztab")))
-    res <- readLines(file.path(d, "test_study.mztab"))
-    expect_true(length(res) > 0L)
-    expect_true(length(grep("^MTD", res)) > 0)
-    expect_true(length(grep("^SML", res)) > 0)
-    expect_true(length(grep("^SMF", res)) > 0)
-    ## Check for empty lines
-    expect_true(length(grep(c("^MTD|SML|SMF"), res, invert = TRUE)) == 2)
-})

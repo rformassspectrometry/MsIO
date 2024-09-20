@@ -26,8 +26,9 @@ setMethod("saveMsObject", signature(object = "MsBackendMzR",
               object <-  Spectra::dropNaSpectraVariables(object)
               fl <- file.path(param@path, "ms_backend_data.txt")
               if (file.exists(fl))
-                  warning("Overwriting already present ",
-                          "'ms_backend_data.txt' file")
+                  stop("Overwriting or saving to an existing directory is not",
+                       " supported. Please remove the directory defined with",
+                       " parameter `path` first.")
               writeLines(paste0("# ", class(object)[1L]), con = fl)
               if (nrow(object@spectraData))
                   suppressWarnings(
@@ -126,7 +127,7 @@ validateAlabasterMsBackendMzR <- function(path = character(),
 #' @noRd
 readAlabasterMsBackendMzR <- function(path = character(), metadata = list(),
                                       spectraPath = character()) {
-    if (!requireNamespace("Spectra", quietly = TRUE))
+    if (!.is_spectra_installed())
         stop("Required package 'Spectra' missing. Please install ",
              "and try again.", call. = FALSE)
     validateAlabasterMsBackendMzR(path, metadata)
