@@ -3,7 +3,7 @@ pkgdown: 2.1.1.9000
 pkgdown_sha: c0cbde4221b87c7e81273e804f210213129c3d83
 articles:
   MsIO: MsIO.html
-last_built: 2024-09-19T13:35Z
+last_built: 2024-09-20T14:41Z
 urls:
   reference: https://rformassspectrometry.github.io/MsIO/reference
   article: https://rformassspectrometry.github.io/MsIO/articles
