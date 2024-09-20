@@ -11,6 +11,10 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     saveMsObject(b, param = param)
     expect_true(dir.exists(pth))
     expect_true(file.exists(file.path(param@path, "ms_backend_data.txt")))
+
+    ## Overwriting is not supported
+    expect_error(saveMsObject(b, param = param), "Overwriting or saving")
+
     ## Loading data again
     b_load <- readMsObject(object = MsBackendMzR(), param)
     expect_true(inherits(b_load, "MsBackendMzR"))
@@ -47,6 +51,14 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     res <- readMsObject(MsBackendMzR(), param)
     expect_s4_class(res, "MsBackendMzR")
     expect_true(length(res) == 0)
+
+    ## Reading wrong backend.
+    pth <- tempdir()
+    writeLines("# MsBackendDataFrame\nSome other line\n",
+               file.path(pth, "ms_backend_data.txt"))
+    p <- PlainTextParam(path = pth)
+    expect_error(readMsObject(MsBackendMzR(), p), "Invalid class")
+    file.remove(file.path(pth, "ms_backend_data.txt"))
 })
 
 test_that("saveObject,readObject,MsBackendMzR works", {
@@ -68,6 +80,12 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     res <- readAlabasterMsBackendMzR(pth)
     expect_s4_class(res, "MsBackendMzR")
     expect_equal(length(b), length(res))
+
+    ## package Spectra not available:
+    with_mock(
+        "MsIO:::.is_spectra_installed" = function() FALSE,
+        expect_error(MsIO:::readAlabasterMsBackendMzR(pth), "package 'Spectra'")
+    )
 
     ## readObject
     res <- readObject(pth)
@@ -101,6 +119,8 @@ test_that("saveObject,readObject,MsBackendMzR works", {
 })
 
 test_that(".ms_backend_mzr_update_storage_path works", {
+    res <- .ms_backend_mzr_update_storage_path(numeric())
+    expect_equal(res, numeric())
     x <- sciex_mzr
     res <- .ms_backend_mzr_update_storage_path(x, "/new/path")
     expect_true(all(grepl("/new/path", res$dataStorage)))
@@ -122,4 +142,17 @@ test_that("saveMsObject,readMsObject,MsBackendMzR,AlabasterParam works", {
     expect_equal(res@spectraData, x@spectraData)
     expect_equal(spectraData(res), spectraData(x))
     expect_equal(res@peaksVariables, x@peaksVariables)
+
+    ## Unexpected errors.
+    x <- MsBackendMzR()
+    pth <- file.path(tempdir(), "remove")
+    slot(x, "spectraData", check = FALSE) <- AlabasterParam()
+    expect_error(saveObject(x, pth), "failed to save 'spectraData'")
+    unlink(pth, recursive = TRUE)
+
+    x <- MsBackendMzR()
+    pth <- file.path(tempdir(), "remove")
+    slot(x, "peaksVariables", check = FALSE) <- AlabasterParam()
+    expect_error(saveObject(x, pth), "failed to save 'peaksVariables'")
+    unlink(pth, recursive = TRUE)
 })

@@ -68,6 +68,18 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     ## Alabaster MsExperiment save/read functions.
     pth <- file.path(tempdir(), "ms_experiment_alabaster")
 
+    ## errors
+    m <- MsExperiment()
+    library(QFeatures)
+    m@qdata <- QFeatures()
+    expect_error(saveObject(m, pth), "QFeatures' in the qdata slot")
+
+    m@qdata <- SummarizedExperiment()
+    with_mock(
+        "MsIO:::.is_alabaster_se_installed" = function() FALSE,
+        expect_error(saveObject(m, pth), "'SummarizedExperiment' objects")
+    )
+
     ## Empty object.
     m <- MsExperiment()
     saveObject(m, pth)
@@ -83,6 +95,20 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     m <- mse_filt
     expect_error(saveObject(m, pth), "existing")
     unlink(pth, recursive = TRUE)
+    with_mock(
+        "MsIO:::.is_alabaster_matrix_installed" = function() FALSE,
+        expect_error(saveObject(m, pth), "alabaster.matrix' missing")
+    )
+    m_2 <- m
+    slot(m_2, "spectra", check = FALSE) <- AlabasterParam()
+    expect_error(saveObject(m_2, pth), "failed to save '@spectra'")
+    unlink(pth, recursive = TRUE)
+
+    m_2 <- m
+    m_2@otherData[[1L]] <- AlabasterParam()
+    expect_error(saveObject(m_2, pth), "failed to save '@otherData'")
+    unlink(pth, recursive = TRUE)
+
     saveObject(m, pth)
     expect_true(all(c("sample_data", "sample_data_links", "spectra",
                       "sample_data_links_mcols", "metadata",
@@ -112,12 +138,25 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     expect_true(all(c("sample_data", "sample_data_links", "spectra",
                       "sample_data_links_mcols", "metadata", "qdata",
                       "experiment_files", "other_data") %in% dir(pth)))
-    res <- MsIO:::readAlabasterMsExperiment(pth)
+    res <- readAlabasterMsExperiment(pth)
     expect_s4_class(res, "MsExperiment")
     expect_equal(assayNames(res@qdata), assayNames(se))
     expect_equal(rowData(res@qdata), rowData(se))
     expect_equal(colData(res@qdata), colData(se))
     expect_equal(assay(res@qdata)[[1L]], assay(se)[[1L]])
+
+    with_mock(
+        "MsIO:::.is_ms_experiment_installed" = function() FALSE,
+        expect_error(readAlabasterMsExperiment(pth), "'MsExperiment' missing")
+    )
+    with_mock(
+        "MsIO:::.is_alabaster_se_installed" = function() FALSE,
+        expect_error(readAlabasterMsExperiment(pth), "alabaster.se' not")
+    )
+    l <- readLines(file.path(pth, "qdata", "OBJECT"))
+    l <- sub("summarized_experiment", "q_features", l)
+    writeLines(l, file.path(pth, "qdata", "OBJECT"))
+    expect_error(readAlabasterMsExperiment(pth), "not be imported")
 
     ## Non-empty object with MsExperimentFiles
     m@experimentFiles <- MsExperimentFiles(
@@ -162,4 +201,24 @@ test_that("saveMsObject,MsExperiment,AlabasterParam works", {
                          spectraPath = d_new)
     expect_s4_class(m_in, "MsExperiment")
     expect_equal(mz(spectra(m_in)[1:10]), mz(spectra(mse[1L])[1:10]))
+})
+
+test_that("readMsObject,MsExperiment,MetaboLightsParam works", {
+    p <- MetaboLightsParam(mtblsId = "MTBLS39", filePattern = "63A.cdf")
+    res <- readMsObject(MsExperiment::MsExperiment(), p)
+    expect_s4_class(res, "MsExperiment")
+    expect_true(length(res) > 0)
+    p <- MetaboLightsParam(mtblsId = "MTBLS39", filePattern = "63A.cdf",
+                           assayName = "aa")
+    expect_error(readMsObject(MsExperiment::MsExperiment(), p), "not exist.")
+    with_mock(
+        "MsIO:::.is_ms_backend_metabo_lights_installed" = function() FALSE,
+        expect_error(readMsObject(MsExperiment::MsExperiment(), p),
+                     "'MsBackendMetaboLights'")
+    )
+    with_mock(
+        "MsIO:::.is_spectra_installed" = function() FALSE,
+        expect_error(readMsObject(MsExperiment::MsExperiment(), p),
+                     "'Spectra' is missing")
+    )
 })
