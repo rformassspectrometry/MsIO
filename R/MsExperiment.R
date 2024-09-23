@@ -253,7 +253,6 @@ setMethod("readMsObject",
               # merging
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
               merged_data <- cbind(assay_data, sample_info[ord, ])
-              names(merged_data) <- gsub(" ", "_", names(merged_data))
               if (keepProtocol || keepOntology || simplify)
                   merged_data <- .clean_merged(x = merged_data,
                                                keepProtocol = keepProtocol,
@@ -284,17 +283,8 @@ setMethod("readMsObject",
 
 #####HELPERS
 
-#' function that takes the extra parameters and clean the metadata if asked by
+#' Function that takes the extra parameters and clean the metadata if asked by
 #' the user.
-#'
-#' Note:  the subsetting of the merged data is done here, which WILL rename the
-#' duplicated columns. I could fix that by first transforming the data.frame into
-#' a list but I am not sure that it is useful.. The user might do some
-#' subsetting too later and then the same thing will happen. Might as well have
-#' it from the beginning.
-#'
-#' Note2: I would move that function later, keeping it her for review to help
-#' clarity
 #'
 #' @noRd
 .clean_merged <- function(x, keepProtocol, keepOntology, simplify) {
