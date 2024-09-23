@@ -273,7 +273,8 @@ setMethod("readMsObject",
                                                merged_data[, nme]), ]
               nme <- gsub(" ", "_", nme)
               colnames(merged_data)[idx] <- nme
-              object@sampleData <- DataFrame(merged_data, check.names = FALSE)
+              object@sampleData <- DataFrame(merged_data, check.names = FALSE,
+                                             row.names = NULL)
               object <- MsExperiment::linkSampleData(object,
                                                      with = paste0("sampleData.",
                                                                 nme,
