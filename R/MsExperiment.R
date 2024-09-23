@@ -267,15 +267,17 @@ setMethod("readMsObject",
 
               ## sample to spectra link
               fl <- object@spectra@backend@spectraData[1, "derived_spectral_data_file"]
-              nme <- colnames(merged_data)[which(merged_data[1, ] == fl)]
+              idx <- which(merged_data[1, ,drop = TRUE] == fl)
+              nme <- colnames(merged_data)[idx]
               merged_data <- merged_data[grepl(param@filePattern,
                                                merged_data[, nme]), ]
-              nme <- gsub(" ", "_", nme) #use concatenate instead ?
+              nme <- gsub(" ", "_", nme)
+              colnames(merged_data)[idx] <- nme
               object@sampleData <- DataFrame(merged_data, check.names = FALSE)
               object <- MsExperiment::linkSampleData(object,
                                                      with = paste0("sampleData.",
                                                                 nme,
-                                                                "= spectra.derived_spectral_data_file"))
+                                                                 "= spectra.derived_spectral_data_file"))
               validObject(object)
               object
           })
