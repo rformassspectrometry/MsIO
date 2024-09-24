@@ -259,7 +259,6 @@ setMethod("readMsObject",
               ## merging
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
               merged_data <- cbind(assay_data, sample_info[ord, ])
-              names(merged_data) <- gsub(" ", "_", names(merged_data))
               if (keepProtocol || keepOntology || simplify)
                   merged_data <- .clean_merged(x = merged_data,
                                                keepProtocol = keepProtocol,
@@ -274,16 +273,19 @@ setMethod("readMsObject",
                                              filePattern = param@filePattern)
 
               ## sample to spectra link
-              fl <- object@spectra@backend@spectraData[
-                                               1, "derived_spectral_data_file"]
-              nme <- colnames(merged_data)[which(merged_data[1, ] == fl)]
+              fl <- object@spectra@backend@spectraData[1, "derived_spectral_data_file"]
+              idx <- which(merged_data[1, ,drop = TRUE] == fl)
+              nme <- colnames(merged_data)[idx]
               merged_data <- merged_data[grepl(param@filePattern,
                                                merged_data[, nme]), ]
-              nme <- gsub(" ", "_", nme) #use concatenate instead ?
-              object@sampleData <- DataFrame(merged_data, check.names = FALSE)
-              l <- paste0("sampleData.", nme,
-                          " = spectra.derived_spectral_data_file")
-              object <- MsExperiment::linkSampleData(object, with = l)
+              nme <- gsub(" ", "_", nme)
+              colnames(merged_data)[idx] <- nme
+              object@sampleData <- DataFrame(merged_data, check.names = FALSE,
+                                             row.names = NULL)
+              object <- MsExperiment::linkSampleData(object,
+                                                     with = paste0("sampleData.",
+                                                                nme,
+                                                                 "= spectra.derived_spectral_data_file"))
               validObject(object)
               object
           })
@@ -291,17 +293,8 @@ setMethod("readMsObject",
 
 #####HELPERS
 
-#' function that takes the extra parameters and clean the metadata if asked by
+#' Function that takes the extra parameters and clean the metadata if asked by
 #' the user.
-#'
-#' Note:  the subsetting of the merged data is done here, which WILL rename the
-#' duplicated columns. I could fix that by first transforming the data.frame into
-#' a list but I am not sure that it is useful.. The user might do some
-#' subsetting too later and then the same thing will happen. Might as well have
-#' it from the beginning.
-#'
-#' Note2: I would move that function later, keeping it her for review to help
-#' clarity
 #'
 #' @noRd
 .clean_merged <- function(x, keepProtocol, keepOntology, simplify) {
