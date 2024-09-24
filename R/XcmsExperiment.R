@@ -137,7 +137,7 @@ setMethod("readMsObject",
 ################################################################################
 #' @rdname AlabasterParam
 setMethod("saveObject", "XcmsExperiment", function(x, path, ...) {
-    if (!requireNamespace("alabaster.matrix", quietly = TRUE))
+    if (!.is_alabaster_matrix_installed())
         stop("Required package 'alabaster.matrix' missing. Please install and ",
              "try again.", call. = FALSE)
     ## Save the MsExperiment part
@@ -163,11 +163,11 @@ validateAlabasterXcmsExperiment <- function(path = character(),
 }
 
 readAlabasterXcmsExperiment <- function(path = character(), metadata = list(),
-                                      ...) {
-    if (!requireNamespace("xcms", quietly = TRUE))
+                                        ...) {
+    if (!.is_xcms_installed())
         stop("Required package 'xcms' missing. Please install ",
              "and try again.", call. = FALSE)
-    if (!requireNamespace("MsExperiment", quietly = TRUE))
+    if (!.is_ms_experiment_installed())
         stop("Required package 'MsExperiment' missing. Please install ",
              "and try again.", call. = FALSE)
     validateAlabasterXcmsExperiment(path, metadata)
@@ -216,18 +216,21 @@ setMethod("saveMsObject",
                     param = "mzTabParam"),
           function(object, param){
               if (!param@sampleDataColumn %in% colnames(object@sampleData))
-                  stop("'sampleDataColumn' has to correspond to column names",
-                       "of the sampleData() table")
+                  stop("'sampleDataColumn' has to correspond to column names ",
+                       "of the sampleData() table", call. = FALSE)
               if (length(param@optionalFeatureColumns) != 0)
-                  if (!param@optionalFeatureColumns %in% colnames(object@featureDefinitions))
-                      stop("'optionalFeatureColumns' have to correspond to",
-                           "column names of the featureDefinitions() table")
+                  if (!param@optionalFeatureColumns %in%
+                      colnames(object@featureDefinitions))
+                      stop("'optionalFeatureColumns' have to correspond to ",
+                           "column names of the featureDefinitions() table",
+                           call. = FALSE)
 
               var_list <- unique(.mztab_study_variables(object@sampleData,
                                                         param@sampleDataColumn))
               fl <- file.path(param@path, paste0(param@studyId, ".mztab"))
               if (file.exists(fl))
-                  stop("File ", basename(fl), " already exists. ")
+                  stop("File \"", basename(fl), "\" already exists.",
+                       call. = FALSE)
               con <- file(fl, open = "at")
               on.exit(close(con))
 

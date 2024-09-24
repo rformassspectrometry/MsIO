@@ -45,7 +45,7 @@ setMethod("readMsObject", signature(object = "Spectra",
               if (!existsMethod("readMsObject", c(variables[["backend"]],
                                                  "PlainTextParam")))
                   stop("Can not read a 'Spectra' object with backend '",
-                       variables["backend"], "'")
+                       variables["backend"], "'", call. = FALSE)
               tryCatch({
                   object@backend <- readMsObject(
                       do.call(variables[["backend"]], list()), param, ...)
@@ -148,7 +148,7 @@ validateAlabasterSpectra <- function(path = character(),
 
 readAlabasterSpectra <- function(path = character(), metadata = list(),
                                  ...) {
-    if (!requireNamespace("Spectra", quietly = TRUE))
+    if (!.is_spectra_installed())
         stop("Required package 'Spectra' missing. Please install ",
              "and try again.", call. = FALSE)
 
@@ -174,7 +174,7 @@ setMethod("saveMsObject", signature(object = "Spectra",
               if (file.exists(param@path))
                   stop("Overwriting or saving to an existing directory is not",
                        " supported. Please remove the directory defined with",
-                       " parameter `path` first.")
+                       " parameter `path` first.", call. = FALSE)
               saveObject(object, param@path)
           })
 

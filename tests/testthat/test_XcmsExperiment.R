@@ -89,6 +89,19 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
 test_that("saveObject,readObject,XcmsExperiment works", {
     pth <- file.path(tempdir(), "xcms_experiment_alabaster")
 
+    with_mock(
+        "MsIO:::.is_alabaster_matrix_installed" = function() FALSE,
+        expect_error(saveObject(XcmsExperiment(), pth), "alabaster.matrix'")
+    )
+    with_mock(
+        "MsIO:::.is_xcms_installed" = function() FALSE,
+        expect_error(readAlabasterXcmsExperiment(pth), "xcms'")
+    )
+    with_mock(
+        "MsIO:::.is_ms_experiment_installed" = function() FALSE,
+        expect_error(readAlabasterXcmsExperiment(pth), "MsExperiment'")
+    )
+
     ## Empty object.
     m <- XcmsExperiment()
     saveObject(m, pth)
@@ -97,8 +110,8 @@ test_that("saveObject,readObject,XcmsExperiment works", {
                       "experiment_files", "other_data", "chrom_peaks",
                       "chrom_peak_data", "feature_definitions") %in% dir(pth)))
     expect_true(!any(dir(pth) %in% c("spectra", "qdata")))
-    expect_silent(MsIO:::validateAlabasterXcmsExperiment(pth))
-    res <- MsIO:::readAlabasterXcmsExperiment(pth)
+    expect_silent(validateAlabasterXcmsExperiment(pth))
+    res <- readAlabasterXcmsExperiment(pth)
     expect_equal(res, m)
 
     ## Real object
@@ -107,8 +120,8 @@ test_that("saveObject,readObject,XcmsExperiment works", {
 
     unlink(pth, recursive = TRUE)
     saveObject(m, pth)
-    expect_silent(MsIO:::validateAlabasterXcmsExperiment(pth))
-    res <- MsIO:::readAlabasterXcmsExperiment(pth)
+    expect_silent(validateAlabasterXcmsExperiment(pth))
+    res <- readAlabasterXcmsExperiment(pth)
     expect_s4_class(res, "XcmsExperiment")
     expect_equal(res@chromPeaks, m@chromPeaks)
     expect_equal(res@chromPeakData, m@chromPeakData)
@@ -159,4 +172,67 @@ test_that("saveMsObject,XcmsExperiment,AlabasterParam works", {
     expect_equal(chromPeaks(m_in), chromPeaks(m))
     ## Check that access to MS data works
     expect_true(length(mz(spectra(m_in)[1L])) > 0)
+})
+
+test_that(".import_chrom_peaks works", {
+    pth <- tempdir()
+    expect_error(.import_chrom_peaks(xcmse, pth), "chrom_peaks.txt")
+    write.table(chromPeaks(xmse),
+                file = file.path(pth, "xcms_experiment_chrom_peaks.txt"),
+                sep = "\t")
+    expect_error(.import_chrom_peaks(xmse, pth),
+                 "chrom_peak_data.txt")
+    file.remove(file.path(pth, "xcms_experiment_chrom_peaks.txt"))
+})
+
+test_that(".import_features works", {
+    pth <- tempdir()
+    write.table(
+        featureDefinitions(xmse)[, 1:8],
+        file = file.path(pth, "xcms_experiment_feature_definitions.txt"),
+        sep = "\t")
+    expect_error(.import_features(xmse, pth), "feature_peak_index.txt")
+})
+
+test_that(".import_process_history works", {
+    pth <- tempdir()
+    expect_error(.import_process_history(xmse, pth), "process_history.json")
+})
+
+test_that("saveMsObject,mzTabParam works", {
+    faahko <- loadXcmsData("faahko_sub2")
+    faahko <- groupChromPeaks(
+        faahko, PeakDensityParam(sampleGroups = rep(1, length(faahko))))
+
+    d <- file.path(tempdir(), "mzt_test")
+    dir.create(d, recursive = TRUE)
+
+    ## errors
+    expect_error(
+        saveMsObject(faahko, mzTabParam(studyId = "test_study", path = d,
+                                        sampleDataColumn = "sample_name")),
+        "has to correspond to column names of the sampleData()")
+    expect_error(
+        saveMsObject(faahko, mzTabParam(studyId = "test_study", path = d,
+                                        sampleDataColumn = "sample_index",
+                                        optionalFeatureColumns = "other")),
+        "'optionalFeatureColumns' have to correspond")
+
+    p <- mzTabParam(studyId = "test_study", path = d,
+                    sampleDataColumn = "sample_index",
+                    optionalFeatureColumns = "peakidx")
+    saveMsObject(faahko, p)
+    expect_true(file.exists(file.path(d, "test_study.mztab")))
+    res <- readLines(file.path(d, "test_study.mztab"))
+    expect_true(length(res) > 0L)
+    expect_true(length(grep("^MTD", res)) > 0)
+    expect_true(length(grep("^SML", res)) > 0)
+    expect_true(length(grep("^SMF", res)) > 0)
+    ## Check for empty lines
+    expect_true(length(grep(c("^MTD|SML|SMF"), res, invert = TRUE)) == 2)
+
+    expect_error(
+        saveMsObject(faahko, p), "File \"test_study.mztab\" already exists")
+
+    unlink(d, recursive = TRUE)
 })

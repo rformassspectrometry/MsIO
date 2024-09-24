@@ -102,12 +102,12 @@ setMethod("saveObject", "MsExperiment", function(x, path, ...) {
         stop("Saving of an 'MsExperiment' with an object of type 'QFeatures'",
              " in the qdata slot is currently not supported.", call. = FALSE)
     if (inherits(x@qdata, "SummarizedExperiment") &&
-        !requireNamespace("alabaster.se", quietly = TRUE))
+        !.is_alabaster_se_installed())
         stop("Required package 'alabaster.se' for export of ",
              "'SummarizedExperiment' objects missing. Please install and ",
              "try again.", call. = FALSE)
     if (length(x@sampleDataLinks) > 0 &&
-        !requireNamespace("alabaster.matrix", quietly = TRUE))
+        !.is_alabaster_matrix_installed())
         stop("Required package 'alabaster.matrix' missing. Please install and ",
              "try again.", call. = FALSE)
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
@@ -149,7 +149,7 @@ validateAlabasterMsExperiment <- function(path = character(),
 #' @importFrom alabaster.base readObjectFile
 readAlabasterMsExperiment <- function(path = character(), metadata = list(),
                                       ...) {
-    if (!requireNamespace("MsExperiment", quietly = TRUE))
+    if (!.is_ms_experiment_installed())
         stop("Required package 'MsExperiment' missing. Please install ",
              "and try again.", call. = FALSE)
     validateAlabasterMsExperiment(path, metadata)
@@ -169,7 +169,7 @@ readAlabasterMsExperiment <- function(path = character(), metadata = list(),
     if (file.exists(file.path(path, "qdata"))) {
         qdata_obj <- readObjectFile(file.path(path, "qdata"))
         if (qdata_obj$type[1L] == "summarized_experiment") {
-            if (!requireNamespace("alabaster.se", quietly = TRUE))
+            if (!.is_alabaster_se_installed())
                 stop("Required package 'alabaster.se' not available. Please ",
                      "install and try again.", call. = FALSE)
             i <- altReadObject(file.path(path, "qdata"))
@@ -216,21 +216,27 @@ setMethod("readMsObject",
                     param = "MetaboLightsParam"),
           function(object, param, keepOntology = TRUE, keepProtocol = TRUE,
                    simplify = TRUE, ...) {
-              if (!requireNamespace("MsBackendMetaboLights", quietly = TRUE)) {
+              if (!.is_ms_backend_metabo_lights_installed())
                   stop("Required package 'MsBackendMetaboLights' is missing. ",
                        "Please install it and try again.", call. = FALSE)
-              }
+              if (!.is_spectra_installed())
+                  stop("Required package 'Spectra' is missing. ",
+                       "Please install and try again.", call. = FALSE)
               pth <- MsBackendMetaboLights::mtbls_ftp_path(param@mtblsId)
               all_fls <- MsBackendMetaboLights::mtbls_list_files(param@mtblsId)
 
               ## Extract and read assay files
               assays <- all_fls[grepl("^a_", all_fls)]
-              if (length(param@assayName) > 0)
+              if (length(param@assayName) > 0) {
                   selected_assay <- param@assayName
+                  if (!selected_assay %in% assays)
+                      stop("Specified assay \"", selected_assay, "\" does ",
+                           "not exist.", call. = FALSE)
+              }
               else {
                   if (length(assays) == 1) {
                       selected_assay <- assays
-                      message("Only one assay file found:", selected_assay, "\n")
+                      message("Only one assay file found:", selected_assay)
                   } else {
                       message("Multiple assay files found:\n")
                       selection <- menu(assays,
@@ -250,7 +256,7 @@ setMethod("readMsObject",
                                         header = TRUE, sep = "\t",
                                         check.names = FALSE)
 
-              # merging
+              ## merging
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
               merged_data <- cbind(assay_data, sample_info[ord, ])
               if (keepProtocol || keepOntology || simplify)
@@ -258,12 +264,13 @@ setMethod("readMsObject",
                                                keepProtocol = keepProtocol,
                                                keepOntology = keepOntology,
                                                simplify = simplify)
-
               ## Assemble object
-              object@spectra <- Spectra::Spectra(mtblsId = param@mtblsId,
-                                                 source = MsBackendMetaboLights::MsBackendMetaboLights(),
-                                                 assayName = selected_assay,
-                                                 filePattern = param@filePattern)
+              b <- MsBackendMetaboLights::MsBackendMetaboLights()
+              object@spectra <- Spectra::Spectra(
+                                             mtblsId = param@mtblsId,
+                                             source = b,
+                                             assayName = selected_assay,
+                                             filePattern = param@filePattern)
 
               ## sample to spectra link
               fl <- object@spectra@backend@spectraData[1, "derived_spectral_data_file"]
@@ -306,4 +313,3 @@ setMethod("readMsObject",
     }
     return(x)
 }
-

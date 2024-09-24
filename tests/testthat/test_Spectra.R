@@ -41,6 +41,10 @@ test_that("saveMsObject,readMsObject,PlainTextParam,Spectra works", {
     expect_equal(mz(s[1:10]), mz(s_load[1:10]))
     expect_no_error(filterRt(s_load, c(3000, 3500)))
 
+    l <- readLines(file.path(pth, "spectra_slots.txt"))
+    writeLines(sub("MsBackendMzR", "M", l), file.path(pth, "spectra_slots.txt"))
+    expect_error(readMsObject(Spectra(), param), "with backend 'M'")
+
     ## Errors
     param <- PlainTextParam(file.path(tempdir()))
     expect_error(readMsObject(Spectra(), param), "No 'spectra_slots")
@@ -69,7 +73,14 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
 
     expect_error(saveObject(Spectra(), path = pth), "available yet")
 
+    s <- Spectra()
+    b <- MsBackendMzR()
+    slot(b, "spectraData", check = FALSE) <- AlabasterParam()
+    slot(s, "backend", check = FALSE) <- b
+    expect_error(saveObject(s, path = pth), "failed to save 'backend'")
+
     ## save/load real object
+    unlink(pth, recursive = TRUE)
     s <- sps_dda
     saveObject(s, pth)
     expect_silent(validateAlabasterSpectra(pth))
@@ -89,6 +100,11 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
     expect_equal(mz(res[1:3]), mz(s[1:3]))
     res_2 <- readObject(pth)
     expect_equal(res, res_2)
+
+    with_mock(
+        "MsIO:::.is_spectra_installed" = function() FALSE,
+        expect_error(readAlabasterSpectra(pth), "'Spectra' missing")
+    )
 
     ## save/load empty object
     unlink(pth, recursive = TRUE)
@@ -139,4 +155,11 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
     expect_equal(res@processingQueueVariables, ref@processingQueueVariables)
     expect_equal(rtime(res), rtime(ref))
     expect_equal(mz(res[1:3]), mz(ref[1:3]))
+
+    unlink(pth, recursive = TRUE)
+    saveMsObject(sps_dda, AlabasterParam(path = pth))
+    res <- readMsObject(Spectra(), AlabasterParam(path = pth))
+    expect_s4_class(res, "Spectra")
+    expect_equal(length(res), length(sps_dda))
+    unlink(pth, recursive = TRUE)
 })
