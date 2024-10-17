@@ -27,8 +27,15 @@
 #'
 #' - `MsBackendMzR`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsBackendMetaboLights`, defined in the
+#'   [*MsBackendMetaboLights*](https://github.com/RforMassSpectrometry/MsBackendMetaboLights)
+#'   package.
 #' - `Spectra`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsExperiment`, defined in the
+#'   [*MsExperiment*](https://bioconductor.org/packages/MsExperiment) package.
+#' - `XcmsExperiment`, defined in the
+#'   [*xcms*](https://bioconductor.org/packages/xcms) package.
 #'
 #' In addition, the *MsIO* package defines the `AlabasterParam` which can be
 #' used to write or read MS objects using the `saveMsObject()` and
@@ -55,11 +62,17 @@
 #'     listed below.
 #'
 #' @param spectraPath For `readMsObject()`: `character(1)` optionally allowing
-#'   to define the (absolute) path where the spectra files (*data storage
-#'   files*) can be found. This parameter is used for `MsBackendMzR` (see
-#'   descriptions below) and can be passed through `...` also to
-#'   `readMsObject()` functions for other classes (such as `Spectra`,
-#'   `MsExperiment` etc).
+#'     to define the (absolute) path where the spectra files (*data storage
+#'     files*) can be found. This parameter is used for `MsBackendMzR` (see
+#'     descriptions below) and can be passed through `...` also to
+#'     `readMsObject()` functions for other classes (such as `Spectra`,
+#'     `MsExperiment` etc).
+#'
+#' @param offline For `readMsObject()` and `readObject()` to load MS data as a
+#'     `MsBackendMetaboLights()`: `logical(1)` to evaluate the local file cache
+#'     and only load local files. Thus `offline = TRUE` does not need an active
+#'     internet connection, but fails if one of more files are not cached
+#'     locally.
 #'
 #' @param ... optional additional parameters passed to the downstream
 #'     functions, such as for example `spectraPath` described above.
@@ -72,6 +85,7 @@
 #'     `readMsObject()` the exported data object, defined with the function's
 #'     first parameter, from the specified path. `saveObject()` and
 #'     `saveMsObject()` don't return anything.
+#'
 #'
 #' @section On-disk storage for `MsBackendMzR` objects:
 #'
@@ -92,6 +106,15 @@
 #' Each sub-folder contains also an *OBJECT* file defining the object's type
 #' and an additional file (in HDF5 format) containing the data. See examples
 #' below for details.
+#'
+#'
+#' @section On-disk storage for `MsBackendMetaboLights` objects:
+#'
+#' The `MsBackendMetaboLights` extends the `MsBackendMzR` backend and hence the
+#' same files are stored. When a `MsBackendMetaboLights` object is restored,
+#' the `mtbls_sync()` function is called to check for presence of all MS data
+#' files and, if missing, re-download them from the *MetaboLights* repository
+#' (if parameter `offline = FALSE` is used).
 #'
 #'
 #' @section On-disk storage for `Spectra` objects:

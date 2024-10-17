@@ -88,9 +88,14 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
 #'
 #' @rdname AlabasterParam
 setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
+    .save_object_spectra_data(x, path, object = "ms_backend_mz_r")
+})
+
+.save_object_spectra_data <- function(x, path, object, version = "1.0") {
     dir.create(path = path, recursive = TRUE, showWarnings = FALSE)
-    saveObjectFile(path, "ms_backend_mz_r",
-                   list(ms_backend_mz_r =list(version = "1.0")))
+    l <- list(list(version = version))
+    names(l) <- object
+    saveObjectFile(path, object, l)
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@spectraData, path = file.path(path, "spectra_data")))
@@ -104,9 +109,9 @@ setMethod("saveObject", "MsBackendMzR", function(x, path, ...) {
                      path = file.path(path, "peaks_variables")))
     }, error = function(e) {
         stop("failed to save 'peaksVariables' of ", class(x)[1L], "\n - ",
-             e$message)
+             e$message, call. = FALSE)
     })
-})
+}
 
 #' @importFrom alabaster.base registerValidateObjectFunction
 #'
