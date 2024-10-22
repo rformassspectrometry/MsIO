@@ -26,13 +26,16 @@
 #' are:
 #'
 #' - `MsBackendMzR` object, defined in the
-#'   ([Spectra](https://bioconductor.org/packages/Spectra)) package.
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsBackendMetaboLights` object, defined in the
+#'   [*MsBackendMetaboLights*](https://bioconductor.org/packages/MsBackendMetaboLights)
+#'   package.
 #' - `Spectra` object, defined in the
-#'   ([Spectra](https://bioconductor.org/packages/Spectra)) package.
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #' - `MsExperiment` object, defined in the
-#'   ([MsExperiment](https://bioconductor.org/packages/MsExperiment)) package.
+#'   [*MsExperiment*](https://bioconductor.org/packages/MsExperiment) package.
 #' - `XcmsExperiment` object, defined in the
-#'   ([xcms](https://bioconductor.org/packages/xcms)) package.
+#'   [*xcms*](https://bioconductor.org/packages/xcms) package.
 #'
 #' See their respective section below for details and formats of the
 #' exported files.
@@ -47,6 +50,11 @@
 #'   descriptions below) and can be passed through `...` also to
 #'   `readMsObject()` functions for other classes (such as `Spectra`,
 #'   `MsExperiment` etc).
+#'
+#' @param offline For `readMsObject()` to load MS data as a
+#'   `MsBackendMetaboLights()`: `logical(1)` to evaluate **only** the local
+#'   file cache. Thus `offline = TRUE` does not need an active internet
+#'   connection, but fails if one of more files are not cached locally.
 #'
 #' @param ... Additional parameters passed down to internal functions. E.g.
 #'   parameter `spectraPath` (see above).
@@ -67,6 +75,15 @@
 #' - The backend's `spectraData()` is stored in a tabular format in a text file
 #'   named *ms_backend_data.txt*. Each row of this tab-delimited text file
 #'   corresponds to a spectrum with its respective metadata in the columns.
+#'
+#'
+#' @section On-disk storage for `MsBackendMetaboLights` objects:
+#'
+#' The `MsBackendMetaboLights` extends the `MsBackendMzR` backend and hence the
+#' same files are stored. When a `MsBackendMetaboLights` object is restored,
+#' the `mtbls_sync()` function is called to check for presence of all MS data
+#' files and, if missing, re-download them from the *MetaboLights* repository.
+#'
 #'
 #' @section On-disk storage for `Spectra` objects:
 #'

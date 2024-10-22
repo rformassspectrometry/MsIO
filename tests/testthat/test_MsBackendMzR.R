@@ -64,6 +64,12 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
 test_that("saveObject,readObject,MsBackendMzR works", {
     b <- sciex_mzr
     pth <- file.path(tempdir(), "save_object_ms_backend_mz_r")
+    .save_object_spectra_data(b, pth, object = "some_object")
+    res <- dir(pth)
+    expect_true(length(res) > 0)
+    expect_true(all(c("OBJECT", "spectra_data", "peaks_variables") %in% res))
+
+    unlink(pth, recursive = TRUE)
     saveObject(b, pth)
     res <- dir(pth)
     expect_true(length(res) > 0)

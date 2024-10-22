@@ -1,5 +1,9 @@
 # Version 0.0
 
+## Changes in 0.0.7
+
+- Add `saveObject()` for `MsBackendMetaboLights`.
+
 ## Changes in 0.0.6
 
 - Expand unit tests.
