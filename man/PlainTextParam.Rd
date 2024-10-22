@@ -47,9 +47,9 @@ and file name or directory to/from which the data object should be
 exported/imported.}
 
 \item{offline}{For \code{readMsObject()} to load MS data as a
-\code{MsBackendMetaboLights()}: \code{logical(1)} to evaluate the local file cache
-and only load local files. Thus \code{offline = TRUE} does not need an active
-internet connection, but fails if one of more files are not cached locally.}
+\code{MsBackendMetaboLights()}: \code{logical(1)} to evaluate \strong{only} the local
+file cache. Thus \code{offline = TRUE} does not need an active internet
+connection, but fails if one of more files are not cached locally.}
 
 \item{spectraPath}{For \code{readMsObject()}: \code{character(1)} optionally allowing
 to define the (absolute) path where the spectra files (\emph{data storage

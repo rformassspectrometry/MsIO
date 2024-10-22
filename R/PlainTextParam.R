@@ -52,9 +52,9 @@
 #'   `MsExperiment` etc).
 #'
 #' @param offline For `readMsObject()` to load MS data as a
-#'   `MsBackendMetaboLights()`: `logical(1)` to evaluate the local file cache
-#'   and only load local files. Thus `offline = TRUE` does not need an active
-#'   internet connection, but fails if one of more files are not cached locally.
+#'   `MsBackendMetaboLights()`: `logical(1)` to evaluate **only** the local
+#'   file cache. Thus `offline = TRUE` does not need an active internet
+#'   connection, but fails if one of more files are not cached locally.
 #'
 #' @param ... Additional parameters passed down to internal functions. E.g.
 #'   parameter `spectraPath` (see above).
