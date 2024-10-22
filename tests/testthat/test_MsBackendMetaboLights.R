@@ -33,6 +33,15 @@ test_that("readMsObject,PlainTextParam,MsBackendMetaboLights works", {
     expect_equal(mz(be_mtbls), mz(res))
 
     unlink(pth, recursive = TRUE)
+
+    pth <- file.path(tempdir(), "test_backend_ml")
+    dir.create(pth)
+    expect_error(readMsObject(MsBackendMetaboLights(), PlainTextParam(pth)),
+                 "found in the provided path.")
+    writeLines("# Some line\nnext line\nthird line\n",
+               con = file.path(pth, "ms_backend_data.txt"))
+    expect_error(readMsObject(MsBackendMetaboLights(), PlainTextParam(pth)),
+                 "Invalid class in")
 })
 
 test_that("saveObject,readObject,MsBackendMetaboLights works", {

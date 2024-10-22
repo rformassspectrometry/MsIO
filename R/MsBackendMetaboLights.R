@@ -4,11 +4,11 @@ setMethod("readMsObject", signature(object = "MsBackendMetaboLights",
           function(object, param, offline = FALSE) {
               fl <- file.path(param@path, "ms_backend_data.txt")
               if (!file.exists(fl))
-                  stop("No 'backend_data.txt' file found in the provided path.")
+                  stop("No 'ms_backend_data.txt' file found in ",
+                       "the provided path.")
               l2 <- readLines(fl, n = 2)
               if (l2[1] != "# MsBackendMetaboLights")
-                  stop("Invalid class in 'ms_backend_data.txt' file.",
-                  "Should run with object = ", l2[1])
+                  stop("Invalid class in 'ms_backend_data.txt' file.")
               if (length(l2) > 1L) {
                   data <- read.table(file = fl, sep = "\t", header = TRUE)
                   rownames(data) <- NULL
