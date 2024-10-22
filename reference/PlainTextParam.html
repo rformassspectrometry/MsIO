@@ -14,13 +14,16 @@ objects, is stored in JSON format instead.
 The MS object currently supported for import and export with this parameter
 are:
 MsBackendMzR object, defined in the
-(Spectra) package.
+Spectra package.
+MsBackendMetaboLights object, defined in the
+MsBackendMetaboLights
+package.
 Spectra object, defined in the
-(Spectra) package.
+Spectra package.
 MsExperiment object, defined in the
-(MsExperiment) package.
+MsExperiment package.
 XcmsExperiment object, defined in the
-(xcms) package.
+xcms package.
 
 
 See their respective section below for details and formats of the
@@ -39,13 +42,16 @@ objects, is stored in JSON format instead.
 The MS object currently supported for import and export with this parameter
 are:
 MsBackendMzR object, defined in the
-(Spectra) package.
+Spectra package.
+MsBackendMetaboLights object, defined in the
+MsBackendMetaboLights
+package.
 Spectra object, defined in the
-(Spectra) package.
+Spectra package.
 MsExperiment object, defined in the
-(MsExperiment) package.
+MsExperiment package.
 XcmsExperiment object, defined in the
-(xcms) package.
+xcms package.
 
 
 See their respective section below for details and formats of the
@@ -57,7 +63,7 @@ exported files."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +86,7 @@ exported files."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Store contents of MS objects as plain text files</h1>
-      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/PlainTextParam.R" class="external-link"><code>R/PlainTextParam.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMzR.R" class="external-link"><code>R/MsBackendMzR.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsExperiment.R" class="external-link"><code>R/MsExperiment.R</code></a>, and 2 more</small>
+      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/PlainTextParam.R" class="external-link"><code>R/PlainTextParam.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMetaboLights.R" class="external-link"><code>R/MsBackendMetaboLights.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMzR.R" class="external-link"><code>R/MsBackendMzR.R</code></a>, and 3 more</small>
       <div class="d-none name"><code>PlainTextParam.Rd</code></div>
     </div>
 
@@ -99,13 +105,16 @@ information, in particular the content of <em>parameter</em> classes within the
 objects, is stored in JSON format instead.</p>
 <p>The MS object currently supported for import and export with this parameter
 are:</p><ul><li><p><code>MsBackendMzR</code> object, defined in the
-(<a href="https://bioconductor.org/packages/Spectra" class="external-link">Spectra</a>) package.</p></li>
+<a href="https://bioconductor.org/packages/Spectra" class="external-link"><em>Spectra</em></a> package.</p></li>
+<li><p><code>MsBackendMetaboLights</code> object, defined in the
+<a href="https://bioconductor.org/packages/MsBackendMetaboLights" class="external-link"><em>MsBackendMetaboLights</em></a>
+package.</p></li>
 <li><p><code>Spectra</code> object, defined in the
-(<a href="https://bioconductor.org/packages/Spectra" class="external-link">Spectra</a>) package.</p></li>
+<a href="https://bioconductor.org/packages/Spectra" class="external-link"><em>Spectra</em></a> package.</p></li>
 <li><p><code>MsExperiment</code> object, defined in the
-(<a href="https://bioconductor.org/packages/MsExperiment" class="external-link">MsExperiment</a>) package.</p></li>
+<a href="https://bioconductor.org/packages/MsExperiment" class="external-link"><em>MsExperiment</em></a> package.</p></li>
 <li><p><code>XcmsExperiment</code> object, defined in the
-(<a href="https://bioconductor.org/packages/xcms" class="external-link">xcms</a>) package.</p></li>
+<a href="https://bioconductor.org/packages/xcms" class="external-link"><em>xcms</em></a> package.</p></li>
 </ul><p>See their respective section below for details and formats of the
 exported files.</p>
     </div>
@@ -113,6 +122,9 @@ exported files.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PlainTextParam</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'MsBackendMetaboLights,PlainTextParam'</span></span>
+<span><span class="fu"><a href="saveMsObject.html">readMsObject</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">param</span>, offline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'MsBackendMzR,PlainTextParam'</span></span>
 <span><span class="fu"><a href="saveMsObject.html">saveMsObject</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">param</span><span class="op">)</span></span>
@@ -160,6 +172,13 @@ and file name or directory to/from which the data object should be
 exported/imported.</p></dd>
 
 
+<dt id="arg-offline">offline<a class="anchor" aria-label="anchor" href="#arg-offline"></a></dt>
+<dd><p>For <code><a href="saveMsObject.html">readMsObject()</a></code> to load MS data as a
+<code>MsBackendMetaboLights()</code>: <code>logical(1)</code> to evaluate <strong>only</strong> the local
+file cache. Thus <code>offline = TRUE</code> does not need an active internet
+connection, but fails if one of more files are not cached locally.</p></dd>
+
+
 <dt id="arg-spectrapath">spectraPath<a class="anchor" aria-label="anchor" href="#arg-spectrapath"></a></dt>
 <dd><p>For <code><a href="saveMsObject.html">readMsObject()</a></code>: <code>character(1)</code> optionally allowing
 to define the (absolute) path where the spectra files (<em>data storage
@@ -191,6 +210,16 @@ file is stored:</p><ul><li><p>The backend's <code><a href="https://rdrr.io/pkg/P
 named <em>ms_backend_data.txt</em>. Each row of this tab-delimited text file
 corresponds to a spectrum with its respective metadata in the columns.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="on-disk-storage-for-msbackendmetabolights-objects">On-disk storage for <code>MsBackendMetaboLights</code> objects<a class="anchor" aria-label="anchor" href="#on-disk-storage-for-msbackendmetabolights-objects"></a></h2>
+
+
+
+<p>The <code>MsBackendMetaboLights</code> extends the <code>MsBackendMzR</code> backend and hence the
+same files are stored. When a <code>MsBackendMetaboLights</code> object is restored,
+the <code>mtbls_sync()</code> function is called to check for presence of all MS data
+files and, if missing, re-download them from the <em>MetaboLights</em> repository.</p>
+    </div>
     <div class="section level2">
     <h2 id="on-disk-storage-for-spectra-objects">On-disk storage for <code>Spectra</code> objects<a class="anchor" aria-label="anchor" href="#on-disk-storage-for-spectra-objects"></a></h2>
 
@@ -414,8 +443,8 @@ any MS data is saved using a call to the <code>saveMsObject</code> of the
 <span class="r-out co"><span class="r-pr">#&gt;</span> PestMix1_DDA.mzML</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation queue: 1 processing step(s)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Processing:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select retention time [400..600] on MS level(s) 1 2 [Fri Sep 20 14:41:57 2024]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select peaks with an m/z within [200, 300] [Fri Sep 20 14:41:57 2024] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select retention time [400..600] on MS level(s) 1 2 [Tue Oct 22 10:10:57 2024]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select peaks with an m/z within [200, 300] [Tue Oct 22 10:10:57 2024] </span>
 <span class="r-in"><span><span class="va">sps_in</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MSn data (Spectra) with 2054 spectra in a MsBackendMzR backend:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        msLevel     rtime scanIndex</span>
@@ -437,8 +466,8 @@ any MS data is saved using a call to the <code>saveMsObject</code> of the
 <span class="r-out co"><span class="r-pr">#&gt;</span> PestMix1_DDA.mzML</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation queue: 1 processing step(s)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Processing:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select retention time [400..600] on MS level(s) 1 2 [Fri Sep 20 14:41:57 2024]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select peaks with an m/z within [200, 300] [Fri Sep 20 14:41:57 2024] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select retention time [400..600] on MS level(s) 1 2 [Tue Oct 22 10:10:57 2024]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Filter: select peaks with an m/z within [200, 300] [Tue Oct 22 10:10:57 2024] </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Same number of spectra</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sps_filt</span><span class="op">)</span></span></span>

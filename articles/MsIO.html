@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.20/MsIO" class="external-link">MsIO</a></em><br><strong>Authors</strong>: Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Philippine
 Louail [aut] (<a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Laurent Gatto
-[ctb] (<a href="https://orcid.org/0000-0002-1520-2268" class="external-link uri">https://orcid.org/0000-0002-1520-2268</a>)<br><strong>Compiled</strong>: Fri Sep 20 14:41:59 2024</p>
+[ctb] (<a href="https://orcid.org/0000-0002-1520-2268" class="external-link uri">https://orcid.org/0000-0002-1520-2268</a>)<br><strong>Compiled</strong>: Tue Oct 22 10:10:59 2024</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -456,7 +456,7 @@ adjust these settings according to your specific study.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 6 rows and 30 columns</span></span>
-<span><span class="co">##     Sample_Name Protocol_REF Protocol_REF.1</span></span>
+<span><span class="co">##     Sample Name Protocol REF Protocol REF.1</span></span>
 <span><span class="co">##     &lt;character&gt;  &lt;character&gt;    &lt;character&gt;</span></span>
 <span><span class="co">## 1     PB130_co1   Extraction  Chromatogr...</span></span>
 <span><span class="co">## 2     PB130_co2   Extraction  Chromatogr...</span></span>
@@ -464,7 +464,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4 PB130_sesa...   Extraction  Chromatogr...</span></span>
 <span><span class="co">## 5 PB130_sesa...   Extraction  Chromatogr...</span></span>
 <span><span class="co">## 6 PB130_sesa...   Extraction  Chromatogr...</span></span>
-<span><span class="co">##   Parameter_Value[Chromatography_Instrument] Parameter_Value[Column_model]</span></span>
+<span><span class="co">##   Parameter Value[Chromatography Instrument] Parameter Value[Column model]</span></span>
 <span><span class="co">##                                  &lt;character&gt;                   &lt;character&gt;</span></span>
 <span><span class="co">## 1                              Waters ACQ...                 ACQUITY UP...</span></span>
 <span><span class="co">## 2                              Waters ACQ...                 ACQUITY UP...</span></span>
@@ -472,7 +472,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4                              Waters ACQ...                 ACQUITY UP...</span></span>
 <span><span class="co">## 5                              Waters ACQ...                 ACQUITY UP...</span></span>
 <span><span class="co">## 6                              Waters ACQ...                 ACQUITY UP...</span></span>
-<span><span class="co">##   Parameter_Value[Column_type] Protocol_REF.2 Parameter_Value[Scan_polarity]</span></span>
+<span><span class="co">##   Parameter Value[Column type] Protocol REF.2 Parameter Value[Scan polarity]</span></span>
 <span><span class="co">##                    &lt;character&gt;    &lt;character&gt;                    &lt;character&gt;</span></span>
 <span><span class="co">## 1                reverse ph...  Mass spect...                       positive</span></span>
 <span><span class="co">## 2                reverse ph...  Mass spect...                       positive</span></span>
@@ -480,7 +480,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4                reverse ph...  Mass spect...                       positive</span></span>
 <span><span class="co">## 5                reverse ph...  Mass spect...                       positive</span></span>
 <span><span class="co">## 6                reverse ph...  Mass spect...                       positive</span></span>
-<span><span class="co">##   Parameter_Value[Instrument] Parameter_Value[Ion_source] Term_Source_REF</span></span>
+<span><span class="co">##   Parameter Value[Instrument] Parameter Value[Ion source] Term Source REF</span></span>
 <span><span class="co">##                   &lt;character&gt;                 &lt;character&gt;     &lt;character&gt;</span></span>
 <span><span class="co">## 1               Waters SYN...               electrospr...              MS</span></span>
 <span><span class="co">## 2               Waters SYN...               electrospr...              MS</span></span>
@@ -488,7 +488,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4               Waters SYN...               electrospr...              MS</span></span>
 <span><span class="co">## 5               Waters SYN...               electrospr...              MS</span></span>
 <span><span class="co">## 6               Waters SYN...               electrospr...              MS</span></span>
-<span><span class="co">##   Term_Accession_Number Parameter_Value[Mass_analyzer] Raw_Spectral_Data_File</span></span>
+<span><span class="co">##   Term Accession Number Parameter Value[Mass analyzer] Raw_Spectral_Data_File</span></span>
 <span><span class="co">##             &lt;character&gt;                    &lt;character&gt;            &lt;character&gt;</span></span>
 <span><span class="co">## 1         http://pur...                  quadrupole...          FILES/PB13...</span></span>
 <span><span class="co">## 2         http://pur...                  quadrupole...          FILES/PB13...</span></span>
@@ -496,7 +496,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4         http://pur...                  quadrupole...          FILES/PB13...</span></span>
 <span><span class="co">## 5         http://pur...                  quadrupole...          FILES/PB13...</span></span>
 <span><span class="co">## 6         http://pur...                  quadrupole...          FILES/PB13...</span></span>
-<span><span class="co">##   Protocol_REF.3 Protocol_REF.4 Metabolite_Assignment_File Source_Name</span></span>
+<span><span class="co">##   Protocol REF.3 Protocol REF.4 Metabolite Assignment File Source Name</span></span>
 <span><span class="co">##      &lt;character&gt;    &lt;character&gt;                &lt;character&gt; &lt;character&gt;</span></span>
 <span><span class="co">## 1  Data trans...  Metabolite...              m_MTBLS575...    MBG-CSIC</span></span>
 <span><span class="co">## 2  Data trans...  Metabolite...              m_MTBLS575...    MBG-CSIC</span></span>
@@ -504,7 +504,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4  Data trans...  Metabolite...              m_MTBLS575...    MBG-CSIC</span></span>
 <span><span class="co">## 5  Data trans...  Metabolite...              m_MTBLS575...    MBG-CSIC</span></span>
 <span><span class="co">## 6  Data trans...  Metabolite...              m_MTBLS575...    MBG-CSIC</span></span>
-<span><span class="co">##   Characteristics[Organism] Term_Source_REF.1 Term_Accession_Number.1</span></span>
+<span><span class="co">##   Characteristics[Organism] Term Source REF.1 Term Accession Number.1</span></span>
 <span><span class="co">##                 &lt;character&gt;       &lt;character&gt;             &lt;character&gt;</span></span>
 <span><span class="co">## 1                  Zea mays         NCBITAXON           http://pur...</span></span>
 <span><span class="co">## 2                  Zea mays         NCBITAXON           http://pur...</span></span>
@@ -512,7 +512,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4                  Zea mays         NCBITAXON           http://pur...</span></span>
 <span><span class="co">## 5                  Zea mays         NCBITAXON           http://pur...</span></span>
 <span><span class="co">## 6                  Zea mays         NCBITAXON           http://pur...</span></span>
-<span><span class="co">##   Characteristics[Variant] Term_Source_REF.2 Term_Accession_Number.2</span></span>
+<span><span class="co">##   Characteristics[Variant] Term Source REF.2 Term Accession Number.2</span></span>
 <span><span class="co">##                &lt;character&gt;       &lt;character&gt;             &lt;character&gt;</span></span>
 <span><span class="co">## 1            Zea mays s...               EFO           http://pur...</span></span>
 <span><span class="co">## 2            Zea mays s...               EFO           http://pur...</span></span>
@@ -520,7 +520,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4            Zea mays s...               EFO           http://pur...</span></span>
 <span><span class="co">## 5            Zea mays s...               EFO           http://pur...</span></span>
 <span><span class="co">## 6            Zea mays s...               EFO           http://pur...</span></span>
-<span><span class="co">##   Characteristics[Organism_part] Term_Accession_Number.3 Protocol_REF.5</span></span>
+<span><span class="co">##   Characteristics[Organism part] Term Accession Number.3 Protocol REF.5</span></span>
 <span><span class="co">##                      &lt;character&gt;             &lt;character&gt;    &lt;character&gt;</span></span>
 <span><span class="co">## 1                  stem inter...           http://pur...  Sample col...</span></span>
 <span><span class="co">## 2                  stem inter...           http://pur...  Sample col...</span></span>
@@ -528,7 +528,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4                  stem inter...           http://pur...  Sample col...</span></span>
 <span><span class="co">## 5                  stem inter...           http://pur...  Sample col...</span></span>
 <span><span class="co">## 6                  stem inter...           http://pur...  Sample col...</span></span>
-<span><span class="co">##   Factor_Value[Genotype] Factor_Value[Infestation]</span></span>
+<span><span class="co">##   Factor Value[Genotype] Factor Value[Infestation]</span></span>
 <span><span class="co">##              &lt;character&gt;               &lt;character&gt;</span></span>
 <span><span class="co">## 1                  PB130                   Control</span></span>
 <span><span class="co">## 2                  PB130                   Control</span></span>
@@ -536,7 +536,7 @@ adjust these settings according to your specific study.</p>
 <span><span class="co">## 4                  PB130             Sesamia in...</span></span>
 <span><span class="co">## 5                  PB130             Sesamia in...</span></span>
 <span><span class="co">## 6                  PB130             Sesamia in...</span></span>
-<span><span class="co">##   Factor_Value[Biological_Replicate]</span></span>
+<span><span class="co">##   Factor Value[Biological Replicate]</span></span>
 <span><span class="co">##                            &lt;integer&gt;</span></span>
 <span><span class="co">## 1                                  1</span></span>
 <span><span class="co">## 2                                  2</span></span>
@@ -561,7 +561,7 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">sampleData</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 6 rows and 10 columns</span></span>
-<span><span class="co">##     Sample_Name Raw_Spectral_Data_File Metabolite_Assignment_File Source_Name</span></span>
+<span><span class="co">##     Sample Name Raw_Spectral_Data_File Metabolite Assignment File Source Name</span></span>
 <span><span class="co">##     &lt;character&gt;            &lt;character&gt;                &lt;character&gt; &lt;character&gt;</span></span>
 <span><span class="co">## 1     PB130_co1          FILES/PB13...              m_MTBLS575...    MBG-CSIC</span></span>
 <span><span class="co">## 2     PB130_co2          FILES/PB13...              m_MTBLS575...    MBG-CSIC</span></span>
@@ -577,7 +577,7 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <span><span class="co">## 4                  Zea mays            Zea mays s...</span></span>
 <span><span class="co">## 5                  Zea mays            Zea mays s...</span></span>
 <span><span class="co">## 6                  Zea mays            Zea mays s...</span></span>
-<span><span class="co">##   Characteristics[Organism_part] Factor_Value[Genotype]</span></span>
+<span><span class="co">##   Characteristics[Organism part] Factor Value[Genotype]</span></span>
 <span><span class="co">##                      &lt;character&gt;            &lt;character&gt;</span></span>
 <span><span class="co">## 1                  stem inter...                  PB130</span></span>
 <span><span class="co">## 2                  stem inter...                  PB130</span></span>
@@ -585,7 +585,7 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <span><span class="co">## 4                  stem inter...                  PB130</span></span>
 <span><span class="co">## 5                  stem inter...                  PB130</span></span>
 <span><span class="co">## 6                  stem inter...                  PB130</span></span>
-<span><span class="co">##   Factor_Value[Infestation] Factor_Value[Biological_Replicate]</span></span>
+<span><span class="co">##   Factor Value[Infestation] Factor Value[Biological Replicate]</span></span>
 <span><span class="co">##                 &lt;character&gt;                          &lt;integer&gt;</span></span>
 <span><span class="co">## 1                   Control                                  1</span></span>
 <span><span class="co">## 2                   Control                                  2</span></span>
@@ -602,7 +602,7 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 22.04.4 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 22.04.5 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -624,14 +624,14 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] Spectra_1.15.8      BiocParallel_1.39.0 S4Vectors_0.43.2   </span></span>
-<span><span class="co">## [4] BiocGenerics_0.51.1 MsExperiment_1.7.0  ProtGenerics_1.37.1</span></span>
-<span><span class="co">## [7] MsIO_0.0.6          BiocStyle_2.33.1   </span></span>
+<span><span class="co">## [1] Spectra_1.15.12     BiocParallel_1.39.0 S4Vectors_0.43.2   </span></span>
+<span><span class="co">## [4] BiocGenerics_0.51.3 MsExperiment_1.7.0  ProtGenerics_1.37.1</span></span>
+<span><span class="co">## [7] MsIO_0.0.7          BiocStyle_2.33.1   </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] DBI_1.2.3                    rlang_1.1.4                 </span></span>
 <span><span class="co">##  [3] magrittr_2.0.3               clue_0.3-65                 </span></span>
-<span><span class="co">##  [5] matrixStats_1.4.1            MsBackendMetaboLights_0.99.0</span></span>
+<span><span class="co">##  [5] matrixStats_1.4.1            MsBackendMetaboLights_0.99.1</span></span>
 <span><span class="co">##  [7] compiler_4.4.1               RSQLite_2.3.7               </span></span>
 <span><span class="co">##  [9] systemfonts_1.1.0            vctrs_0.6.5                 </span></span>
 <span><span class="co">## [11] reshape2_1.4.4               stringr_1.5.1               </span></span>
@@ -640,44 +640,44 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <span><span class="co">## [17] dbplyr_2.5.0                 XVector_0.45.0              </span></span>
 <span><span class="co">## [19] utf8_1.2.4                   rmarkdown_2.28              </span></span>
 <span><span class="co">## [21] UCSC.utils_1.1.0             ragg_1.3.3                  </span></span>
-<span><span class="co">## [23] purrr_1.0.2                  bit_4.0.5                   </span></span>
-<span><span class="co">## [25] xfun_0.47                    MultiAssayExperiment_1.31.5 </span></span>
-<span><span class="co">## [27] zlibbioc_1.51.1              cachem_1.1.0                </span></span>
-<span><span class="co">## [29] GenomeInfoDb_1.41.1          jsonlite_1.8.8              </span></span>
+<span><span class="co">## [23] purrr_1.0.2                  bit_4.5.0                   </span></span>
+<span><span class="co">## [25] xfun_0.48                    MultiAssayExperiment_1.31.5 </span></span>
+<span><span class="co">## [27] zlibbioc_1.51.2              cachem_1.1.0                </span></span>
+<span><span class="co">## [29] GenomeInfoDb_1.41.2          jsonlite_1.8.9              </span></span>
 <span><span class="co">## [31] blob_1.2.4                   rhdf5filters_1.17.0         </span></span>
-<span><span class="co">## [33] DelayedArray_0.31.11         Rhdf5lib_1.27.0             </span></span>
+<span><span class="co">## [33] DelayedArray_0.31.14         Rhdf5lib_1.27.0             </span></span>
 <span><span class="co">## [35] parallel_4.4.1               cluster_2.1.6               </span></span>
 <span><span class="co">## [37] R6_2.5.1                     bslib_0.8.0                 </span></span>
-<span><span class="co">## [39] stringi_1.8.4                GenomicRanges_1.57.1        </span></span>
+<span><span class="co">## [39] stringi_1.8.4                GenomicRanges_1.57.2        </span></span>
 <span><span class="co">## [41] jquerylib_0.1.4              Rcpp_1.0.13                 </span></span>
-<span><span class="co">## [43] bookdown_0.40                SummarizedExperiment_1.35.1 </span></span>
+<span><span class="co">## [43] bookdown_0.41                SummarizedExperiment_1.35.4 </span></span>
 <span><span class="co">## [45] knitr_1.48                   IRanges_2.39.2              </span></span>
-<span><span class="co">## [47] Matrix_1.7-0                 igraph_2.0.3                </span></span>
+<span><span class="co">## [47] Matrix_1.7-1                 igraph_2.1.1                </span></span>
 <span><span class="co">## [49] tidyselect_1.2.1             abind_1.4-8                 </span></span>
 <span><span class="co">## [51] yaml_2.3.10                  codetools_0.2-20            </span></span>
-<span><span class="co">## [53] curl_5.2.2                   lattice_0.22-6              </span></span>
+<span><span class="co">## [53] curl_5.2.3                   lattice_0.22-6              </span></span>
 <span><span class="co">## [55] tibble_3.2.1                 plyr_1.8.9                  </span></span>
 <span><span class="co">## [57] Biobase_2.65.1               withr_3.0.1                 </span></span>
-<span><span class="co">## [59] evaluate_1.0.0               desc_1.4.3                  </span></span>
-<span><span class="co">## [61] BiocFileCache_2.13.0         alabaster.schemas_1.5.0     </span></span>
+<span><span class="co">## [59] evaluate_1.0.1               desc_1.4.3                  </span></span>
+<span><span class="co">## [61] BiocFileCache_2.13.2         alabaster.schemas_1.5.0     </span></span>
 <span><span class="co">## [63] pillar_1.9.0                 BiocManager_1.30.25         </span></span>
 <span><span class="co">## [65] filelock_1.0.3               MatrixGenerics_1.17.0       </span></span>
 <span><span class="co">## [67] ncdf4_1.23                   generics_0.1.3              </span></span>
-<span><span class="co">## [69] alabaster.base_1.5.8         glue_1.7.0                  </span></span>
-<span><span class="co">## [71] alabaster.matrix_1.5.9       lazyeval_0.2.2              </span></span>
-<span><span class="co">## [73] tools_4.4.1                  QFeatures_1.15.2            </span></span>
-<span><span class="co">## [75] mzR_2.39.0                   fs_1.6.4                    </span></span>
+<span><span class="co">## [69] alabaster.base_1.5.10        glue_1.8.0                  </span></span>
+<span><span class="co">## [71] alabaster.matrix_1.5.10      lazyeval_0.2.2              </span></span>
+<span><span class="co">## [73] tools_4.4.1                  QFeatures_1.15.3            </span></span>
+<span><span class="co">## [75] mzR_2.39.2                   fs_1.6.4                    </span></span>
 <span><span class="co">## [77] rhdf5_2.49.0                 grid_4.4.1                  </span></span>
 <span><span class="co">## [79] tidyr_1.3.1                  MsCoreUtils_1.17.2          </span></span>
-<span><span class="co">## [81] GenomeInfoDbData_1.2.12      HDF5Array_1.33.6            </span></span>
+<span><span class="co">## [81] GenomeInfoDbData_1.2.13      HDF5Array_1.33.8            </span></span>
 <span><span class="co">## [83] cli_3.6.3                    textshaping_0.4.0           </span></span>
-<span><span class="co">## [85] fansi_1.0.6                  S4Arrays_1.5.7              </span></span>
+<span><span class="co">## [85] fansi_1.0.6                  S4Arrays_1.5.11             </span></span>
 <span><span class="co">## [87] dplyr_1.1.4                  AnnotationFilter_1.29.0     </span></span>
 <span><span class="co">## [89] sass_0.4.9                   digest_0.6.37               </span></span>
-<span><span class="co">## [91] SparseArray_1.5.36           htmlwidgets_1.6.4           </span></span>
+<span><span class="co">## [91] SparseArray_1.5.45           htmlwidgets_1.6.4           </span></span>
 <span><span class="co">## [93] memoise_2.0.1                htmltools_0.5.8.1           </span></span>
 <span><span class="co">## [95] pkgdown_2.1.1.9000           lifecycle_1.0.4             </span></span>
-<span><span class="co">## [97] httr_1.4.7                   bit64_4.0.5                 </span></span>
+<span><span class="co">## [97] httr_1.4.7                   bit64_4.5.2                 </span></span>
 <span><span class="co">## [99] MASS_7.3-61</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

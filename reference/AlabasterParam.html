@@ -12,8 +12,15 @@ classes hence allowing to use saveObject() and readObject() directly on
 these objects:
 MsBackendMzR, defined in the
 Spectra package.
+MsBackendMetaboLights, defined in the
+MsBackendMetaboLights
+package.
 Spectra, defined in the
 Spectra package.
+MsExperiment, defined in the
+MsExperiment package.
+XcmsExperiment, defined in the
+xcms package.
 
 
 In addition, the MsIO package defines the AlabasterParam which can be
@@ -41,8 +48,15 @@ classes hence allowing to use saveObject() and readObject() directly on
 these objects:
 MsBackendMzR, defined in the
 Spectra package.
+MsBackendMetaboLights, defined in the
+MsBackendMetaboLights
+package.
 Spectra, defined in the
 Spectra package.
+MsExperiment, defined in the
+MsExperiment package.
+XcmsExperiment, defined in the
+xcms package.
 
 
 In addition, the MsIO package defines the AlabasterParam which can be
@@ -65,7 +79,7 @@ various supported MS data objects are listed in the following sections."></head>
 
     <a class="navbar-brand me-2" href="../index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +102,7 @@ various supported MS data objects are listed in the following sections."></head>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Store MS data objects using the alabaster framework</h1>
-      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/AlabasterParam.R" class="external-link"><code>R/AlabasterParam.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMzR.R" class="external-link"><code>R/MsBackendMzR.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsExperiment.R" class="external-link"><code>R/MsExperiment.R</code></a>, and 2 more</small>
+      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/AlabasterParam.R" class="external-link"><code>R/AlabasterParam.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMetaboLights.R" class="external-link"><code>R/MsBackendMetaboLights.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MsIO/blob/main/R/MsBackendMzR.R" class="external-link"><code>R/MsBackendMzR.R</code></a>, and 3 more</small>
       <div class="d-none name"><code>AlabasterParam.Rd</code></div>
     </div>
 
@@ -105,8 +119,15 @@ methods. Implementations of these methods are available for the following
 classes hence allowing to use <code>saveObject()</code> and <code>readObject()</code> directly on
 these objects:</p><ul><li><p><code>MsBackendMzR</code>, defined in the
 <a href="https://bioconductor.org/packages/Spectra" class="external-link"><em>Spectra</em></a> package.</p></li>
+<li><p><code>MsBackendMetaboLights</code>, defined in the
+<a href="https://github.com/RforMassSpectrometry/MsBackendMetaboLights" class="external-link"><em>MsBackendMetaboLights</em></a>
+package.</p></li>
 <li><p><code>Spectra</code>, defined in the
 <a href="https://bioconductor.org/packages/Spectra" class="external-link"><em>Spectra</em></a> package.</p></li>
+<li><p><code>MsExperiment</code>, defined in the
+<a href="https://bioconductor.org/packages/MsExperiment" class="external-link"><em>MsExperiment</em></a> package.</p></li>
+<li><p><code>XcmsExperiment</code>, defined in the
+<a href="https://bioconductor.org/packages/xcms" class="external-link"><em>xcms</em></a> package.</p></li>
 </ul><p>In addition, the <em>MsIO</em> package defines the <code>AlabasterParam</code> which can be
 used to write or read MS objects using the <code><a href="saveMsObject.html">saveMsObject()</a></code> and
 <code><a href="saveMsObject.html">readMsObject()</a></code> methods. This allows additional configurations and
@@ -125,6 +146,15 @@ various supported MS data objects are listed in the following sections.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">AlabasterParam</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'MsBackendMetaboLights'</span></span>
+<span><span class="fu">saveObject</span><span class="op">(</span><span class="va">x</span>, <span class="va">path</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'MsBackendMetaboLights,AlabasterParam'</span></span>
+<span><span class="fu"><a href="saveMsObject.html">saveMsObject</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">param</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'MsBackendMetaboLights,AlabasterParam'</span></span>
+<span><span class="fu"><a href="saveMsObject.html">readMsObject</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">param</span>, offline <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'MsBackendMzR'</span></span>
 <span><span class="fu">saveObject</span><span class="op">(</span><span class="va">x</span>, <span class="va">path</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -195,6 +225,14 @@ and file name or directory to/from which the data object should be
 exported/imported.</p></dd>
 
 
+<dt id="arg-offline">offline<a class="anchor" aria-label="anchor" href="#arg-offline"></a></dt>
+<dd><p>For <code><a href="saveMsObject.html">readMsObject()</a></code> and <code>readObject()</code> to load MS data as a
+<code>MsBackendMetaboLights()</code>: <code>logical(1)</code> to evaluate the local file cache
+and only load local files. Thus <code>offline = TRUE</code> does not need an active
+internet connection, but fails if one of more files are not cached
+locally.</p></dd>
+
+
 <dt id="arg-spectrapath">spectraPath<a class="anchor" aria-label="anchor" href="#arg-spectrapath"></a></dt>
 <dd><p>For <code><a href="saveMsObject.html">readMsObject()</a></code>: <code>character(1)</code> optionally allowing
 to define the (absolute) path where the spectra files (<em>data storage
@@ -234,6 +272,17 @@ variables of the object) and <em>spectra_data</em> (the metadata for all spectra
 Each sub-folder contains also an <em>OBJECT</em> file defining the object's type
 and an additional file (in HDF5 format) containing the data. See examples
 below for details.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="on-disk-storage-for-msbackendmetabolights-objects">On-disk storage for <code>MsBackendMetaboLights</code> objects<a class="anchor" aria-label="anchor" href="#on-disk-storage-for-msbackendmetabolights-objects"></a></h2>
+
+
+
+<p>The <code>MsBackendMetaboLights</code> extends the <code>MsBackendMzR</code> backend and hence the
+same files are stored. When a <code>MsBackendMetaboLights</code> object is restored,
+the <code>mtbls_sync()</code> function is called to check for presence of all MS data
+files and, if missing, re-download them from the <em>MetaboLights</em> repository
+(if parameter <code>offline = FALSE</code> is used).</p>
     </div>
     <div class="section level2">
     <h2 id="on-disk-storage-for-spectra-objects">On-disk storage for <code>Spectra</code> objects<a class="anchor" aria-label="anchor" href="#on-disk-storage-for-spectra-objects"></a></h2>
@@ -355,8 +404,8 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, intersect, is.unsorted,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     lapply, mapply, match, mget, order, paste, pmax, pmax.int, pmin,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, setdiff, table, tapply,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     union, unique, unsplit, which.max, which.min</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     pmin.int, rank, rbind, rownames, sapply, saveRDS, setdiff, table,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘S4Vectors’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:utils’:</span>
@@ -366,12 +415,6 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocParallel</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ProtGenerics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘ProtGenerics’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     smooth</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msdata</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">be</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/backendInitialize.html" class="external-link">backendInitialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackendMzR</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">fl</span><span class="op">)</span></span></span>
@@ -516,6 +559,12 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-in"><span><span class="co">####</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MsExperiment" class="external-link">MsExperiment</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ProtGenerics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘ProtGenerics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     smooth</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create a new `MsExperiment` with sample data and our previously defined</span></span></span>
 <span class="r-in"><span><span class="co">## `Spectra` as its MS data</span></span></span>
