@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,10 @@
 </h2>
 <p>The currently available export/data storage formats along with the respective <em>parameter</em> object to configure the export/import are listed below:</p>
 <ul>
-<li>Export to or import from plain text files. For most objects the data is stored in simple tabulator delimited text files. Export/import can be configured with the <code>PlainTextParam</code> <em>parameter</em> class and is supported at present for <code>MsBackendMzR</code> and <code>Spectra</code> objects from the <a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link"><em>Spectra</em></a> package, <code>MsExperiment</code> objects from the <a href="https://github.com/RforMassSpectrometry/MsExperiment" class="external-link"><em>MsExperiment</em></a> package and <code>XcmsExperiment</code> objects from the <a href="https://github.com/sneumann/xcms" class="external-link"><em>xcms</em></a> package.</li>
+<li><p><code>PlainTextParam</code>: Export to or import from plain text files. For most objects the data is stored in simple tabulator delimited text files. Export/import can be configured with the <code>PlainTextParam</code> <em>parameter</em> class and is supported at present for <code>MsBackendMzR</code> and <code>Spectra</code> objects from the <a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link"><em>Spectra</em></a> package, <code>MsExperiment</code> objects from the <a href="https://github.com/RforMassSpectrometry/MsExperiment" class="external-link"><em>MsExperiment</em></a> package and <code>XcmsExperiment</code> objects from the <a href="https://github.com/sneumann/xcms" class="external-link"><em>xcms</em></a> package.</p></li>
+<li><p><code>AlabasterParam</code>: Export or import based on <em>alabaster</em>. The alabaster format stores the data in a structured way using standard file formats including HDF5 and JSON ensuring thus across programming language compatibility.</p></li>
+<li><p><code>mzTabParam</code>: <a href="https://github.com/sneumann/xcms" class="external-link"><em>xcms</em></a> preprocessing results (i.e., from <code>XcmsExperiment</code> objects) can be exported in <a href="https://hupo-psi.github.io/mzTab/" class="external-link">mzTab-M format</a>.</p></li>
+<li><p><code>MetaboLightsParam</code>: Import MS data experiments (including MS data files) from the public <a href="https://www.ebi.ac.uk/metabolights/" class="external-link">MetaboLights</a> repository.</p></li>
 </ul>
 </div>
 </div>
