@@ -47,7 +47,7 @@ readAlabasterMsBackendMetaboLights <- function(path = character(),
     be <- MsBackendMetaboLights::MsBackendMetaboLights()
     slot(be, "spectraData", check = FALSE) <- sdata
     slot(be, "peaksVariables", check = FALSE) <- pvars
-    MsBackendMetaboLights::mtbls_sync(be, offline = offline)
+    be <- MsBackendMetaboLights::mtbls_sync(be, offline = offline)
     validObject(be)
     be
 }

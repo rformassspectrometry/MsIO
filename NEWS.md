@@ -1,5 +1,10 @@
 # Version 0.0
 
+## Changes in 0.0.8
+
+- Fix bug in `readObject()` for `MsBackendMetaboLights` that would not
+  update/fix the local path to the cached data files.
+
 ## Changes in 0.0.7
 
 - Add `saveObject()` for `MsBackendMetaboLights`.
