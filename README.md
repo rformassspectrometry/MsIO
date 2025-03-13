@@ -36,15 +36,27 @@ by other software.
 The currently available export/data storage formats along with the respective
 *parameter* object to configure the export/import are listed below:
 
-- Export to or import from plain text files. For most objects the data is stored
-  in simple tabulator delimited text files. Export/import can be configured with
-  the `PlainTextParam` *parameter* class and is supported at present for
-  `MsBackendMzR` and `Spectra` objects from the
+- `PlainTextParam`: Export to or import from plain text files. For most
+  objects the data is stored in simple tabulator delimited text files.
+  Export/import can be configured with the `PlainTextParam` *parameter* class
+  and is supported at present for `MsBackendMzR` and `Spectra` objects from the
   [*Spectra*](https://github.com/RforMassSpectrometry/Spectra) package,
   `MsExperiment` objects from the
   [*MsExperiment*](https://github.com/RforMassSpectrometry/MsExperiment) package
   and `XcmsExperiment` objects from the
   [*xcms*](https://github.com/sneumann/xcms) package.
+
+- `AlabasterParam`: Export or import based on *alabaster*. The alabaster format
+  stores the data in a structured way using standard file formats including
+  HDF5 and JSON ensuring thus across programming language compatibility.
+
+- `mzTabParam`: [*xcms*](https://github.com/sneumann/xcms) preprocessing
+  results (i.e., from `XcmsExperiment` objects) can be exported in [mzTab-M
+  format](https://hupo-psi.github.io/mzTab/).
+
+- `MetaboLightsParam`: Import MS data experiments (including MS data files)
+  from the public [MetaboLights](https://www.ebi.ac.uk/metabolights/)
+  repository.
 
 
 # Contributions
