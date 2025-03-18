@@ -1,5 +1,11 @@
 # Version 0.0
 
+## Changes in 0.0.9
+
+- Fix bug in `readMsObject()` for `MetaboLightsParam`: mapping between samples
+  and spectra could fail for some MetaboLights data set if a `filePattern`
+  was defined.
+
 ## Changes in 0.0.8
 
 - Fix bug in `readObject()` for `MsBackendMetaboLights` that would not

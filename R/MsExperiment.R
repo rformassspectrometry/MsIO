@@ -236,7 +236,7 @@ setMethod("readMsObject",
               else {
                   if (length(assays) == 1) {
                       selected_assay <- assays
-                      message("Only one assay file found:", selected_assay)
+                      message("Only one assay file found: ", selected_assay)
                   } else {
                       message("Multiple assay files found:\n")
                       selection <- menu(assays,
@@ -260,7 +260,7 @@ setMethod("readMsObject",
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
               merged_data <- cbind(assay_data, sample_info[ord, ])
               if (keepProtocol || keepOntology || simplify)
-                  merged_data <- .clean_merged(x = merged_data,
+                  merged_data <- MsIO:::.clean_merged(x = merged_data,
                                                keepProtocol = keepProtocol,
                                                keepOntology = keepOntology,
                                                simplify = simplify)
@@ -273,19 +273,23 @@ setMethod("readMsObject",
                                              filePattern = param@filePattern)
 
               ## sample to spectra link
-              fl <- object@spectra@backend@spectraData[1, "derived_spectral_data_file"]
-              idx <- which(merged_data[1, ,drop = TRUE] == fl)
-              nme <- colnames(merged_data)[idx]
+              fl <- object@spectra@backend@spectraData$derived_spectral_data_file[1L]
+              ## identify the column in the assay/sample description containing
+              ## the file name information.
+              nms <- c("Raw Spectral Data File", "Derived Spectral Data File")
+              nms <- nms[nms %in% colnames(merged_data)]
+              nme <- nms[vapply(nms, function(z)
+                  any(merged_data[, z] %in% fl), NA)]
               merged_data <- merged_data[grepl(param@filePattern,
-                                               merged_data[, nme]), ]
-              nme <- gsub(" ", "_", nme)
-              colnames(merged_data)[idx] <- nme
+                                               merged_data[, nme]), ,
+                                         drop = FALSE]
+              nnme <- gsub(" ", "_", nme, fixed = TRUE)
+              colnames(merged_data)[colnames(merged_data) == nme] <- nnme
               object@sampleData <- DataFrame(merged_data, check.names = FALSE,
                                              row.names = NULL)
-              object <- MsExperiment::linkSampleData(object,
-                                                     with = paste0("sampleData.",
-                                                                nme,
-                                                                 "= spectra.derived_spectral_data_file"))
+              w <- paste0("sampleData.", nnme,
+                          "= spectra.derived_spectral_data_file")
+              object <- MsExperiment::linkSampleData(object, with = w)
               validObject(object)
               object
           })
@@ -311,5 +315,5 @@ setMethod("readMsObject",
         x <- x[, !duplicated(as.list(x)), drop = FALSE]
         x <- x[, colSums(is.na(x)) != nrow(x), drop = FALSE]
     }
-    return(x)
+    x
 }

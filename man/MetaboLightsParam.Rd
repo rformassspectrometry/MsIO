@@ -94,6 +94,7 @@ Further filtering can be performed using the \code{filePattern} parameter of the
 types.
 }
 \examples{
+
 library(MsExperiment)
 # Load a study with the mtblsId "MTBLS39" and selecting specific file pattern
 # as well as removing ontology and protocol information in the metadata.
