@@ -215,6 +215,13 @@ setMethod("saveMsObject",
           signature(object = "XcmsExperiment",
                     param = "mzTabParam"),
           function(object, param){
+              if (length(param@studyId) != 1)
+                  stop("'studyId' has to be a character string of length 1")
+              if (length(param@polarity) != 1)
+                  stop("'polarity' has to be a character string ",
+                       "of length 1")
+              if (length(param@sampleDataColumn) == 0)
+                  stop("'sampleDataColumn' cannot be empty")
               if (!param@sampleDataColumn %in% colnames(object@sampleData))
                   stop("'sampleDataColumn' has to correspond to column names ",
                        "of the sampleData() table", call. = FALSE)

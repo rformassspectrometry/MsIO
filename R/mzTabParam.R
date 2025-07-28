@@ -82,6 +82,10 @@
 #' ## Save as a mzTab-M file
 #' saveMsObject(test_xcms, param)
 #'
+#' ## Load mztab-m file into SummarizedExperiment object
+#' param <- mzTabParam(path = ...) ## need to have a file in the package to test
+#'
+#' sumexp <- readMsObject(SummarizedExperiment(), param)
 NULL
 
 #' @noRd
@@ -104,16 +108,9 @@ setClass("mzTabParam",
          ),
          validity = function(object) {
              msg <- NULL
-             if (length(object@studyId) != 1)
-                 msg <- c("'studyId' has to be a character string of length 1")
-             if (length(object@polarity) != 1)
-                 msg <- c(msg, "'polarity' has to be a character string ",
-                 "of length 1")
-             if (length(object@sampleDataColumn) == 0)
-                 msg <- c(msg, "'sampleDataColumn' cannot be empty")
              if (length(object@path) != 1)
                  msg <- c(msg, "'path' has to be a character string of ",
-                 "length 1")
+                          "length 1")
              msg
          })
 
