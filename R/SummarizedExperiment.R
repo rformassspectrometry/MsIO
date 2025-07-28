@@ -1,13 +1,12 @@
 #' @include mzTabParam.R
 #' @title Methods to save and load contents of a SummarizedExperiment object
 #'
-#' @importFrom ProtGenerics spectra
 #'
-#' @importFrom S4Vectors DataFrame
+#' @importFrom SummarizedExperiment SummarizedExperiment
 #'
-#' @importFrom methods callNextMethod as
+#' @importFrom jsonlite unserializeJSON read_json
 #'
-#' @importFrom jsonlite serializeJSON unserializeJSON read_json write_json
+#' @author Kozo Nishida
 #'
 #' @noRd
 NULL
