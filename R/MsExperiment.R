@@ -61,7 +61,11 @@ setMethod("readMsObject",
                   stop("No 'ms_experiment_sample_data.txt' file found in ",
                        "the provided path.")
               sd <- read.table(fl, sep = "\t", header = TRUE)
-              object@sampleData <- DataFrame(sd, row.names = NULL)
+              if (is.character(all.equal(rownames(sd),
+                                         as.character(seq_len(nrow(sd))))))
+                  object@sampleData <- DataFrame(sd)
+              else
+                  object@sampleData <- DataFrame(sd, row.names = NULL)
 
               ## read spectra
               if (file.exists(file.path(param@path, "spectra_slots.txt")))

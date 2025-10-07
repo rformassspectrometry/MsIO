@@ -55,7 +55,7 @@ BugReports: https://github.com/RforMassSpectrometry/MsIO/issues
 URL: https://github.com/RforMassSpectrometry/MsIO
 biocViews: Infrastructure, MassSpectrometry, Metabolomics, DataImport, Proteomics
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate:
     'PlainTextParam.R'
     'AlabasterParam.R'
