@@ -63,8 +63,9 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
 
 .ms_backend_mzr_update_storage_path <- function(x, spectraPath = character()) {
     if (!length(x)) return(x)
-    old <- common_path(dataStorage(x))
     dataStoragePaths <- dataStorage(x)
+    gsub("\\\\", "/", normalizedDataStoragePaths)
+    old <- common_path(dataStoragePaths)
     normalizedDataStoragePaths <- normalizePath(
         dataStoragePaths, winslash = "/", mustWork = FALSE)
     spectraPath <- normalizePath(spectraPath, winslash = "/", mustWork = FALSE)
