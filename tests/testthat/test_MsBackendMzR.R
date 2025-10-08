@@ -25,6 +25,7 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
 
     ## Check the spectraPath parameter.
     bp <- dataStorageBasePath(b)
+    bn <- basename(dataStorage(b))
     ## manually change dataStorage path of backend
     sd <- read.table(file.path(param@path, "ms_backend_data.txt"),
                      sep = "\t", header = TRUE)
@@ -37,8 +38,33 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
                     append = TRUE, row.names = FALSE)
     expect_error(readMsObject(MsBackendMzR(), param), "invalid class")
     expect_no_error(readMsObject(MsBackendMzR(), param, spectraPath = bp))
-    param <- PlainTextParam(tempdir())
-    expect_error(readMsObject(MsBackendMzR(), param), "No 'backend_data")
+    ## simulating import from Windows file system.
+    ## Double \\ -> will be written as \ to the file.
+    sd$dataStorage <- paste0("C:\\whatever\\path\\", bn)
+    writeLines("# MsBackendMzR",
+               con = file.path(param@path, "ms_backend_data.txt"))
+    write.table(sd,
+                file = file.path(param@path, "ms_backend_data.txt"),
+                sep = "\t", quote = FALSE,
+                append = TRUE, row.names = FALSE)
+    expect_error(readMsObject(MsBackendMzR(), param), "invalid class")
+    expect_no_error(a <- readMsObject(MsBackendMzR(), param, spectraPath = bp))
+    expect_true(validObject(a))
+    expect_equal(mz(a[1:10]), mz(b[1:10]))
+
+    ## Four \\\\ -> will be written as \\ to the file.
+    sd$dataStorage <- paste0("C:\\\\whatever\\\\path\\\\",
+                             bn)
+    writeLines("# MsBackendMzR",
+               con = file.path(param@path, "ms_backend_data.txt"))
+    write.table(sd,
+                file = file.path(param@path, "ms_backend_data.txt"),
+                sep = "\t", quote = FALSE,
+                append = TRUE, row.names = FALSE)
+    expect_error(readMsObject(MsBackendMzR(), param), "invalid class")
+    expect_no_error(a <- readMsObject(MsBackendMzR(), param, spectraPath = bp))
+    expect_true(validObject(a))
+    expect_equal(mz(a[1:10]), mz(b[1:10]))
 
     ## check for empty backend
     b_empty <- MsBackendMzR()
@@ -124,14 +150,14 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     }
 })
 
-test_that(".ms_backend_mzr_update_storage_path works", {
-    res <- .ms_backend_mzr_update_storage_path(numeric())
-    expect_equal(res, numeric())
-    x <- sciex_mzr
-    res <- .ms_backend_mzr_update_storage_path(x, "/new/path")
-    expect_true(all(grepl("/new/path", res$dataStorage)))
-    expect_error(validObject(res), "not found")
-})
+## test_that(".ms_backend_mzr_update_storage_path works", {
+##     res <- .ms_backend_mzr_update_storage_path(numeric())
+##     expect_equal(res, numeric())
+##     x <- sciex_mzr
+##     res <- .ms_backend_mzr_update_storage_path(x, "/new/path")
+##     expect_true(all(grepl("/new/path", res$dataStorage)))
+##     expect_error(validObject(res), "not found")
+## })
 
 test_that("saveMsObject,readMsObject,MsBackendMzR,AlabasterParam works", {
     x <- backendInitialize(MsBackendMzR(), sciex_file[2L])

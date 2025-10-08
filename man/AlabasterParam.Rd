@@ -103,7 +103,7 @@ alabaster ensures that the data can also be read and imported by other
 programming languages such as Python or Javascript. This improves
 interoperability between application ecosystems.
 
-The \emph{alabaster} package defines the \code{\link[=saveObject]{saveObject()}} and \code{\link[=readObject]{readObject()}}
+The \emph{alabaster} package defines the \code{\link[alabaster.base:saveObject]{alabaster.base::saveObject()}} and \code{\link[=readObject]{readObject()}}
 methods. Implementations of these methods are available for the following
 classes hence allowing to use \code{saveObject()} and \code{readObject()} directly on
 these objects:

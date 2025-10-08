@@ -7,8 +7,6 @@
 #'
 #' @importFrom utils read.table write.table
 #'
-#' @importFrom MsCoreUtils common_path
-#'
 #' @importFrom S4Vectors DataFrame
 #'
 #' @importFrom methods validObject
@@ -52,27 +50,12 @@ setMethod("readMsObject", signature(object = "MsBackendMzR",
                   data <- read.table(file = fl, sep = "\t", header = TRUE)
                   rownames(data) <- NULL
                   object@spectraData <- DataFrame(data)
-                  if (length(spectraPath) > 0) {
-                      object <- .ms_backend_mzr_update_storage_path(
-                          object, spectraPath)
-                  }
+                  if (length(spectraPath) > 0)
+                      Spectra::dataStorageBasePath(object) <- spectraPath
               }
               validObject(object)
               object
           })
-
-.ms_backend_mzr_update_storage_path <- function(x, spectraPath = character()) {
-    if (!length(x)) return(x)
-    dataStoragePaths <- dataStorage(x)
-    dataStoragePaths <- gsub("\\\\", "/", dataStoragePaths)
-    old <- common_path(dataStoragePaths)
-    normalizedDataStoragePaths <- normalizePath(
-        dataStoragePaths, winslash = "/", mustWork = FALSE)
-    spectraPath <- normalizePath(spectraPath, winslash = "/", mustWork = FALSE)
-    x@spectraData$dataStorage <- sub(old, spectraPath,
-                                     normalizedDataStoragePaths)
-    x
-}
 
 ################################################################################
 ##
@@ -143,7 +126,7 @@ readAlabasterMsBackendMzR <- function(path = character(), metadata = list(),
     be@spectraData <- sdata
     be@peaksVariables <- pvars
     if (length(spectraPath) > 0)
-        be <- .ms_backend_mzr_update_storage_path(be, spectraPath)
+        Spectra::dataStorageBasePath(be) <- spectraPath
     validObject(be)
     be
 }
