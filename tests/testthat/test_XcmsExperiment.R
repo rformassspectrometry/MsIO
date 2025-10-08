@@ -145,7 +145,7 @@ test_that("saveMsObject,XcmsExperiment,AlabasterParam works", {
         unlink(pth, recursive = TRUE)
 
     ## Simulate moving data files.
-    fl <- system.file('cdf/KO/ko15.CDF', package = "faahKO")
+    fl <- system.file("cdf/KO/ko15.CDF", package = "faahKO")
     fl_new <- tempfile()
     file.copy(fl, fl_new)
     library(MsExperiment)

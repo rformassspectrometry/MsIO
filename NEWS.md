@@ -1,5 +1,10 @@
 # Version 0.0
 
+## Changes in 0.0.10
+
+- Re-use the `Spectra::dataStorageBasePath()` method to update/set the base path
+  to the data storage files to read `MsBackendMzR` objects.
+
 ## Changes in 0.0.9
 
 - Fix bug in `readMsObject()` for `MetaboLightsParam`: mapping between samples
