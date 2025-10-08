@@ -1,5 +1,13 @@
 # Version 0.0
 
+## Changes in 0.0.10
+
+- Fix bug in `readMsObject()` for `AlabasterParam()`: if the saved object has 
+  backslash in the paths to the raw file, the `spectraPath` replacment does not 
+  work as intended in Linux system. [issue #30](https://github.com/rformassspectrometry/MsIO/issues/30)
+
+- Ensure SampleData rownames are retained in `readMsObject()` for `PlainTextParam`.
+
 ## Changes in 0.0.9
 
 - Fix bug in `readMsObject()` for `MetaboLightsParam`: mapping between samples
