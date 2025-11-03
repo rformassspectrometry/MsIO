@@ -218,9 +218,9 @@ setMethod("saveMsObject",
               if (!all(param@sampleDataColumn %in% colnames(object@sampleData)))
                   stop("'sampleDataColumn' has to correspond to column names ",
                        "of the sampleData() table", call. = FALSE)
-              if (length(param@optionalFeatureColumns) != 0)
-                  if (!param@optionalFeatureColumns %in%
-                      colnames(object@featureDefinitions))
+              if (length(param@optionalFeatureColumns))
+                  if (!all(param@optionalFeatureColumns %in%
+                           colnames(object@featureDefinitions)))
                       stop("'optionalFeatureColumns' have to correspond to ",
                            "column names of the featureDefinitions() table",
                            call. = FALSE)

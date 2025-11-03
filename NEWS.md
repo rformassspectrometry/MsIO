@@ -3,6 +3,8 @@
 ## Changes in 0.0.11
 
 - Fix error message/check for `mzTabParam()` export of `XcmsExperiment`.
+- Use the internal `.retry()` function from *MsBackendMetaboLights* to retry
+  downloading from EBI's ftp server.
 
 ## Changes in 0.0.10
 

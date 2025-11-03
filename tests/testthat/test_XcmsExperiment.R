@@ -221,6 +221,11 @@ test_that("saveMsObject,mzTabParam works", {
                                         sampleDataColumn = "sample_index",
                                         optionalFeatureColumns = "other")),
         "'optionalFeatureColumns' have to correspond")
+    expect_error(saveMsObject(
+        faahko, mzTabParam(studyId = "test_study", path = d,
+                           sampleDataColumn = c("sample_index"),
+                           optionalFeatureColumns = c("mzmed", "mzmin", "a"))),
+        "'optionalFeatureColumns' have to correspond")
 
     p <- mzTabParam(studyId = "test_study", path = d,
                     sampleDataColumn = "sample_index",

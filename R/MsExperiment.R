@@ -250,21 +250,25 @@ setMethod("readMsObject",
                   }
               }
 
-              assay_data <- read.table(paste0(pth, selected_assay),
-                                       header = TRUE, sep = "\t",
-                                       check.names = FALSE)
+              assay_data <- MsBackendMetaboLights:::.retry(
+                                read.table(paste0(pth, selected_assay),
+                                           header = TRUE, sep = "\t",
+                                           check.names = FALSE),
+                                ntimes = 5, sleep_mult = 7)
 
               ## Extract and read sample info files
               s_files <- all_fls[grepl("^s_", all_fls)]
-              sample_info <- read.table(paste0(pth, s_files),
-                                        header = TRUE, sep = "\t",
-                                        check.names = FALSE)
+              sample_info <- MsBackendMetaboLights:::.retry(
+                                 read.table(paste0(pth, s_files),
+                                            header = TRUE, sep = "\t",
+                                            check.names = FALSE),
+                                 ntimes = 5, sleep_mult = 7)
 
               ## merging
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
               merged_data <- cbind(assay_data, sample_info[ord, ])
               if (keepProtocol || keepOntology || simplify)
-                  merged_data <- MsIO:::.clean_merged(x = merged_data,
+                  merged_data <- .clean_merged(x = merged_data,
                                                keepProtocol = keepProtocol,
                                                keepOntology = keepOntology,
                                                simplify = simplify)
