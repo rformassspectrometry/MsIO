@@ -169,6 +169,10 @@ jobs:
           BiocManager::install("mzR", dependencies = TRUE, ask = FALSE, update = FALSE)
           BiocManager::install("msdata")
           BiocManager::install("RforMassSpectrometry/MsBackendMetaboLights")
+          BiocManager::install("artifactdb/alabaster.base")
+          BiocManager::install("artifactdb/alabaster.matrix")
+          BiocManager::install("artifactdb/alabaster.ranges")
+          BiocManager::install("artifactdb/alabaster.se")
 
           message(paste('****', Sys.time(), 'force installation of selected packages ****'))
           BiocManager::install(c("BiocStyle", "rmarkdown", "magick", "Spectra"))
