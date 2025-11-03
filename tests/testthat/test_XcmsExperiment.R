@@ -212,6 +212,10 @@ test_that("saveMsObject,mzTabParam works", {
         saveMsObject(faahko, mzTabParam(studyId = "test_study", path = d,
                                         sampleDataColumn = "sample_name")),
         "has to correspond to column names of the sampleData()")
+    expect_error(saveMsObject(
+        faahko, mzTabParam(studyId = "test_study", path = d,
+                           sampleDataColumn = c("sample_name","sample_index"))),
+        "has to correspond to column names of the sampleData()")
     expect_error(
         saveMsObject(faahko, mzTabParam(studyId = "test_study", path = d,
                                         sampleDataColumn = "sample_index",

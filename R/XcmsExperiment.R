@@ -215,7 +215,7 @@ setMethod("saveMsObject",
           signature(object = "XcmsExperiment",
                     param = "mzTabParam"),
           function(object, param){
-              if (!param@sampleDataColumn %in% colnames(object@sampleData))
+              if (!all(param@sampleDataColumn %in% colnames(object@sampleData)))
                   stop("'sampleDataColumn' has to correspond to column names ",
                        "of the sampleData() table", call. = FALSE)
               if (length(param@optionalFeatureColumns) != 0)

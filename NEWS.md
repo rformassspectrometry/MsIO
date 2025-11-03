@@ -1,5 +1,9 @@
 # Version 0.0
 
+## Changes in 0.0.11
+
+- Fix error message/check for `mzTabParam()` export of `XcmsExperiment`.
+
 ## Changes in 0.0.10
 
 - Re-use the `Spectra::dataStorageBasePath()` method to update/set the base path
