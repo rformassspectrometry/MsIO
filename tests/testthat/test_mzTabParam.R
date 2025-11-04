@@ -30,8 +30,8 @@ test_that(".mztab_small_molecule_feature works", {
         method = "sum", value = "maxo")
     expect_equal(nrow(a), nrow(b))
     expect_true(ncol(b) > ncol(a))
-    expect_true(any(b[1, ] == "opt_peakidx"))
-    expect_true(any(b[1, ] == "opt_ms_level"))
+    expect_true(any(b[1, ] == "opt_global_peakidx"))
+    expect_true(any(b[1, ] == "opt_global_ms_level"))
     ## Check that optional parameters are correctly passed
     a2 <- a[2:nrow(a), a[1, ] == "abundance_assay[2]"]
     a2[a2 == "null"] <- NA
