@@ -380,7 +380,7 @@ setMethod("saveMsObject",
                                          collapse = "| ")
                               } else as.character(fts[, z], digits = 15)
                           }))
-        colnames(tmp) <- paste0("opt_", opt_columns)
+        colnames(tmp) <- paste0("opt_global_", opt_columns)
         smf <- cbind(smf, tmp)
     }
     smf <- rbind(colnames(smf), smf)

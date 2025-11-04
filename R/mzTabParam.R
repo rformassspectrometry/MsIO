@@ -40,7 +40,7 @@
 #'     least one column in `sampleData()` has to be specified.
 #'
 #' @param path `character(1)` Define where the file is going to be stored. The
-#'     default is `paht = tempdir()`.
+#'     default is `path = tempdir()`.
 #'
 #' @param optionalFeatureColumns `character` with optional column names from
 #'     `featureDefinitions()` that should be exported. Defaults to

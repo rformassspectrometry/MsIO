@@ -29,7 +29,7 @@ to the mzTab-M file. Defaults to \code{sampleDataColumn = character()}. At
 least one column in \code{sampleData()} has to be specified.}
 
 \item{path}{\code{character(1)} Define where the file is going to be stored. The
-default is \code{paht = tempdir()}.}
+default is \code{path = tempdir()}.}
 
 \item{optionalFeatureColumns}{\code{character} with optional column names from
 \code{featureDefinitions()} that should be exported. Defaults to
