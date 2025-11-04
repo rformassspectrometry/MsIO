@@ -47,6 +47,8 @@ currently supported formats and the respective parameter objects are:
 - `PlainTextParam`: storage of data in plain text file format.
 - `AlabasterParam`: storage of MS data using Bioconductor's
   `r Biocpkg("alabaster.base")` framework based files in HDF5 and JSON format.
+- `mzTabParam`: export of LC-MS analysis results in *mzTab-M* format. Currently
+  only `XcmsExperiment` is supported.
 
 These storage formats are described in more details in the following sections.
 
@@ -271,9 +273,9 @@ It is recommended to adjust these settings according to your specific study.
 ```{r}
 library(MsExperiment())
 # Prepare parameter
-param <- MetaboLightsParam(mtblsId = "MTBLS575", 
+param <- MetaboLightsParam(mtblsId = "MTBLS575",
                            assayName = paste0("a_MTBLS575_POS_INFEST_CTRL_",
-                                              "mass_spectrometry.txt"), 
+                                              "mass_spectrometry.txt"),
                            filePattern = "cdf$")
 
 # Load MsExperiment object
@@ -286,17 +288,17 @@ Next, we examine the `sampleData()` of our `mse` object:
 sampleData(mse)
 ```
 
-We observe that a large number of columns are present. Several parameters are 
-available in the `readMsObject()` function to simplify the `sampleData`. 
-Setting `keepOntology = FALSE` will remove columns related to ontology terms, 
-while `keepProtocol = FALSE` will remove columns related to protocol information. 
-The `simplify = TRUE` option (the default) removes NAs and merges columns 
-with different names but duplicate contents. You can set `simplify = FALSE` 
-to retain all columns. Below, we load the object again, this time simplifying 
+We observe that a large number of columns are present. Several parameters are
+available in the `readMsObject()` function to simplify the `sampleData`.
+Setting `keepOntology = FALSE` will remove columns related to ontology terms,
+while `keepProtocol = FALSE` will remove columns related to protocol information.
+The `simplify = TRUE` option (the default) removes NAs and merges columns
+with different names but duplicate contents. You can set `simplify = FALSE`
+to retain all columns. Below, we load the object again, this time simplifying
 the `sampleData`:
 
 ```{r}
-mse <- readMsObject(MsExperiment(), param, keepOntology = FALSE, 
+mse <- readMsObject(MsExperiment(), param, keepOntology = FALSE,
                     keepProtocol = FALSE, simplify = TRUE)
 ```
 

@@ -5,6 +5,8 @@
 - Fix error message/check for `mzTabParam()` export of `XcmsExperiment`.
 - Use the internal `.retry()` function from *MsBackendMetaboLights* to retry
   downloading from EBI's ftp server.
+- Avoid duplicated export of `"mzmed"`, `"rtmin"`, `"rtmed"` and `"rtmax"`
+  `featureData()` columns in mzTab-M export.
 
 ## Changes in 0.0.10
 

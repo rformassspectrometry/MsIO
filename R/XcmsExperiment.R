@@ -350,6 +350,8 @@ setMethod("saveMsObject",
 .mztab_small_molecule_feature <- function(object, opt_columns = character(),
                                           ...) {
     fts <- object@featureDefinitions
+    opt_columns <- unique(
+        setdiff(opt_columns, c("mzmed", "rtmed", "rtmin", "rtmax")))
     smf <- matrix(data = "null", ncol = length(.SMF), nrow = nrow(fts),
                   dimnames = list(character(), .SMF))
     smf[, "SFH"] <- "SMF"

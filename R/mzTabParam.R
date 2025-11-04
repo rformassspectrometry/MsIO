@@ -1,4 +1,4 @@
-#' @title Store xcms preprocessing results to a file in mzTab-M format.
+#' @title Store xcms preprocessing results to a file in mzTab-M format
 #'
 #' @name mzTabParam
 #'
@@ -9,6 +9,7 @@
 #' @family MS object export and import formats.
 #'
 #' @description
+#'
 #' The `saveMsObject()` and `readMsObject()` methods with the `mzTabParam`
 #' option enable users to save/load `XcmsExperiment` objects in Mz-Tab-m
 #' file format. Mainly the metadata (MTD) and Small molecule feature (SMF)
@@ -28,31 +29,32 @@
 #' an error.
 #'
 #' @param studyId `character(1)` Will be both the `filename` of the object
-#' saved in mzTab-M format and the `mzTab-ID` in the file.
+#'     saved in mzTab-M format and the `mzTab-ID` in the file.
 #'
 #' @param polarity `character(1)` Describes the polarity of the experiment. Two
-#' inputs are possible, "positive" (default) or "negative".
+#'     inputs are possible, "positive" (default) or "negative".
 #'
-#' @param sampleDataColumn `character` strings corresponding to the column
-#' name(s) of the `sampleData()` of the `XcmsExperiment` object with the
-#' different *variables* of the experiment, for example it could be
-#' *"phenotype"*, *"sample_type"*, etc...
+#' @param sampleDataColumn `character` with the column name(s) of the
+#'     `sampleData()` of the `XcmsExperiment` object that should be exported
+#'     to the mzTab-M file. Defaults to `sampleDataColumn = character()`. At
+#'     least one column in `sampleData()` has to be specified.
 #'
 #' @param path `character(1)` Define where the file is going to be stored. The
-#' default will be `tempdir()`.
+#'     default is `paht = tempdir()`.
 #'
-#' @param optionalFeatureColumns Optional columns from `featureDefinitions()`
-#' that should be exported too. For example it could be *"ms_level"*,
-#' *"npeaks"*, etc...
+#' @param optionalFeatureColumns `character` with optional column names from
+#'     `featureDefinitions()` that should be exported. Defaults to
+#'     `optionalFeatureColumns = character()`. Feature columns `"mzmed"`,
+#'     `"rtmed"`, `"rtmin"` and `"rtmax"` are always exported.
 #'
 #' @slot dots Correspond to any optional parameters to be passed
-#' to the `featureValues()` function. (e.g. parameters `method` or `value`).
+#'     to the `featureValues()` function. (e.g. parameters `method` or `value`).
 #'
 #'
 #' @note
+#'
 #' This function was build so that the output fit the recommendation of
-#' mzTab-M file format version 2.0. These can be found here:
-#' (http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html)
+#' mzTab-M file format version 2.0. These can be found [here](http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html).
 #'
 #' @references
 #'

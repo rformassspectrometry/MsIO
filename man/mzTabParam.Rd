@@ -3,7 +3,7 @@
 \name{mzTabParam}
 \alias{mzTabParam}
 \alias{saveMsObject,XcmsExperiment,mzTabParam-method}
-\title{Store xcms preprocessing results to a file in mzTab-M format.}
+\title{Store xcms preprocessing results to a file in mzTab-M format}
 \usage{
 mzTabParam(
   studyId = character(),
@@ -23,17 +23,18 @@ saved in mzTab-M format and the \code{mzTab-ID} in the file.}
 \item{polarity}{\code{character(1)} Describes the polarity of the experiment. Two
 inputs are possible, "positive" (default) or "negative".}
 
-\item{sampleDataColumn}{\code{character} strings corresponding to the column
-name(s) of the \code{sampleData()} of the \code{XcmsExperiment} object with the
-different \emph{variables} of the experiment, for example it could be
-\emph{"phenotype"}, \emph{"sample_type"}, etc...}
+\item{sampleDataColumn}{\code{character} with the column name(s) of the
+\code{sampleData()} of the \code{XcmsExperiment} object that should be exported
+to the mzTab-M file. Defaults to \code{sampleDataColumn = character()}. At
+least one column in \code{sampleData()} has to be specified.}
 
 \item{path}{\code{character(1)} Define where the file is going to be stored. The
-default will be \code{tempdir()}.}
+default is \code{paht = tempdir()}.}
 
-\item{optionalFeatureColumns}{Optional columns from \code{featureDefinitions()}
-that should be exported too. For example it could be \emph{"ms_level"},
-\emph{"npeaks"}, etc...}
+\item{optionalFeatureColumns}{\code{character} with optional column names from
+\code{featureDefinitions()} that should be exported. Defaults to
+\code{optionalFeatureColumns = character()}. Feature columns \code{"mzmed"},
+\code{"rtmed"}, \code{"rtmin"} and \code{"rtmax"} are always exported.}
 
 \item{...}{additional optional arguments. See documentation of respective
 method for more information.}
@@ -73,8 +74,7 @@ to the \code{featureValues()} function. (e.g. parameters \code{method} or \code{
 
 \note{
 This function was build so that the output fit the recommendation of
-mzTab-M file format version 2.0. These can be found here:
-(http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html)
+mzTab-M file format version 2.0. These can be found \href{http://hupo-psi.github.io/mzTab/2_0-metabolomics-release/mzTab_format_specification_2_0-M_release.html}{here}.
 }
 \examples{
 ## Load a test data set with detected peaks, of class `XcmsExperiment`
