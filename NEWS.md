@@ -7,6 +7,7 @@
   downloading from EBI's ftp server.
 - Avoid duplicated export of `"mzmed"`, `"rtmin"`, `"rtmed"` and `"rtmax"`
   `featureData()` columns in mzTab-M export.
+- Fix definition of *study_variables* for the SML array in mzTab-M export.
 
 ## Changes in 0.0.10
 

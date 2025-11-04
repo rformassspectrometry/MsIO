@@ -225,8 +225,9 @@ setMethod("saveMsObject",
                            "column names of the featureDefinitions() table",
                            call. = FALSE)
 
-              var_list <- unique(.mztab_study_variables(object@sampleData,
-                                                        param@sampleDataColumn))
+              var_list <- unique(as.vector(
+                  .mztab_study_variables(object@sampleData,
+                                         param@sampleDataColumn)))
               fl <- file.path(param@path, paste0(param@studyId, ".mztab"))
               if (file.exists(fl))
                   stop("File \"", basename(fl), "\" already exists.",
