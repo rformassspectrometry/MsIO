@@ -44,7 +44,7 @@ Suggests:
     xcms,
     alabaster.se,
     alabaster.matrix,
-    MsBackendMetaboLights (>= 0.99.1),
+    MsBackendMetaboLights (>= 1.4.2),
     BiocFileCache,
     QFeatures
 License: Artistic-2.0

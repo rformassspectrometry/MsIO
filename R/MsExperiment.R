@@ -250,7 +250,7 @@ setMethod("readMsObject",
                   }
               }
 
-              assay_data <- MsBackendMetaboLights:::.retry(
+              assay_data <- MsBackendMetaboLights::retry(
                                 read.table(paste0(pth, selected_assay),
                                            header = TRUE, sep = "\t",
                                            check.names = FALSE),
@@ -258,7 +258,7 @@ setMethod("readMsObject",
 
               ## Extract and read sample info files
               s_files <- all_fls[grepl("^s_", all_fls)]
-              sample_info <- MsBackendMetaboLights:::.retry(
+              sample_info <- MsBackendMetaboLights::retry(
                                  read.table(paste0(pth, s_files),
                                             header = TRUE, sep = "\t",
                                             check.names = FALSE),
