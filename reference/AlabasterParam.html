@@ -6,7 +6,7 @@ e.g. R's RDS files). By using standard file formats such as JSON and HDF5,
 alabaster ensures that the data can also be read and imported by other
 programming languages such as Python or Javascript. This improves
 interoperability between application ecosystems.
-The alabaster package defines the saveObject() and readObject()
+The alabaster package defines the alabaster.base::saveObject() and readObject()
 methods. Implementations of these methods are available for the following
 classes hence allowing to use saveObject() and readObject() directly on
 these objects:
@@ -42,7 +42,7 @@ e.g. R's RDS files). By using standard file formats such as JSON and HDF5,
 alabaster ensures that the data can also be read and imported by other
 programming languages such as Python or Javascript. This improves
 interoperability between application ecosystems.
-The alabaster package defines the saveObject() and readObject()
+The alabaster package defines the alabaster.base::saveObject() and readObject()
 methods. Implementations of these methods are available for the following
 classes hence allowing to use saveObject() and readObject() directly on
 these objects:
@@ -79,7 +79,7 @@ various supported MS data objects are listed in the following sections."></head>
 
     <a class="navbar-brand me-2" href="../index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.11</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,7 +114,7 @@ e.g. R's RDS files). By using standard file formats such as JSON and HDF5,
 alabaster ensures that the data can also be read and imported by other
 programming languages such as Python or Javascript. This improves
 interoperability between application ecosystems.</p>
-<p>The <em>alabaster</em> package defines the <code>saveObject()</code> and <code>readObject()</code>
+<p>The <em>alabaster</em> package defines the <code><a href="https://rdrr.io/pkg/alabaster.base/man/saveObject.html" class="external-link">alabaster.base::saveObject()</a></code> and <code>readObject()</code>
 methods. Implementations of these methods are available for the following
 classes hence allowing to use <code>saveObject()</code> and <code>readObject()</code> directly on
 these objects:</p><ul><li><p><code>MsBackendMzR</code>, defined in the
@@ -615,15 +615,7 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-in"><span><span class="co">## package.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sneumann/xcms" class="external-link">xcms</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This is xcms version 4.5.3 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘xcms’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:Spectra’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     ppm</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     sigma</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is xcms version 4.9.0 </span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xcms/man/loadXcmsData.html" class="external-link">loadXcmsData</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class XcmsExperiment </span>
@@ -633,7 +625,7 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - spectra: 8 sample(s) to 8688 element(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  xcms results:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - chromatographic peaks: 3651 in MS level(s): 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   - adjusted retention times: mean absolute difference 6.46 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - adjusted retention times</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - correspondence results: 351 features in MS level(s): 1 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Store this result object to a folder</span></span></span>
@@ -668,7 +660,7 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - spectra: 8 sample(s) to 8688 element(s).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  xcms results:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - chromatographic peaks: 3651 in MS level(s): 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   - adjusted retention times: mean absolute difference 6.46 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - adjusted retention times</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - correspondence results: 351 features in MS level(s): 1 </span>
 </code></pre></div>
     </div>
@@ -681,7 +673,7 @@ format to a file <em>xcms_experiment_process_history.json</em>.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer></div>

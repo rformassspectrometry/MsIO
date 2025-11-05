@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MsIO</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.11</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,9 +71,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.21/MsIO" class="external-link">MsIO</a></em><br><strong>Authors</strong>: Johannes Rainer [aut, cre] (ORCID: <a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Philippine
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.23/MsIO" class="external-link">MsIO</a></em><br><strong>Authors</strong>: Johannes Rainer [aut, cre] (ORCID: <a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Philippine
 Louail [aut] (ORCID: <a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Laurent Gatto
-[ctb] (ORCID: <a href="https://orcid.org/0000-0002-1520-2268" class="external-link uri">https://orcid.org/0000-0002-1520-2268</a>)<br><strong>Compiled</strong>: Tue Mar 18 15:00:32 2025</p>
+[ctb] (ORCID: <a href="https://orcid.org/0000-0002-1520-2268" class="external-link uri">https://orcid.org/0000-0002-1520-2268</a>)<br><strong>Compiled</strong>: Wed Nov 5 06:55:40 2025</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -86,7 +86,7 @@ programming languages. The <em>MsIO</em> package provides functionality
 to export and import mass spectrometry data objects in various storage
 formats aiming to facilitate data exchange between software. This
 includes, among other formats, also storage of data objects using
-Bioconductor’s <em><a href="https://bioconductor.org/packages/3.21/alabaster.base" class="external-link">alabaster.base</a></em>
+Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/alabaster.base" class="external-link">alabaster.base</a></em>
 package.</p>
 <p>For export or import of MS data objects, the
 <code><a href="../reference/saveMsObject.html">saveMsObject()</a></code> and <code><a href="../reference/saveMsObject.html">readMsObject()</a></code> functions
@@ -102,8 +102,12 @@ parameter objects are:</p>
 format.</li>
 <li>
 <code>AlabasterParam</code>: storage of MS data using Bioconductor’s
-<em><a href="https://bioconductor.org/packages/3.21/alabaster.base" class="external-link">alabaster.base</a></em>
+<em><a href="https://bioconductor.org/packages/3.23/alabaster.base" class="external-link">alabaster.base</a></em>
 framework based files in HDF5 and JSON format.</li>
+<li>
+<code>mzTabParam</code>: export of LC-MS analysis results in
+<em>mzTab-M</em> format. Currently only <code>XcmsExperiment</code> is
+supported.</li>
 </ul>
 <p>These storage formats are described in more details in the following
 sections.</p>
@@ -127,15 +131,15 @@ install this package.</p>
 Bioconductor packages might be needed:</p>
 <ul>
 <li>
-<em><a href="https://bioconductor.org/packages/3.21/Spectra" class="external-link">Spectra</a></em>
+<em><a href="https://bioconductor.org/packages/3.23/Spectra" class="external-link">Spectra</a></em>
 (with <code>BiocManager::install("Spectra")</code>) for import or export
 of <code>Spectra</code> or <code>MsBackendMzR</code> objects.</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.21/MsExperiment" class="external-link">MsExperiment</a></em>
+<em><a href="https://bioconductor.org/packages/3.23/MsExperiment" class="external-link">MsExperiment</a></em>
 (with <code>BiocManager::install("MsExperiment")</code>) for import or
 export of <code>MsExperiment</code> objects.</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.21/xcms" class="external-link">xcms</a></em> (with
+<em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em> (with
 <code>BiocManager::install("xcms")</code>) for import or export of
 <code>XcmsExperiment</code> objects (result objects of
 <em>xcms</em>-based preprocessing).</li>
@@ -202,7 +206,7 @@ with the second. In our example we use <code><a href="https://rdrr.io/pkg/MsExpe
 first parameter and <code>PlainTextParam</code> as second. The MS data
 of our <code>MsExperiment</code> data object was represented by a
 <code>Spectra</code> object, thus, to import the data we need in
-addition to load the <em><a href="https://bioconductor.org/packages/3.21/Spectra" class="external-link">Spectra</a></em>
+addition to load the <em><a href="https://bioconductor.org/packages/3.23/Spectra" class="external-link">Spectra</a></em>
 package.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span>
@@ -309,7 +313,7 @@ representing the MS experiment’s MS data.</p>
 <em>alabaster</em>-based formats<a class="anchor" aria-label="anchor" href="#alabaster-based-formats"></a>
 </h2>
 <p>The <a href="https://github.com/ArtifactDB/alabaster.base" class="external-link">alabaster
-framework</a> and related Bioconductor package <em><a href="https://bioconductor.org/packages/3.21/alabaster.base" class="external-link">alabaster.base</a></em>
+framework</a> and related Bioconductor package <em><a href="https://bioconductor.org/packages/3.23/alabaster.base" class="external-link">alabaster.base</a></em>
 implements methods to save a variety of R/Bioconductor objects to
 on-disk representations based on standard file formats like HDF5 and
 JSON. This ensures that Bioconductor objects can be easily read from
@@ -418,10 +422,10 @@ Below we read the sample annotation information as a
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/AlabasterParam.html">readObject</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">d</span>, <span class="st">"sample_data"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 2 rows and 3 columns</span></span>
-<span><span class="co">##            name        mode spectraOrigin</span></span>
-<span><span class="co">##     &lt;character&gt; &lt;character&gt;   &lt;character&gt;</span></span>
-<span><span class="co">## 1 Pestmix1 D...         DDA /__w/_temp...</span></span>
-<span><span class="co">## 2 Pestmix SW...       SWATH /__w/_temp...</span></span></code></pre>
+<span><span class="co">##                              name        mode spectraOrigin</span></span>
+<span><span class="co">##                       &lt;character&gt; &lt;character&gt;   &lt;character&gt;</span></span>
+<span><span class="co">## PestMix1_DDA.mzML   Pestmix1 D...         DDA /__w/_temp...</span></span>
+<span><span class="co">## PestMix1_SWATH.mzML Pestmix SW...       SWATH /__w/_temp...</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="loading-data-from-metabolights">Loading data from <em>MetaboLights</em><a class="anchor" aria-label="anchor" href="#loading-data-from-metabolights"></a>
@@ -445,9 +449,9 @@ adjust these settings according to your specific study.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">MsExperiment</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Prepare parameter</span></span>
-<span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MetaboLightsParam.html">MetaboLightsParam</a></span><span class="op">(</span>mtblsId <span class="op">=</span> <span class="st">"MTBLS575"</span>, </span>
+<span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MetaboLightsParam.html">MetaboLightsParam</a></span><span class="op">(</span>mtblsId <span class="op">=</span> <span class="st">"MTBLS575"</span>,</span>
 <span>                           assayName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"a_MTBLS575_POS_INFEST_CTRL_"</span>,</span>
-<span>                                              <span class="st">"mass_spectrometry.txt"</span><span class="op">)</span>, </span>
+<span>                                              <span class="st">"mass_spectrometry.txt"</span><span class="op">)</span>,</span>
 <span>                           filePattern <span class="op">=</span> <span class="st">"cdf$"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load MsExperiment object</span></span>
@@ -556,7 +560,7 @@ columns with different names but duplicate contents. You can set
 <code>simplify = FALSE</code> to retain all columns. Below, we load the
 object again, this time simplifying the <code>sampleData</code>:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/saveMsObject.html">readMsObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">MsExperiment</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">param</span>, keepOntology <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<code class="sourceCode R"><span><span class="va">mse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/saveMsObject.html">readMsObject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MsExperiment/man/MsExperiment.html" class="external-link">MsExperiment</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">param</span>, keepOntology <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                    keepProtocol <span class="op">=</span> <span class="cn">FALSE</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Now, if we examine the <code>sampleData</code> information:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
@@ -601,9 +605,9 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 </h2>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R Under development (unstable) (2025-02-24 r87814)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2025-10-31 r88977)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">## Running under: Ubuntu 24.04.1 LTS</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -625,61 +629,61 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] Spectra_1.17.9      BiocParallel_1.41.2 S4Vectors_0.45.4   </span></span>
-<span><span class="co">## [4] BiocGenerics_0.53.6 generics_0.1.3      MsExperiment_1.9.1 </span></span>
-<span><span class="co">## [7] ProtGenerics_1.39.2 MsIO_0.0.9          BiocStyle_2.35.0   </span></span>
+<span><span class="co">## [1] Spectra_1.21.0      BiocParallel_1.45.0 S4Vectors_0.49.0   </span></span>
+<span><span class="co">## [4] BiocGenerics_0.57.0 generics_0.1.4      MsExperiment_1.13.0</span></span>
+<span><span class="co">## [7] ProtGenerics_1.43.0 MsIO_0.0.11         BiocStyle_2.39.0   </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] DBI_1.2.3                   rlang_1.1.5                </span></span>
-<span><span class="co">##   [3] magrittr_2.0.3              clue_0.3-66                </span></span>
-<span><span class="co">##   [5] matrixStats_1.5.0           MsBackendMetaboLights_1.1.2</span></span>
-<span><span class="co">##   [7] compiler_4.5.0              RSQLite_2.3.9              </span></span>
-<span><span class="co">##   [9] systemfonts_1.2.1           vctrs_0.6.5                </span></span>
-<span><span class="co">##  [11] reshape2_1.4.4              stringr_1.5.1              </span></span>
-<span><span class="co">##  [13] pkgconfig_2.0.3             MetaboCoreUtils_1.15.0     </span></span>
-<span><span class="co">##  [15] crayon_1.5.3                fastmap_1.2.0              </span></span>
-<span><span class="co">##  [17] dbplyr_2.5.0                XVector_0.47.2             </span></span>
-<span><span class="co">##  [19] rmarkdown_2.29              UCSC.utils_1.3.1           </span></span>
-<span><span class="co">##  [21] ragg_1.3.3                  purrr_1.0.4                </span></span>
-<span><span class="co">##  [23] bit_4.6.0                   xfun_0.51                  </span></span>
-<span><span class="co">##  [25] MultiAssayExperiment_1.33.9 cachem_1.1.0               </span></span>
-<span><span class="co">##  [27] GenomeInfoDb_1.43.4         jsonlite_1.9.1             </span></span>
-<span><span class="co">##  [29] progress_1.2.3              blob_1.2.4                 </span></span>
-<span><span class="co">##  [31] rhdf5filters_1.19.2         DelayedArray_0.33.6        </span></span>
-<span><span class="co">##  [33] Rhdf5lib_1.29.1             prettyunits_1.2.0          </span></span>
-<span><span class="co">##  [35] parallel_4.5.0              cluster_2.1.8.1            </span></span>
-<span><span class="co">##  [37] R6_2.6.1                    bslib_0.9.0                </span></span>
-<span><span class="co">##  [39] stringi_1.8.4               GenomicRanges_1.59.1       </span></span>
-<span><span class="co">##  [41] jquerylib_0.1.4             Rcpp_1.0.14                </span></span>
-<span><span class="co">##  [43] bookdown_0.42               SummarizedExperiment_1.37.0</span></span>
-<span><span class="co">##  [45] knitr_1.50                  IRanges_2.41.3             </span></span>
-<span><span class="co">##  [47] BiocBaseUtils_1.9.0         Matrix_1.7-3               </span></span>
-<span><span class="co">##  [49] igraph_2.1.4                tidyselect_1.2.1           </span></span>
-<span><span class="co">##  [51] abind_1.4-8                 yaml_2.3.10                </span></span>
-<span><span class="co">##  [53] codetools_0.2-20            curl_6.2.1                 </span></span>
-<span><span class="co">##  [55] lattice_0.22-6              tibble_3.2.1               </span></span>
-<span><span class="co">##  [57] plyr_1.8.9                  withr_3.0.2                </span></span>
-<span><span class="co">##  [59] Biobase_2.67.0              evaluate_1.0.3             </span></span>
-<span><span class="co">##  [61] desc_1.4.3                  BiocFileCache_2.15.1       </span></span>
-<span><span class="co">##  [63] alabaster.schemas_1.7.0     pillar_1.10.1              </span></span>
-<span><span class="co">##  [65] BiocManager_1.30.25         filelock_1.0.3             </span></span>
-<span><span class="co">##  [67] MatrixGenerics_1.19.1       ncdf4_1.23                 </span></span>
-<span><span class="co">##  [69] hms_1.1.3                   alabaster.base_1.7.8       </span></span>
-<span><span class="co">##  [71] glue_1.8.0                  alabaster.matrix_1.7.8     </span></span>
-<span><span class="co">##  [73] lazyeval_0.2.2              tools_4.5.0                </span></span>
-<span><span class="co">##  [75] QFeatures_1.17.4            mzR_2.41.4                 </span></span>
-<span><span class="co">##  [77] fs_1.6.5                    rhdf5_2.51.2               </span></span>
-<span><span class="co">##  [79] grid_4.5.0                  tidyr_1.3.1                </span></span>
-<span><span class="co">##  [81] MsCoreUtils_1.19.1          GenomeInfoDbData_1.2.14    </span></span>
-<span><span class="co">##  [83] HDF5Array_1.35.15           cli_3.6.4                  </span></span>
-<span><span class="co">##  [85] textshaping_1.0.0           S4Arrays_1.7.3             </span></span>
-<span><span class="co">##  [87] dplyr_1.1.4                 AnnotationFilter_1.31.0    </span></span>
-<span><span class="co">##  [89] sass_0.4.9                  digest_0.6.37              </span></span>
-<span><span class="co">##  [91] SparseArray_1.7.6           htmlwidgets_1.6.4          </span></span>
-<span><span class="co">##  [93] memoise_2.0.1               htmltools_0.5.8.1          </span></span>
-<span><span class="co">##  [95] pkgdown_2.1.1.9000          lifecycle_1.0.4            </span></span>
-<span><span class="co">##  [97] h5mread_0.99.4              httr_1.4.7                 </span></span>
-<span><span class="co">##  [99] bit64_4.6.0-1               MASS_7.3-65</span></span></code></pre>
+<span><span class="co">##  [1] DBI_1.2.3                   httr2_1.2.1                </span></span>
+<span><span class="co">##  [3] rlang_1.1.6                 magrittr_2.0.4             </span></span>
+<span><span class="co">##  [5] clue_0.3-66                 matrixStats_1.5.0          </span></span>
+<span><span class="co">##  [7] MsBackendMetaboLights_1.5.1 compiler_4.6.0             </span></span>
+<span><span class="co">##  [9] RSQLite_2.4.3               systemfonts_1.3.1          </span></span>
+<span><span class="co">## [11] vctrs_0.6.5                 reshape2_1.4.4             </span></span>
+<span><span class="co">## [13] stringr_1.6.0               crayon_1.5.3               </span></span>
+<span><span class="co">## [15] pkgconfig_2.0.3             MetaboCoreUtils_1.19.0     </span></span>
+<span><span class="co">## [17] fastmap_1.2.0               dbplyr_2.5.1               </span></span>
+<span><span class="co">## [19] XVector_0.51.0              rmarkdown_2.30             </span></span>
+<span><span class="co">## [21] ragg_1.5.0                  purrr_1.2.0                </span></span>
+<span><span class="co">## [23] bit_4.6.0                   xfun_0.54                  </span></span>
+<span><span class="co">## [25] MultiAssayExperiment_1.37.0 cachem_1.1.0               </span></span>
+<span><span class="co">## [27] jsonlite_2.0.0              progress_1.2.3             </span></span>
+<span><span class="co">## [29] blob_1.2.4                  rhdf5filters_1.23.0        </span></span>
+<span><span class="co">## [31] DelayedArray_0.37.0         Rhdf5lib_1.33.0            </span></span>
+<span><span class="co">## [33] prettyunits_1.2.0           parallel_4.6.0             </span></span>
+<span><span class="co">## [35] cluster_2.1.8.1             R6_2.6.1                   </span></span>
+<span><span class="co">## [37] bslib_0.9.0                 stringi_1.8.7              </span></span>
+<span><span class="co">## [39] GenomicRanges_1.63.0        jquerylib_0.1.4            </span></span>
+<span><span class="co">## [41] Rcpp_1.1.0                  Seqinfo_1.1.0              </span></span>
+<span><span class="co">## [43] bookdown_0.45               SummarizedExperiment_1.41.0</span></span>
+<span><span class="co">## [45] knitr_1.50                  IRanges_2.45.0             </span></span>
+<span><span class="co">## [47] BiocBaseUtils_1.13.0        Matrix_1.7-4               </span></span>
+<span><span class="co">## [49] igraph_2.2.1                tidyselect_1.2.1           </span></span>
+<span><span class="co">## [51] abind_1.4-8                 yaml_2.3.10                </span></span>
+<span><span class="co">## [53] codetools_0.2-20            curl_7.0.0                 </span></span>
+<span><span class="co">## [55] lattice_0.22-7              tibble_3.3.0               </span></span>
+<span><span class="co">## [57] plyr_1.8.9                  withr_3.0.2                </span></span>
+<span><span class="co">## [59] Biobase_2.71.0              evaluate_1.0.5             </span></span>
+<span><span class="co">## [61] desc_1.4.3                  BiocFileCache_3.1.0        </span></span>
+<span><span class="co">## [63] alabaster.schemas_1.11.0    pillar_1.11.1              </span></span>
+<span><span class="co">## [65] BiocManager_1.30.26         filelock_1.0.3             </span></span>
+<span><span class="co">## [67] MatrixGenerics_1.23.0       ncdf4_1.24                 </span></span>
+<span><span class="co">## [69] hms_1.1.4                   alabaster.base_1.11.1      </span></span>
+<span><span class="co">## [71] glue_1.8.0                  alabaster.matrix_1.7.8     </span></span>
+<span><span class="co">## [73] lazyeval_0.2.2              tools_4.6.0                </span></span>
+<span><span class="co">## [75] QFeatures_1.21.0            mzR_2.45.0                 </span></span>
+<span><span class="co">## [77] fs_1.6.6                    rhdf5_2.55.4               </span></span>
+<span><span class="co">## [79] grid_4.6.0                  tidyr_1.3.1                </span></span>
+<span><span class="co">## [81] MsCoreUtils_1.21.0          HDF5Array_1.39.0           </span></span>
+<span><span class="co">## [83] cli_3.6.5                   rappdirs_0.3.3             </span></span>
+<span><span class="co">## [85] textshaping_1.0.4           S4Arrays_1.11.0            </span></span>
+<span><span class="co">## [87] dplyr_1.1.4                 AnnotationFilter_1.35.0    </span></span>
+<span><span class="co">## [89] sass_0.4.10                 digest_0.6.37              </span></span>
+<span><span class="co">## [91] SparseArray_1.11.1          htmlwidgets_1.6.4          </span></span>
+<span><span class="co">## [93] memoise_2.0.1               htmltools_0.5.8.1          </span></span>
+<span><span class="co">## [95] pkgdown_2.1.3.9000          lifecycle_1.0.4            </span></span>
+<span><span class="co">## [97] h5mread_1.3.0               bit64_4.6.0-1              </span></span>
+<span><span class="co">## [99] MASS_7.3-65</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -692,7 +696,7 @@ object again, this time simplifying the <code>sampleData</code>:</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer>
