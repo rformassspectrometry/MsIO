@@ -215,18 +215,19 @@ setMethod("saveMsObject",
           signature(object = "XcmsExperiment",
                     param = "mzTabParam"),
           function(object, param){
-              if (!param@sampleDataColumn %in% colnames(object@sampleData))
+              if (!all(param@sampleDataColumn %in% colnames(object@sampleData)))
                   stop("'sampleDataColumn' has to correspond to column names ",
                        "of the sampleData() table", call. = FALSE)
-              if (length(param@optionalFeatureColumns) != 0)
-                  if (!param@optionalFeatureColumns %in%
-                      colnames(object@featureDefinitions))
+              if (length(param@optionalFeatureColumns))
+                  if (!all(param@optionalFeatureColumns %in%
+                           colnames(object@featureDefinitions)))
                       stop("'optionalFeatureColumns' have to correspond to ",
                            "column names of the featureDefinitions() table",
                            call. = FALSE)
 
-              var_list <- unique(.mztab_study_variables(object@sampleData,
-                                                        param@sampleDataColumn))
+              var_list <- unique(as.vector(
+                  .mztab_study_variables(object@sampleData,
+                                         param@sampleDataColumn)))
               fl <- file.path(param@path, paste0(param@studyId, ".mztab"))
               if (file.exists(fl))
                   stop("File \"", basename(fl), "\" already exists.",
@@ -350,6 +351,8 @@ setMethod("saveMsObject",
 .mztab_small_molecule_feature <- function(object, opt_columns = character(),
                                           ...) {
     fts <- object@featureDefinitions
+    opt_columns <- unique(
+        setdiff(opt_columns, c("mzmed", "rtmed", "rtmin", "rtmax")))
     smf <- matrix(data = "null", ncol = length(.SMF), nrow = nrow(fts),
                   dimnames = list(character(), .SMF))
     smf[, "SFH"] <- "SMF"
@@ -377,7 +380,7 @@ setMethod("saveMsObject",
                                          collapse = "| ")
                               } else as.character(fts[, z], digits = 15)
                           }))
-        colnames(tmp) <- paste0("opt_", opt_columns)
+        colnames(tmp) <- paste0("opt_global_", opt_columns)
         smf <- cbind(smf, tmp)
     }
     smf <- rbind(colnames(smf), smf)
