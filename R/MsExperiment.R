@@ -253,7 +253,9 @@ setMethod("readMsObject",
               assay_data <- MsBackendMetaboLights::retry(
                                 read.table(paste0(pth, selected_assay),
                                            header = TRUE, sep = "\t",
-                                           check.names = FALSE),
+                                           check.names = FALSE,
+                                           comment.char = "",
+                                           quote = ""),
                                 ntimes = 5, sleep_mult = 7)
 
               ## Extract and read sample info files
@@ -261,7 +263,9 @@ setMethod("readMsObject",
               sample_info <- MsBackendMetaboLights::retry(
                                  read.table(paste0(pth, s_files),
                                             header = TRUE, sep = "\t",
-                                            check.names = FALSE),
+                                            check.names = FALSE,
+                                            comment.char = "",
+                                            quote = ""),
                                  ntimes = 5, sleep_mult = 7)
 
               ## merging
