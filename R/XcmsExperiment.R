@@ -337,9 +337,14 @@ setMethod("saveMsObject",
 #' @description
 #'
 #' Create the small molecule feature (SMF) `matrix` One row is one feature
-#' defined in xcms. Use the .SMF static object.
-#' object as a basis.
-#'read
+#' defined in xcms. Use the .SMF static object as a basis.
+#'
+#' @note
+#'
+#' Maybe add a version that takes a `data.frame` (`featureDefinitions()` or
+#' `rowData()`) and `matrix` (`featureValues()` or `assay()`) as input to
+#' support both `XcmsExperiment` and `SummarizedExperiment`?
+#'
 #' @noRd
 #'
 #' @param object `XcmsExperiment`.

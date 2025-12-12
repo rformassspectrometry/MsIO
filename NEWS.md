@@ -1,5 +1,10 @@
 # Version 0.0
 
+## Changes in 0.0.12
+
+- Fix reading of sample and assay information tables from MetaboLights for
+  `readMsObject()` with `MetaboLightsParam()`.
+
 ## Changes in 0.0.11
 
 - Fix error message/check for `mzTabParam()` export of `XcmsExperiment`.

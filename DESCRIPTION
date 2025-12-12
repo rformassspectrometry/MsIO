@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.11
+Version: 0.0.12
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
