@@ -1,3 +1,4 @@
+library(Spectra)
 
 test_that("saveMsObject/readMsObject,MsBackendCached,PlainTextParam works", {
     ## Empty object
@@ -92,7 +93,7 @@ test_that(".ms_backend_cached_save and readAlabasterMsBackendCached works", {
     ## package Spectra not available:
     with_mocked_bindings(
         ".is_spectra_installed" = function() FALSE,
-        code = expect_error(MsIO:::readAlabasterMsBackendCached(pth),
+        code = expect_error(readAlabasterMsBackendCached(pth),
                             "package 'Spectra'")
     )
 })

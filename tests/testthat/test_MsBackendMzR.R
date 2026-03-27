@@ -1,7 +1,7 @@
 library(Spectra)
 
-sciex_file <- c(MsDataHub::X20171016_POOL_POS_1_105.134.mzML(),
-                MsDataHub::X20171016_POOL_POS_3_105.134.mzML())
+sciex_file <- c(X20171016_POOL_POS_1_105.134.mzML(),
+                X20171016_POOL_POS_3_105.134.mzML())
 sciex_mzr <- backendInitialize(MsBackendMzR(), files = sciex_file)
 
 test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
@@ -116,7 +116,7 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     ## package Spectra not available:
     with_mocked_bindings(
         ".is_spectra_installed" = function() FALSE,
-        code = expect_error(MsIO:::readAlabasterMsBackendMzR(pth),
+        code = expect_error(readAlabasterMsBackendMzR(pth),
                             "package 'Spectra'")
     )
 

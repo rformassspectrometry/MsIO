@@ -1,7 +1,7 @@
 library(Spectra)
 library(MsDataHub)
 
-fl <- MsDataHub::PestMix1_DDA.mzML()
+fl <- PestMix1_DDA.mzML()
 sps_dda <- Spectra(fl)
 ## add processingQueueVariables to test export
 sps_dda@processingQueueVariables <- c(sps_dda@processingQueueVariables, "rtime")

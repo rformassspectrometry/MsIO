@@ -90,8 +90,8 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
                       "sample_data_links_mcols", "metadata",
                       "experiment_files", "other_data") %in% dir(pth)))
     expect_true(!any(dir(pth) %in% c("spectra", "qdata")))
-    expect_silent(MsIO:::validateAlabasterMsExperiment(pth))
-    res <- MsIO:::readAlabasterMsExperiment(pth)
+    expect_silent(validateAlabasterMsExperiment(pth))
+    res <- readAlabasterMsExperiment(pth)
     expect_equal(res, m)
 
     ## Non-empty object with SampleDataLinks and Spectra
