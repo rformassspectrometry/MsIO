@@ -7,6 +7,9 @@
                                    validateAlabasterMsBackendMzR)
     registerReadObjectFunction("ms_backend_metabo_lights",
                                readAlabasterMsBackendMetaboLights)
+    registerValidateObjectFunction("ms_backend_cached",
+                                   validateAlabasterMsBackendCached)
+    registerReadObjectFunction("ms_backend_cached",readAlabasterMsBackendCached)
     registerValidateObjectFunction("spectra", validateAlabasterSpectra)
     registerReadObjectFunction("spectra", readAlabasterSpectra)
     registerValidateObjectFunction("ms_experiment_files",

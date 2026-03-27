@@ -94,6 +94,8 @@ are:
 \itemize{
 \item \code{MsBackendMzR} object, defined in the
 \href{https://bioconductor.org/packages/Spectra}{\emph{Spectra}} package.
+\item \code{MsBackendCached} object, defined in the
+\href{https://bioconductor.org/packages/Spectra}{\emph{Spectra}} package.
 \item \code{MsBackendMetaboLights} object, defined in the
 \href{https://bioconductor.org/packages/MsBackendMetaboLights}{\emph{MsBackendMetaboLights}}
 package.
@@ -117,6 +119,22 @@ file is stored:
 \item The backend's \code{spectraData()} is stored in a tabular format in a text file
 named \emph{ms_backend_data.txt}. Each row of this tab-delimited text file
 corresponds to a spectrum with its respective metadata in the columns.
+}
+}
+
+\section{On-disk storage for \code{MsBackendCached} objects}{
+
+
+For \code{MsBackendCached} objects the following files are stored:
+\itemize{
+\item The \code{data.frame} in the object's \verb{@localData} slot with the cached content
+for spectra variables. This \code{data.frame} is stored to a file
+\code{"ms_backend_data.txt"}.
+\item The \code{character} vector in the object's \verb{@spectraVariables} slot with the
+set of supported and available spectra variables. This is stored (tab
+separated) to a file \code{"ms_backend_spectra_variables.txt"}.
+\item The \code{integer(1)} in the object's \verb{@nspectra} slot defining the number of
+spectra, saved to \code{"ms_backend_nspectra.txt"}.
 }
 }
 
@@ -292,6 +310,6 @@ Other MS object export and import formats.:
 \code{\link{mzTabParam}}
 }
 \author{
-Philippine Louail
+Philippine Louail, Johannes Rainer
 }
 \concept{MS object export and import formats.}

@@ -1,5 +1,9 @@
 # Version 0.0
 
+## Changes in 0.0.14
+
+- Add support to save and read `Spectra::MsBackendCached` objects.
+
 ## Changes in 0.0.13
 
 - Load test files from the *MsDataHub* package and drop dependency on the

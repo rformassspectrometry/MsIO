@@ -27,6 +27,8 @@
 #'
 #' - `MsBackendMzR`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsBackendCached`, defined in the
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #' - `MsBackendMetaboLights`, defined in the
 #'   [*MsBackendMetaboLights*](https://github.com/RforMassSpectrometry/MsBackendMetaboLights)
 #'   package.
@@ -106,6 +108,15 @@
 #' Each sub-folder contains also an *OBJECT* file defining the object's type
 #' and an additional file (in HDF5 format) containing the data. See examples
 #' below for details.
+#'
+#'
+#' @section On-disk storage for `MsBackendCached` objects:
+#'
+#' `MsBackendCached` objects can be saved and restored with the same
+#' functionality as described for `MsBackendMzR`. The content of the object's
+#' slots is stored into subfolders `"local_data"`, `"spectra_variables"` and
+#' `"nspectra"` using the default *alabaster*-based export functionality for
+#' the respective type of data.
 #'
 #'
 #' @section On-disk storage for `MsBackendMetaboLights` objects:
