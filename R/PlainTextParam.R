@@ -184,8 +184,8 @@
 #' ## Export and import a `Spectra` object:
 #'
 #' library(Spectra)
-#' library(msdata)
-#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' library(MsDataHub)
+#' fl <- MsDataHub::PestMix1_DDA.mzML()
 #' sps <- Spectra(fl)
 #'
 #' ## Export the object to a temporary directory

@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.12
+Version: 0.0.13
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -36,7 +36,7 @@ Suggests:
     faahKO,
     knitr (>= 1.1.0),
     MsExperiment,
-    msdata,
+    MsDataHub,
     rmarkdown,
     roxygen2,
     Spectra (>= 1.15.6),
@@ -61,6 +61,7 @@ Collate:
     'AllGenerics.R'
     'MetaboLightsParam.R'
     'MsBackend.R'
+    'MsBackendCached.R'
     'MsBackendMetaboLights.R'
     'MsBackendMzR.R'
     'MsExperiment.R'

@@ -217,8 +217,8 @@
 #' ####
 #'
 #' library(Spectra)
-#' library(msdata)
-#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' library(MsDataHub)
+#' fl <- MsDataHub::PestMix1_DDA.mzML()
 #' be <- backendInitialize(MsBackendMzR(), fl)
 #' be
 #'
