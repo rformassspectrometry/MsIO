@@ -1,4 +1,5 @@
 library(Spectra)
+library(MsDataHub)
 
 sciex_file <- c(X20171016_POOL_POS_1_105.134.mzML(),
                 X20171016_POOL_POS_3_105.134.mzML())
