@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.14
+Version: 0.0.15
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -46,6 +46,7 @@ Suggests:
     alabaster.matrix,
     MsBackendMetaboLights (>= 1.4.2),
     BiocFileCache,
+    MsBackendSql,
     QFeatures
 License: Artistic-2.0
 Encoding: UTF-8
@@ -64,6 +65,7 @@ Collate:
     'MsBackendCached.R'
     'MsBackendMetaboLights.R'
     'MsBackendMzR.R'
+    'MsBackendOfflineSql.R'
     'MsExperiment.R'
     'MsExperimentFiles.R'
     'Spectra.R'

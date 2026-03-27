@@ -32,6 +32,9 @@
 #' - `MsBackendMetaboLights`, defined in the
 #'   [*MsBackendMetaboLights*](https://github.com/RforMassSpectrometry/MsBackendMetaboLights)
 #'   package.
+#' - `MsBackendOfflineSql`, defined in the
+#'   [*MsBackendSql*](https://github.com/RforMassSpectrometry/MsBackendSql)
+#'   package.
 #' - `Spectra`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #' - `MsExperiment`, defined in the
@@ -75,6 +78,9 @@
 #'     and only load local files. Thus `offline = TRUE` does not need an active
 #'     internet connection, but fails if one of more files are not cached
 #'     locally.
+#'
+#' @param password For `readMsObject()` and `MsBackendOfflineSql()` backends:
+#'     `character(1)` with the password for the database if required.
 #'
 #' @param ... optional additional parameters passed to the downstream
 #'     functions, such as for example `spectraPath` described above.
@@ -126,6 +132,16 @@
 #' the `mtbls_sync()` function is called to check for presence of all MS data
 #' files and, if missing, re-download them from the *MetaboLights* repository
 #' (if parameter `offline = FALSE` is used).
+#'
+#'
+#' @section On-disk storage for `MsBackendOfflineSql` objects:
+#'
+#' The `MsBackendOfflineSql` backend allows to retrieve MS data from an SQL
+#' database. When serialized with `saveObject()` or `saveMsObject()` only the
+#' database connection information is saved, but no MS data (except the locally
+#' cached spectra variables; see `MsBackendCached` above for details). To load
+#' and use a serialized `MsBackendOfflineSql` thus also the database needs to
+#' be available.
 #'
 #'
 #' @section On-disk storage for `Spectra` objects:
