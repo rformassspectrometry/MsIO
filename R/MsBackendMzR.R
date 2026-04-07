@@ -1,5 +1,6 @@
-#'@include PlainTextParam.R
-#'@title Methods to save and load contents of an MsBackendMzR object
+#' @include PlainTextParam.R
+#'
+#' @title Methods to save and load contents of an MsBackendMzR object
 #'
 #' @author Philippine Louail
 #'

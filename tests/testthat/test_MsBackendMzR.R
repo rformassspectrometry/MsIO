@@ -1,7 +1,8 @@
 library(Spectra)
+library(MsDataHub)
 
-sciex_file <- normalizePath(
-    dir(system.file("sciex", package = "msdata"), full.names = TRUE))
+sciex_file <- c(X20171016_POOL_POS_1_105.134.mzML(),
+                X20171016_POOL_POS_3_105.134.mzML())
 sciex_mzr <- backendInitialize(MsBackendMzR(), files = sciex_file)
 
 test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
@@ -29,7 +30,7 @@ test_that("saveMsObject,readMsObject,PlainTextParam,MsBackendMzR works", {
     ## manually change dataStorage path of backend
     sd <- read.table(file.path(param@path, "ms_backend_data.txt"),
                      sep = "\t", header = TRUE)
-    sd$dataStorage <- sub("msdata", "other", sd$dataStorage)
+    sd$dataStorage <- sub("cache", "other", sd$dataStorage)
     writeLines("# MsBackendMzR",
                con = file.path(param@path, "ms_backend_data.txt"))
     write.table(sd,
@@ -114,9 +115,10 @@ test_that("saveObject,readObject,MsBackendMzR works", {
     expect_equal(length(b), length(res))
 
     ## package Spectra not available:
-    with_mock(
-        "MsIO:::.is_spectra_installed" = function() FALSE,
-        expect_error(MsIO:::readAlabasterMsBackendMzR(pth), "package 'Spectra'")
+    with_mocked_bindings(
+        ".is_spectra_installed" = function() FALSE,
+        code = expect_error(readAlabasterMsBackendMzR(pth),
+                            "package 'Spectra'")
     )
 
     ## readObject

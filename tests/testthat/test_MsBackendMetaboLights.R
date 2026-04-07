@@ -72,15 +72,15 @@ test_that("saveObject,readObject,MsBackendMetaboLights works", {
     expect_true(validObject(res))
 
     ## package Spectra not available:
-    with_mock(
-        "MsIO:::.is_spectra_installed" = function() FALSE,
-        expect_error(MsIO:::readAlabasterMsBackendMetaboLights(pth),
-                     "package 'Spectra'")
+    with_mocked_bindings(
+        ".is_spectra_installed" = function() FALSE,
+        code = expect_error(readAlabasterMsBackendMetaboLights(pth),
+                            "package 'Spectra'")
     )
     ## package Spectra not available:
-    with_mock(
-        "MsIO:::.is_ms_backend_metabo_lights_installed" = function() FALSE,
-        expect_error(MsIO:::readAlabasterMsBackendMetaboLights(pth),
+    with_mocked_bindings(
+        ".is_ms_backend_metabo_lights_installed" = function() FALSE,
+        code = expect_error(readAlabasterMsBackendMetaboLights(pth),
                      "package 'MsBackendMetaboLights'")
     )
     unlink(pth, recursive = TRUE)

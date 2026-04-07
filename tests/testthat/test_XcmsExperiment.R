@@ -89,17 +89,18 @@ test_that("saveMsObject,readMsObject,PlainTextParam,XcmsExperiment works", {
 test_that("saveObject,readObject,XcmsExperiment works", {
     pth <- file.path(tempdir(), "xcms_experiment_alabaster")
 
-    with_mock(
-        "MsIO:::.is_alabaster_matrix_installed" = function() FALSE,
-        expect_error(saveObject(XcmsExperiment(), pth), "alabaster.matrix'")
+    with_mocked_bindings(
+        ".is_alabaster_matrix_installed" = function() FALSE,
+        code = expect_error(saveObject(XcmsExperiment(), pth),
+                            "alabaster.matrix'")
     )
-    with_mock(
-        "MsIO:::.is_xcms_installed" = function() FALSE,
-        expect_error(readAlabasterXcmsExperiment(pth), "xcms'")
+    with_mocked_bindings(
+        ".is_xcms_installed" = function() FALSE,
+        code = expect_error(readAlabasterXcmsExperiment(pth), "xcms'")
     )
-    with_mock(
-        "MsIO:::.is_ms_experiment_installed" = function() FALSE,
-        expect_error(readAlabasterXcmsExperiment(pth), "MsExperiment'")
+    with_mocked_bindings(
+        ".is_ms_experiment_installed" = function() FALSE,
+        code = expect_error(readAlabasterXcmsExperiment(pth), "MsExperiment'")
     )
 
     ## Empty object.

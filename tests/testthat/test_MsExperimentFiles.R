@@ -5,7 +5,7 @@ test_that("saveObject,readObject,MsExperimentFiles works", {
     fl <- tempfile()
     saveObject(a, path = fl)
     expect_true(all(c("OBJECT", "x") %in% dir(fl)))
-    expect_silent(MsIO:::validateAlabasterMsExperimentFiles(fl))
+    expect_silent(validateAlabasterMsExperimentFiles(fl))
     res <- readAlabasterMsExperimentFiles(fl)
     expect_s4_class(res, "MsExperimentFiles")
     expect_equal(a, res)

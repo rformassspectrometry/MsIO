@@ -1,7 +1,7 @@
 library(Spectra)
+library(MsDataHub)
 
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML",
-                  package = "msdata")
+fl <- PestMix1_DDA.mzML()
 sps_dda <- Spectra(fl)
 ## add processingQueueVariables to test export
 sps_dda@processingQueueVariables <- c(sps_dda@processingQueueVariables, "rtime")
@@ -101,9 +101,9 @@ test_that("saveObject,readObject,saveMsObject,readMsObject,Spectra works", {
     res_2 <- readObject(pth)
     expect_equal(res, res_2)
 
-    with_mock(
-        "MsIO:::.is_spectra_installed" = function() FALSE,
-        expect_error(readAlabasterSpectra(pth), "'Spectra' missing")
+    with_mocked_bindings(
+        ".is_spectra_installed" = function() FALSE,
+        code = expect_error(readAlabasterSpectra(pth), "'Spectra' missing")
     )
 
     ## save/load empty object

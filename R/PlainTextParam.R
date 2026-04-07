@@ -27,6 +27,8 @@
 #'
 #' - `MsBackendMzR` object, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsBackendCached` object, defined in the
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #' - `MsBackendMetaboLights` object, defined in the
 #'   [*MsBackendMetaboLights*](https://bioconductor.org/packages/MsBackendMetaboLights)
 #'   package.
@@ -56,6 +58,9 @@
 #'   file cache. Thus `offline = TRUE` does not need an active internet
 #'   connection, but fails if one of more files are not cached locally.
 #'
+#' @param password For `readMsObject()` for `MsBackendOfflineSql`: the password
+#'   for the database connection in case it is required.
+#'
 #' @param ... Additional parameters passed down to internal functions. E.g.
 #'   parameter `spectraPath` (see above).
 #'
@@ -66,7 +71,6 @@
 #' plain text files to a folder. The `readMsObject()` method returns the
 #' restored data as an instance of the class specified with parameter `object`.
 #'
-#'
 #' @section On-disk storage for `MsBackendMzR` objects:
 #'
 #' For `MsBackendMzR` objects, defined in the `Spectra` package, the following
@@ -76,6 +80,18 @@
 #'   named *ms_backend_data.txt*. Each row of this tab-delimited text file
 #'   corresponds to a spectrum with its respective metadata in the columns.
 #'
+#' @section On-disk storage for `MsBackendCached` objects:
+#'
+#' For `MsBackendCached` objects the following files are stored:
+#'
+#' - The `data.frame` in the object's `@localData` slot with the cached content
+#'   for spectra variables. This `data.frame` is stored to a file
+#'   `"ms_backend_data.txt"`.
+#' - The `character` vector in the object's `@spectraVariables` slot with the
+#'   set of supported and available spectra variables. This is stored (tab
+#'   separated) to a file `"ms_backend_spectra_variables.txt"`.
+#' - The `integer(1)` in the object's `@nspectra` slot defining the number of
+#'   spectra, saved to `"ms_backend_nspectra.txt"`.
 #'
 #' @section On-disk storage for `MsBackendMetaboLights` objects:
 #'
@@ -84,6 +100,19 @@
 #' the `mtbls_sync()` function is called to check for presence of all MS data
 #' files and, if missing, re-download them from the *MetaboLights* repository.
 #'
+#' @section On-disk storage for `MsBackendOfflineSql` objects:
+#'
+#' The `MsBackendOfflineSql` backends provide an interface for MS data stored
+#' in an SQL database. Text file-based on-disk storage of such a backend will
+#' only save information on the database connection (such as the database name
+#' and eventually the user name, host and port), the IDs of the references
+#' spectra (in case the data was subset or reordered) and eventually present
+#' cached data (see `MsBackendCached` above). These are stored in files
+#' `"ms_backend_dbinfo.txt"`, `"ms_backend_spectra_ids"` and
+#' `"ms_backend_drv.txt"` (as well as files written by `MsBackendCached`). Note
+#' that no password is stored, hence, if required, the password for the
+#' database connection needs to be provided by the `readMsObject()` call with
+#' parameter `password`.
 #'
 #' @section On-disk storage for `Spectra` objects:
 #'
@@ -107,7 +136,6 @@
 #'   the `saveMsObject()` method of the respective backend type. Currently
 #'   only backends for which the `saveMsObject()` method is implemented (see
 #'   above) are supported.
-#'
 #'
 #' @section On-disk storage for `MsExperiment` objects:
 #'
@@ -140,8 +168,6 @@
 #'   content is exported to the same folder using a `saveMsObject()` call on
 #'   it (see above for details of exporting `Spectra` objects to text files).
 #'
-#'
-#'
 #' @section On-disk storage for `XcmsExperiment` objects:
 #'
 #' For `XcmsExperiment` objects, defined in the *xcms* package, the exported
@@ -173,7 +199,7 @@
 #'   `MsExperiment` (see above for more information).
 #'
 #'
-#' @author Philippine Louail
+#' @author Philippine Louail, Johannes Rainer
 #'
 #' @importFrom methods new
 #'
@@ -184,8 +210,8 @@
 #' ## Export and import a `Spectra` object:
 #'
 #' library(Spectra)
-#' library(msdata)
-#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' library(MsDataHub)
+#' fl <- MsDataHub::PestMix1_DDA.mzML()
 #' sps <- Spectra(fl)
 #'
 #' ## Export the object to a temporary directory

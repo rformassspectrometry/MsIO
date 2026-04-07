@@ -27,8 +27,13 @@
 #'
 #' - `MsBackendMzR`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+#' - `MsBackendCached`, defined in the
+#'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 #' - `MsBackendMetaboLights`, defined in the
 #'   [*MsBackendMetaboLights*](https://github.com/RforMassSpectrometry/MsBackendMetaboLights)
+#'   package.
+#' - `MsBackendOfflineSql`, defined in the
+#'   [*MsBackendSql*](https://github.com/RforMassSpectrometry/MsBackendSql)
 #'   package.
 #' - `Spectra`, defined in the
 #'   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
@@ -74,6 +79,9 @@
 #'     internet connection, but fails if one of more files are not cached
 #'     locally.
 #'
+#' @param password For `readMsObject()` and `MsBackendOfflineSql()` backends:
+#'     `character(1)` with the password for the database if required.
+#'
 #' @param ... optional additional parameters passed to the downstream
 #'     functions, such as for example `spectraPath` described above.
 #'
@@ -108,6 +116,15 @@
 #' below for details.
 #'
 #'
+#' @section On-disk storage for `MsBackendCached` objects:
+#'
+#' `MsBackendCached` objects can be saved and restored with the same
+#' functionality as described for `MsBackendMzR`. The content of the object's
+#' slots is stored into subfolders `"local_data"`, `"spectra_variables"` and
+#' `"nspectra"` using the default *alabaster*-based export functionality for
+#' the respective type of data.
+#'
+#'
 #' @section On-disk storage for `MsBackendMetaboLights` objects:
 #'
 #' The `MsBackendMetaboLights` extends the `MsBackendMzR` backend and hence the
@@ -115,6 +132,16 @@
 #' the `mtbls_sync()` function is called to check for presence of all MS data
 #' files and, if missing, re-download them from the *MetaboLights* repository
 #' (if parameter `offline = FALSE` is used).
+#'
+#'
+#' @section On-disk storage for `MsBackendOfflineSql` objects:
+#'
+#' The `MsBackendOfflineSql` backend allows to retrieve MS data from an SQL
+#' database. When serialized with `saveObject()` or `saveMsObject()` only the
+#' database connection information is saved, but no MS data (except the locally
+#' cached spectra variables; see `MsBackendCached` above for details). To load
+#' and use a serialized `MsBackendOfflineSql` thus also the database needs to
+#' be available.
 #'
 #'
 #' @section On-disk storage for `Spectra` objects:
@@ -217,8 +244,8 @@
 #' ####
 #'
 #' library(Spectra)
-#' library(msdata)
-#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' library(MsDataHub)
+#' fl <- MsDataHub::PestMix1_DDA.mzML()
 #' be <- backendInitialize(MsBackendMzR(), fl)
 #' be
 #'

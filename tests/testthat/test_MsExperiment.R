@@ -77,9 +77,10 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     expect_error(saveObject(m, pth), "QFeatures' in the qdata slot")
 
     m@qdata <- SummarizedExperiment()
-    with_mock(
-        "MsIO:::.is_alabaster_se_installed" = function() FALSE,
-        expect_error(saveObject(m, pth), "'SummarizedExperiment' objects")
+    with_mocked_bindings(
+        ".is_alabaster_se_installed" = function() FALSE,
+        code = expect_error(saveObject(m, pth),
+                            "'SummarizedExperiment' objects")
     )
 
     ## Empty object.
@@ -89,17 +90,17 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
                       "sample_data_links_mcols", "metadata",
                       "experiment_files", "other_data") %in% dir(pth)))
     expect_true(!any(dir(pth) %in% c("spectra", "qdata")))
-    expect_silent(MsIO:::validateAlabasterMsExperiment(pth))
-    res <- MsIO:::readAlabasterMsExperiment(pth)
+    expect_silent(validateAlabasterMsExperiment(pth))
+    res <- readAlabasterMsExperiment(pth)
     expect_equal(res, m)
 
     ## Non-empty object with SampleDataLinks and Spectra
     m <- mse_filt
     expect_error(saveObject(m, pth), "existing")
     unlink(pth, recursive = TRUE)
-    with_mock(
-        "MsIO:::.is_alabaster_matrix_installed" = function() FALSE,
-        expect_error(saveObject(m, pth), "alabaster.matrix' missing")
+    with_mocked_bindings(
+        ".is_alabaster_matrix_installed" = function() FALSE,
+        code = expect_error(saveObject(m, pth), "alabaster.matrix' missing")
     )
     m_2 <- m
     slot(m_2, "spectra", check = FALSE) <- AlabasterParam()
@@ -147,13 +148,14 @@ test_that("saveObject,MsExperiment,readAlabasterMsExperiment etc works", {
     expect_equal(colData(res@qdata), colData(se))
     expect_equal(assay(res@qdata)[[1L]], assay(se)[[1L]])
 
-    with_mock(
-        "MsIO:::.is_ms_experiment_installed" = function() FALSE,
-        expect_error(readAlabasterMsExperiment(pth), "'MsExperiment' missing")
+    with_mocked_bindings(
+        ".is_ms_experiment_installed" = function() FALSE,
+        code = expect_error(readAlabasterMsExperiment(pth),
+                            "'MsExperiment' missing")
     )
-    with_mock(
-        "MsIO:::.is_alabaster_se_installed" = function() FALSE,
-        expect_error(readAlabasterMsExperiment(pth), "alabaster.se' not")
+    with_mocked_bindings(
+        ".is_alabaster_se_installed" = function() FALSE,
+        code = expect_error(readAlabasterMsExperiment(pth), "alabaster.se' not")
     )
     l <- readLines(file.path(pth, "qdata", "OBJECT"))
     l <- sub("summarized_experiment", "q_features", l)
@@ -213,14 +215,14 @@ test_that("readMsObject,MsExperiment,MetaboLightsParam works", {
     p <- MetaboLightsParam(mtblsId = "MTBLS39", filePattern = "63A.cdf",
                            assayName = "aa")
     expect_error(readMsObject(MsExperiment::MsExperiment(), p), "not exist.")
-    with_mock(
-        "MsIO:::.is_ms_backend_metabo_lights_installed" = function() FALSE,
-        expect_error(readMsObject(MsExperiment::MsExperiment(), p),
-                     "'MsBackendMetaboLights'")
+    with_mocked_bindings(
+        ".is_ms_backend_metabo_lights_installed" = function() FALSE,
+        code = expect_error(readMsObject(MsExperiment::MsExperiment(), p),
+                            "'MsBackendMetaboLights'")
     )
-    with_mock(
-        "MsIO:::.is_spectra_installed" = function() FALSE,
-        expect_error(readMsObject(MsExperiment::MsExperiment(), p),
-                     "'Spectra' is missing")
+    with_mocked_bindings(
+        ".is_spectra_installed" = function() FALSE,
+        code = expect_error(readMsObject(MsExperiment::MsExperiment(), p),
+                            "'Spectra' is missing")
     )
 })

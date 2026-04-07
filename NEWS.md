@@ -1,5 +1,18 @@
 # Version 0.0
 
+## Changes in 0.0.15
+
+- Add support to save and read `MsBackendSql::MsBackendOfflineSql` objects.
+
+## Changes in 0.0.14
+
+- Add support to save and read `Spectra::MsBackendCached` objects.
+
+## Changes in 0.0.13
+
+- Load test files from the *MsDataHub* package and drop dependency on the
+  *msdata* package.
+
 ## Changes in 0.0.12
 
 - Fix reading of sample and assay information tables from MetaboLights for
