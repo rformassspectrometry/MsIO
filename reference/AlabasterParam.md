@@ -18,8 +18,15 @@ and `readObject()` directly on these objects:
 - `MsBackendMzR`, defined in the
   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 
+- `MsBackendCached`, defined in the
+  [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+
 - `MsBackendMetaboLights`, defined in the
   [*MsBackendMetaboLights*](https://github.com/RforMassSpectrometry/MsBackendMetaboLights)
+  package.
+
+- `MsBackendOfflineSql`, defined in the
+  [*MsBackendSql*](https://github.com/RforMassSpectrometry/MsBackendSql)
   package.
 
 - `Spectra`, defined in the
@@ -56,6 +63,15 @@ various supported MS data objects are listed in the following sections.
 ``` r
 AlabasterParam(path = tempdir())
 
+# S4 method for class 'MsBackendCached'
+saveObject(x, path, ...)
+
+# S4 method for class 'MsBackendCached,AlabasterParam'
+saveMsObject(object, param)
+
+# S4 method for class 'MsBackendCached,AlabasterParam'
+readMsObject(object, param)
+
 # S4 method for class 'MsBackendMetaboLights'
 saveObject(x, path, ...)
 
@@ -73,6 +89,15 @@ saveMsObject(object, param)
 
 # S4 method for class 'MsBackendMzR,AlabasterParam'
 readMsObject(object, param, spectraPath = character())
+
+# S4 method for class 'MsBackendOfflineSql'
+saveObject(x, path, ...)
+
+# S4 method for class 'MsBackendOfflineSql,AlabasterParam'
+saveMsObject(object, param)
+
+# S4 method for class 'MsBackendOfflineSql,AlabasterParam'
+readMsObject(object, param, password = character())
 
 # S4 method for class 'MsExperiment'
 saveObject(x, path, ...)
@@ -155,6 +180,13 @@ readMsObject(object, param, ...)
   [`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
   functions for other classes (such as `Spectra`, `MsExperiment` etc).
 
+- password:
+
+  For
+  [`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
+  and `MsBackendOfflineSql()` backends: `character(1)` with the password
+  for the database if required.
+
 ## Value
 
 For `AlabasterParam()`: an instance of `AlabasterParam` class. For
@@ -190,6 +222,14 @@ spectra). Each sub-folder contains also an *OBJECT* file defining the
 object's type and an additional file (in HDF5 format) containing the
 data. See examples below for details.
 
+## On-disk storage for `MsBackendCached` objects
+
+`MsBackendCached` objects can be saved and restored with the same
+functionality as described for `MsBackendMzR`. The content of the
+object's slots is stored into subfolders `"local_data"`,
+`"spectra_variables"` and `"nspectra"` using the default
+*alabaster*-based export functionality for the respective type of data.
+
 ## On-disk storage for `MsBackendMetaboLights` objects
 
 The `MsBackendMetaboLights` extends the `MsBackendMzR` backend and hence
@@ -197,6 +237,16 @@ the same files are stored. When a `MsBackendMetaboLights` object is
 restored, the `mtbls_sync()` function is called to check for presence of
 all MS data files and, if missing, re-download them from the
 *MetaboLights* repository (if parameter `offline = FALSE` is used).
+
+## On-disk storage for `MsBackendOfflineSql` objects
+
+The `MsBackendOfflineSql` backend allows to retrieve MS data from an SQL
+database. When serialized with `saveObject()` or
+[`saveMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
+only the database connection information is saved, but no MS data
+(except the locally cached spectra variables; see `MsBackendCached`
+above for details). To load and use a serialized `MsBackendOfflineSql`
+thus also the database needs to be available.
 
 ## On-disk storage for `Spectra` objects
 
@@ -354,8 +404,13 @@ library(Spectra)
 #> 
 #>     I, expand.grid, unname
 #> Loading required package: BiocParallel
-library(msdata)
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+library(MsDataHub)
+#> Registered S3 method overwritten by 'bit64':
+#>   method          from 
+#>   print.bitstring tools
+fl <- MsDataHub::PestMix1_DDA.mzML()
+#> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
+#> loading from cache
 be <- backendInitialize(MsBackendMzR(), fl)
 be
 #> MsBackendMzR with 7602 spectra
@@ -375,7 +430,7 @@ be
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 ## Export the object to a temporary directory using the alabaster framework;
 ## the equivalent command using the parameter object would be
@@ -409,7 +464,7 @@ be_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 ## Alternatively, the data could be restored also using
 be_in <- readMsObject(MsBackendMzR(), AlabasterParam(d))
@@ -468,7 +523,7 @@ s_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 ## Alternatively, it would also be possible to just import the
 ## `MsBackendMzR` of the `Spectra`:
@@ -491,7 +546,7 @@ be_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 
 ########
@@ -547,7 +602,7 @@ m_in
 ## package.
 library(xcms)
 #> 
-#> This is xcms version 4.9.0 
+#> This is xcms version 4.9.2 
 x <- loadXcmsData()
 x
 #> Object of class XcmsExperiment 

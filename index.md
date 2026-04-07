@@ -1,11 +1,11 @@
 # MsIO
 
 [![Project Status:
-Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)  
-[![R-CMD-check-bioc](https://github.com/RforMassSpectrometry/MsIO/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RforMassSpectrometry/MsIO/actions?query=workflow%3AR-CMD-check-bioc)  
-[![codecov](https://codecov.io/gh/rformassspectrometry/MsIO/graph/badge.svg?token=M4yYzef5mK)](https://codecov.io/gh/rformassspectrometry/MsIO)  
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)\
+[![R-CMD-check-bioc](https://github.com/RforMassSpectrometry/MsIO/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RforMassSpectrometry/MsIO/actions?query=workflow%3AR-CMD-check-bioc)\
+[![codecov](https://codecov.io/gh/rformassspectrometry/MsIO/graph/badge.svg?token=M4yYzef5mK)](https://codecov.io/gh/rformassspectrometry/MsIO)\
 [![:name status
-badge](https://rformassspectrometry.r-universe.dev/badges/:name)](https://rformassspectrometry.r-universe.dev/)  
+badge](https://rformassspectrometry.r-universe.dev/badges/:name)](https://rformassspectrometry.r-universe.dev/)\
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
 ------------------------------------------------------------------------
@@ -31,10 +31,10 @@ software ecosystems.
 ## Key Features
 
 - 📦 Export/import **MS analysis results objects** across interoperable
-  file formats  
-- 🧩 Modular design via S4 **parameter classes** and generic methods  
+  file formats\
+- 🧩 Modular design via S4 **parameter classes** and generic methods\
 - 🔄 Integration with [Bioconductor](https://bioconductor.org) packages
-  like **Spectra**, **MsExperiment**, **xcms**, and **alabaster.base**  
+  like **Spectra**, **MsExperiment**, **xcms**, and **alabaster.base**\
 - 🔧 Support for plain text, JSON+HDF5, mzTab-M, and MetaboLights
   repository data
 
@@ -44,7 +44,7 @@ software ecosystems.
 
 ### Generic Methods
 
-- `saveMsObject(object, param)`  
+- `saveMsObject(object, param)`\
 - `readMsObject(object, param)`
 
 These methods delegate the actual file handling based on the class of
@@ -100,8 +100,8 @@ follow the same structure.
 
 Future development directions include:
 
-- 🔄 **Import mzTab-M** into `SummarizedExperiment`  
-- 🔄 **Import mzTab-M** into `QFeatures`  
+- 🔄 **Import mzTab-M** into `SummarizedExperiment`\
+- 🔄 **Import mzTab-M** into `QFeatures`\
 - 🔄 **Generic ISA-tab** import integration (if justified)
 
 We welcome and encourage contributions — see below for how to get
@@ -135,8 +135,8 @@ If you’re planning to contribute:
 
 ## License
 
-This package is licensed under the **Artistic 2.0 License**:  
+This package is licensed under the **Artistic 2.0 License**:\
 📄 <https://opensource.org/licenses/Artistic-2.0>
 
-Documentation (manuals, vignettes) is licensed under **CC BY-SA 4.0**:  
+Documentation (manuals, vignettes) is licensed under **CC BY-SA 4.0**:\
 📄 <https://creativecommons.org/licenses/by-sa/4.0/>

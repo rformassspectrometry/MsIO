@@ -2,6 +2,31 @@
 
 ## Version 0.0
 
+### Changes in 0.0.15
+
+- Add support to save and read
+  [`MsBackendSql::MsBackendOfflineSql`](https://rdrr.io/pkg/MsBackendSql/man/MsBackendOfflineSql.html)
+  objects.
+
+### Changes in 0.0.14
+
+- Add support to save and read
+  [`Spectra::MsBackendCached`](https://rdrr.io/pkg/Spectra/man/MsBackendCached.html)
+  objects.
+
+### Changes in 0.0.13
+
+- Load test files from the *MsDataHub* package and drop dependency on
+  the *msdata* package.
+
+### Changes in 0.0.12
+
+- Fix reading of sample and assay information tables from MetaboLights
+  for
+  [`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
+  with
+  [`MetaboLightsParam()`](https://rformassspectrometry.github.io/MsIO/reference/MetaboLightsParam.md).
+
 ### Changes in 0.0.11
 
 - Fix error message/check for

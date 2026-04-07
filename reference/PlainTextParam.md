@@ -25,6 +25,9 @@ parameter are:
 - `MsBackendMzR` object, defined in the
   [*Spectra*](https://bioconductor.org/packages/Spectra) package.
 
+- `MsBackendCached` object, defined in the
+  [*Spectra*](https://bioconductor.org/packages/Spectra) package.
+
 - `MsBackendMetaboLights` object, defined in the
   [*MsBackendMetaboLights*](https://bioconductor.org/packages/MsBackendMetaboLights)
   package.
@@ -47,6 +50,12 @@ exported files.
 ``` r
 PlainTextParam(path = tempdir())
 
+# S4 method for class 'MsBackendCached,PlainTextParam'
+saveMsObject(object, param)
+
+# S4 method for class 'MsBackendCached,PlainTextParam'
+readMsObject(object, param)
+
 # S4 method for class 'MsBackendMetaboLights,PlainTextParam'
 readMsObject(object, param, offline = FALSE)
 
@@ -55,6 +64,12 @@ saveMsObject(object, param)
 
 # S4 method for class 'MsBackendMzR,PlainTextParam'
 readMsObject(object, param, spectraPath = character())
+
+# S4 method for class 'MsBackendOfflineSql,PlainTextParam'
+saveMsObject(object, param)
+
+# S4 method for class 'MsBackendOfflineSql,PlainTextParam'
+readMsObject(object, param, password = character())
 
 # S4 method for class 'MsExperiment,PlainTextParam'
 saveMsObject(object, param)
@@ -117,6 +132,13 @@ readMsObject(object, param, ...)
   [`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
   functions for other classes (such as `Spectra`, `MsExperiment` etc).
 
+- password:
+
+  For
+  [`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
+  for `MsBackendOfflineSql`: the password for the database connection in
+  case it is required.
+
 - ...:
 
   Additional parameters passed down to internal functions. E.g.
@@ -143,6 +165,21 @@ following file is stored:
   *ms_backend_data.txt*. Each row of this tab-delimited text file
   corresponds to a spectrum with its respective metadata in the columns.
 
+## On-disk storage for `MsBackendCached` objects
+
+For `MsBackendCached` objects the following files are stored:
+
+- The `data.frame` in the object's `@localData` slot with the cached
+  content for spectra variables. This `data.frame` is stored to a file
+  `"ms_backend_data.txt"`.
+
+- The `character` vector in the object's `@spectraVariables` slot with
+  the set of supported and available spectra variables. This is stored
+  (tab separated) to a file `"ms_backend_spectra_variables.txt"`.
+
+- The `integer(1)` in the object's `@nspectra` slot defining the number
+  of spectra, saved to `"ms_backend_nspectra.txt"`.
+
 ## On-disk storage for `MsBackendMetaboLights` objects
 
 The `MsBackendMetaboLights` extends the `MsBackendMzR` backend and hence
@@ -150,6 +187,21 @@ the same files are stored. When a `MsBackendMetaboLights` object is
 restored, the `mtbls_sync()` function is called to check for presence of
 all MS data files and, if missing, re-download them from the
 *MetaboLights* repository.
+
+## On-disk storage for `MsBackendOfflineSql` objects
+
+The `MsBackendOfflineSql` backends provide an interface for MS data
+stored in an SQL database. Text file-based on-disk storage of such a
+backend will only save information on the database connection (such as
+the database name and eventually the user name, host and port), the IDs
+of the references spectra (in case the data was subset or reordered) and
+eventually present cached data (see `MsBackendCached` above). These are
+stored in files `"ms_backend_dbinfo.txt"`, `"ms_backend_spectra_ids"`
+and `"ms_backend_drv.txt"` (as well as files written by
+`MsBackendCached`). Note that no password is stored, hence, if required,
+the password for the database connection needs to be provided by the
+[`readMsObject()`](https://rformassspectrometry.github.io/MsIO/reference/saveMsObject.md)
+call with parameter `password`.
 
 ## On-disk storage for `Spectra` objects
 
@@ -269,7 +321,7 @@ Other MS object export and import formats.:
 
 ## Author
 
-Philippine Louail
+Philippine Louail, Johannes Rainer
 
 ## Examples
 
@@ -278,8 +330,10 @@ Philippine Louail
 ## Export and import a `Spectra` object:
 
 library(Spectra)
-library(msdata)
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+library(MsDataHub)
+fl <- MsDataHub::PestMix1_DDA.mzML()
+#> see ?MsDataHub and browseVignettes('MsDataHub') for documentation
+#> loading from cache
 sps <- Spectra(fl)
 
 ## Export the object to a temporary directory
@@ -320,7 +374,7 @@ sps_in
 #>  ... 27 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 ## Check that the data is the same
 all.equal(rtime(sps), rtime(sps_in))
@@ -349,7 +403,7 @@ be
 #>  ... 27 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 
 ## The export functionality also ensures that the data/object can be
 ## completely restored, i.e., for `Spectra` objects also their
@@ -402,11 +456,11 @@ sps_filt
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 #> Lazy evaluation queue: 1 processing step(s)
 #> Processing:
-#>  Filter: select retention time [400..600] on MS level(s)  [Wed Nov  5 06:55:37 2025]
-#>  Filter: select peaks with an m/z within [200, 300] [Wed Nov  5 06:55:37 2025] 
+#>  Filter: select retention time [400..600] on MS level(s)  [Tue Apr  7 09:03:35 2026]
+#>  Filter: select peaks with an m/z within [200, 300] [Tue Apr  7 09:03:35 2026] 
 sps_in
 #> MSn data (Spectra) with 2054 spectra in a MsBackendMzR backend:
 #>        msLevel     rtime scanIndex
@@ -425,11 +479,11 @@ sps_in
 #>  ... 27 more variables/columns.
 #> 
 #> file(s):
-#> PestMix1_DDA.mzML
+#> 4e852c3dc74d_7861
 #> Lazy evaluation queue: 1 processing step(s)
 #> Processing:
-#>  Filter: select retention time [400..600] on MS level(s)  [Wed Nov  5 06:55:37 2025]
-#>  Filter: select peaks with an m/z within [200, 300] [Wed Nov  5 06:55:37 2025] 
+#>  Filter: select retention time [400..600] on MS level(s)  [Tue Apr  7 09:03:35 2026]
+#>  Filter: select peaks with an m/z within [200, 300] [Tue Apr  7 09:03:35 2026] 
 
 ## Same number of spectra
 length(sps_filt)
