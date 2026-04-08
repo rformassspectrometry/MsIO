@@ -327,4 +327,4 @@ setMethod("readMsObject",
     x
 }
 
-.RETRY_PATTERN <- "temp|connection"
+.RETRY_PATTERN <- "temp|connect"
