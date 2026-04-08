@@ -215,6 +215,8 @@ setMethod("readMsObject", signature(object = "MsExperiment",
 ################################################################################
 #' @rdname MetaboLightsParam
 #' @importFrom utils menu
+#'
+#' @importFrom MsCoreUtils retry
 setMethod("readMsObject",
           signature(object = "MsExperiment",
                     param = "MetaboLightsParam"),
@@ -250,23 +252,18 @@ setMethod("readMsObject",
                   }
               }
 
-              assay_data <- MsBackendMetaboLights::retry(
-                                read.table(paste0(pth, selected_assay),
-                                           header = TRUE, sep = "\t",
-                                           check.names = FALSE,
-                                           comment.char = "",
-                                           quote = ""),
-                                ntimes = 5, sleep_mult = 7)
+              assay_data <- retry(
+                  read.table(paste0(pth, selected_assay), header = TRUE,
+                             sep = "\t", check.names = FALSE, comment.char = "",
+                             quote = ""),
+                  ntimes = 5, sleep_mult = 7, retry_on = .RETRY_PATTERN)
 
               ## Extract and read sample info files
               s_files <- all_fls[grepl("^s_", all_fls)]
-              sample_info <- MsBackendMetaboLights::retry(
-                                 read.table(paste0(pth, s_files),
-                                            header = TRUE, sep = "\t",
-                                            check.names = FALSE,
-                                            comment.char = "",
-                                            quote = ""),
-                                 ntimes = 5, sleep_mult = 7)
+              sample_info <- retry(
+                  read.table(paste0(pth, s_files), header = TRUE, sep = "\t",
+                             check.names = FALSE, comment.char = "",quote = ""),
+                  ntimes = 5, sleep_mult = 7, retry_on = .RETRY_PATTERN)
 
               ## merging
               ord <- match(assay_data$`Sample Name`, sample_info$`Sample Name`)
@@ -329,3 +326,5 @@ setMethod("readMsObject",
     }
     x
 }
+
+.RETRY_PATTERN <- "temporary"

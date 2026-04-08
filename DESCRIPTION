@@ -1,6 +1,6 @@
 Package: MsIO
 Title: Serializing and restoring/importing mass spectrometry data objects
-Version: 0.0.15
+Version: 0.0.16
 Authors@R:
     c(person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
@@ -30,7 +30,8 @@ Imports:
     methods,
     S4Vectors,
     ProtGenerics,
-    alabaster.base
+    alabaster.base,
+    MsCoreUtils (>= 1.23.7)
 Suggests:
     BiocStyle (>= 2.5.19),
     faahKO,
