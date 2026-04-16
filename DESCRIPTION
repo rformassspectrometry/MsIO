@@ -31,7 +31,7 @@ Imports:
     S4Vectors,
     ProtGenerics,
     alabaster.base,
-    MsCoreUtils (>= 1.23.7)
+    MsCoreUtils (>= 1.23.8)
 Suggests:
     BiocStyle (>= 2.5.19),
     faahKO,
