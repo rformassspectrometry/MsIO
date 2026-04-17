@@ -118,6 +118,28 @@ test_that("reading/writing MsBackendOfflineSql with alabaster works", {
     unlink(p, recursive = TRUE)
 })
 
+test_that("readObject dispatches to MsBackendOfflineSql, not MsBackendCached", {
+    p <- file.path(tempdir(), "offline_sql")
+
+    ## Empty data
+    unlink(p, recursive = TRUE)
+    a <- MsBackendOfflineSql()
+    saveObject(a, p)
+    res <- readObject(p)
+    expect_s4_class(res, "MsBackendOfflineSql")
+    expect_equal(a, res)
+
+    ## Real data
+    unlink(p, recursive = TRUE)
+    a <- s@backend
+    saveObject(a, p)
+    res <- readObject(p)
+    expect_s4_class(res, "MsBackendOfflineSql")
+    expect_equal(a, res)
+
+    unlink(p, recursive = TRUE)
+})
+
 test_that("saveMsObject/readMsObject MsBackendOfflineSql and AlabasterParam", {
     p <- file.path(tempdir(), "offline_sql")
 
