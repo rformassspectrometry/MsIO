@@ -2,6 +2,10 @@
 
 ## Version 0.0
 
+### Changes in 0.0.16
+
+- Import `retry()` function from *MsCoreUtils*.
+
 ### Changes in 0.0.15
 
 - Add support to save and read

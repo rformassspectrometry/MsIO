@@ -5,7 +5,7 @@
 <https://orcid.org/0000-0002-6977-7147>), Philippine Louail \[aut\]
 (ORCID: <https://orcid.org/0009-0007-5429-6846>), Laurent Gatto \[ctb\]
 (ORCID: <https://orcid.org/0000-0002-1520-2268>)\
-**Compiled**: Tue Apr 7 09:03:37 2026
+**Compiled**: Fri Apr 17 13:44:49 2026
 
 ## Introduction
 
@@ -245,8 +245,8 @@ s
     ##  ... 27 more variables/columns.
     ## 
     ## file(s):
-    ## 4e852c3dc74d_7861
-    ## 4e8514c02dfc_7862
+    ## 5f0b3899848f_7861
+    ## 5f0b37894d7a_7862
 
 Or even only the `MsBackendMzR` that is used by the `Spectra` object to
 represent the MS data.
@@ -274,8 +274,8 @@ be
     ##  ... 27 more variables/columns.
     ## 
     ## file(s):
-    ## 4e852c3dc74d_7861
-    ## 4e8514c02dfc_7862
+    ## 5f0b3899848f_7861
+    ## 5f0b37894d7a_7862
 
 ## *alabaster*-based formats
 
@@ -385,8 +385,8 @@ s
     ##  ... 34 more variables/columns.
     ## 
     ## file(s):
-    ## 4e852c3dc74d_7861
-    ## 4e8514c02dfc_7862
+    ## 5f0b3899848f_7861
+    ## 5f0b37894d7a_7862
 
 The import/export functionality is completely compatible with
 Bioconductor’s alabaster framework and hence allows also to read the
@@ -421,8 +421,8 @@ readObject(path = file.path(d, "sample_data"))
     ## DataFrame with 2 rows and 3 columns
     ##                            name        mode spectraOrigin
     ##                     <character> <character>   <character>
-    ## 4e852c3dc74d_7861 Pestmix1 D...         DDA /github/ho...
-    ## 4e8514c02dfc_7862 Pestmix SW...       SWATH /github/ho...
+    ## 5f0b3899848f_7861 Pestmix1 D...         DDA /github/ho...
+    ## 5f0b37894d7a_7862 Pestmix SW...       SWATH /github/ho...
 
 ## Loading data from *MetaboLights*
 
@@ -622,7 +622,7 @@ We can see that it is much simpler.
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-04-05 r89793)
+    ## R Under development (unstable) (2026-04-12 r89873)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
@@ -646,24 +646,24 @@ sessionInfo()
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] Spectra_1.21.6      BiocParallel_1.45.0 S4Vectors_0.49.1   
-    ##  [4] BiocGenerics_0.57.0 generics_0.1.4      MsDataHub_1.11.2   
-    ##  [7] MsExperiment_1.13.1 ProtGenerics_1.43.0 MsIO_0.0.15        
+    ##  [1] Spectra_1.21.7      BiocParallel_1.45.0 S4Vectors_0.49.1-1 
+    ##  [4] BiocGenerics_0.57.0 generics_0.1.4      MsDataHub_1.11.3   
+    ##  [7] MsExperiment_1.13.1 ProtGenerics_1.43.0 MsIO_0.0.16        
     ## [10] BiocStyle_2.39.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] DBI_1.3.0                   httr2_1.2.2                
     ##   [3] rlang_1.2.0                 magrittr_2.0.5             
     ##   [5] clue_0.3-68                 otel_0.2.0                 
-    ##   [7] MsBackendMetaboLights_1.5.2 matrixStats_1.5.0          
+    ##   [7] MsBackendMetaboLights_1.5.3 matrixStats_1.5.0          
     ##   [9] compiler_4.7.0              RSQLite_2.4.6              
     ##  [11] png_0.1-9                   systemfonts_1.3.2          
-    ##  [13] vctrs_0.7.2                 reshape2_1.4.5             
+    ##  [13] vctrs_0.7.3                 reshape2_1.4.5             
     ##  [15] stringr_1.6.0               crayon_1.5.3               
     ##  [17] pkgconfig_2.0.3             MetaboCoreUtils_1.19.2     
     ##  [19] fastmap_1.2.0               dbplyr_2.5.2               
     ##  [21] XVector_0.51.0              rmarkdown_2.31             
-    ##  [23] ragg_1.5.2                  purrr_1.2.1                
+    ##  [23] ragg_1.5.2                  purrr_1.2.2                
     ##  [25] bit_4.6.0                   xfun_0.57                  
     ##  [27] MultiAssayExperiment_1.37.4 cachem_1.1.0               
     ##  [29] jsonlite_2.0.0              progress_1.2.3             
@@ -672,8 +672,8 @@ sessionInfo()
     ##  [35] prettyunits_1.2.0           parallel_4.7.0             
     ##  [37] cluster_2.1.8.2             R6_2.6.1                   
     ##  [39] bslib_0.10.0                stringi_1.8.7              
-    ##  [41] GenomicRanges_1.63.1        jquerylib_0.1.4            
-    ##  [43] Rcpp_1.1.1                  Seqinfo_1.1.0              
+    ##  [41] GenomicRanges_1.63.2        jquerylib_0.1.4            
+    ##  [43] Rcpp_1.1.1-1                Seqinfo_1.1.0              
     ##  [45] bookdown_0.46               SummarizedExperiment_1.41.1
     ##  [47] knitr_1.51                  IRanges_2.45.0             
     ##  [49] Matrix_1.7-5                igraph_2.2.3               
@@ -681,28 +681,28 @@ sessionInfo()
     ##  [53] yaml_2.3.12                 codetools_0.2-20           
     ##  [55] curl_7.0.0                  lattice_0.22-9             
     ##  [57] tibble_3.3.1                plyr_1.8.9                 
-    ##  [59] withr_3.0.2                 KEGGREST_1.51.1            
-    ##  [61] Biobase_2.71.0              evaluate_1.0.5             
+    ##  [59] withr_3.0.2                 Biobase_2.71.0             
+    ##  [61] KEGGREST_1.51.1             evaluate_1.0.5             
     ##  [63] desc_1.4.3                  BiocFileCache_3.1.0        
     ##  [65] alabaster.schemas_1.11.0    Biostrings_2.79.5          
     ##  [67] ExperimentHub_3.1.0         pillar_1.11.1              
     ##  [69] BiocManager_1.30.27         filelock_1.0.3             
     ##  [71] MatrixGenerics_1.23.0       ncdf4_1.24                 
     ##  [73] hms_1.1.4                   BiocVersion_3.23.1         
-    ##  [75] alabaster.base_1.11.4       glue_1.8.0                 
+    ##  [75] alabaster.base_1.11.4       glue_1.8.1                 
     ##  [77] alabaster.matrix_1.7.8      lazyeval_0.2.3             
     ##  [79] tools_4.7.0                 AnnotationHub_4.1.0        
     ##  [81] data.table_1.18.2.1         mzR_2.45.1                 
-    ##  [83] QFeatures_1.21.1            fs_2.0.1                   
+    ##  [83] QFeatures_1.21.2            fs_2.0.1                   
     ##  [85] rhdf5_2.55.16               grid_4.7.0                 
-    ##  [87] tidyr_1.3.2                 MsCoreUtils_1.23.6         
-    ##  [89] AnnotationDbi_1.73.0        HDF5Array_1.39.0           
-    ##  [91] cli_3.6.5                   rappdirs_0.3.4             
+    ##  [87] tidyr_1.3.2                 MsCoreUtils_1.23.9         
+    ##  [89] AnnotationDbi_1.73.1        HDF5Array_1.39.1           
+    ##  [91] cli_3.6.6                   rappdirs_0.3.4             
     ##  [93] textshaping_1.0.5           S4Arrays_1.11.1            
     ##  [95] dplyr_1.2.1                 AnnotationFilter_1.35.0    
     ##  [97] sass_0.4.10                 digest_0.6.39              
     ##  [99] SparseArray_1.11.13         htmlwidgets_1.6.4          
     ## [101] memoise_2.0.1               htmltools_0.5.9            
     ## [103] pkgdown_2.2.0.9000          lifecycle_1.0.5            
-    ## [105] h5mread_1.3.2               httr_1.4.8                 
+    ## [105] h5mread_1.3.3               httr_1.4.8                 
     ## [107] bit64_4.6.0-1               MASS_7.3-65
