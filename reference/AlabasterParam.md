@@ -430,7 +430,7 @@ be
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> 12094ad629ae_7861
+#> 126e11c6ae01_7861
 
 ## Export the object to a temporary directory using the alabaster framework;
 ## the equivalent command using the parameter object would be
@@ -464,7 +464,7 @@ be_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> 12094ad629ae_7861
+#> 126e11c6ae01_7861
 
 ## Alternatively, the data could be restored also using
 be_in <- readMsObject(MsBackendMzR(), AlabasterParam(d))
@@ -523,7 +523,7 @@ s_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> 12094ad629ae_7861
+#> 126e11c6ae01_7861
 
 ## Alternatively, it would also be possible to just import the
 ## `MsBackendMzR` of the `Spectra`:
@@ -546,7 +546,7 @@ be_in
 #>  ... 34 more variables/columns.
 #> 
 #> file(s):
-#> 12094ad629ae_7861
+#> 126e11c6ae01_7861
 
 
 ########

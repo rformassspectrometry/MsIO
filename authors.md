@@ -17,13 +17,13 @@ Source:
 [`DESCRIPTION`](https://github.com/RforMassSpectrometry/MsIO/blob/main/DESCRIPTION)
 
 Rainer J, Louail P (2026). *MsIO: Serializing and restoring/importing
-mass spectrometry data objects*. R package version 0.0.16,
+mass spectrometry data objects*. R package version 0.0.17,
 <https://github.com/RforMassSpectrometry/MsIO>.
 
     @Manual{,
       title = {MsIO: Serializing and restoring/importing mass spectrometry data objects},
       author = {Johannes Rainer and Philippine Louail},
       year = {2026},
-      note = {R package version 0.0.16},
+      note = {R package version 0.0.17},
       url = {https://github.com/RforMassSpectrometry/MsIO},
     }

@@ -5,7 +5,7 @@
 <https://orcid.org/0000-0002-6977-7147>), Philippine Louail \[aut\]
 (ORCID: <https://orcid.org/0009-0007-5429-6846>), Laurent Gatto \[ctb\]
 (ORCID: <https://orcid.org/0000-0002-1520-2268>)\
-**Compiled**: Fri Apr 17 14:37:08 2026
+**Compiled**: Fri Apr 17 14:59:48 2026
 
 ## Introduction
 
@@ -35,7 +35,8 @@ second parameter `param` defines and configures the storage format of
 the MS data. The currently supported formats and the respective
 parameter objects are:
 
-- `PlainTextParam`: storage of data in plain text file format.
+- `PlainTextParam`: storage of data in (a custom) plain text file
+  format.
 - `AlabasterParam`: storage of MS data using Bioconductor’s
   *[alabaster.base](https://bioconductor.org/packages/3.23/alabaster.base)*
   framework based files in HDF5 and JSON format.
@@ -245,8 +246,8 @@ s
     ##  ... 27 more variables/columns.
     ## 
     ## file(s):
-    ## 12094ad629ae_7861
-    ## 120924539036_7862
+    ## 126e11c6ae01_7861
+    ## 126e76144e1b_7862
 
 Or even only the `MsBackendMzR` that is used by the `Spectra` object to
 represent the MS data.
@@ -274,8 +275,8 @@ be
     ##  ... 27 more variables/columns.
     ## 
     ## file(s):
-    ## 12094ad629ae_7861
-    ## 120924539036_7862
+    ## 126e11c6ae01_7861
+    ## 126e76144e1b_7862
 
 ## *alabaster*-based formats
 
@@ -385,8 +386,8 @@ s
     ##  ... 34 more variables/columns.
     ## 
     ## file(s):
-    ## 12094ad629ae_7861
-    ## 120924539036_7862
+    ## 126e11c6ae01_7861
+    ## 126e76144e1b_7862
 
 The import/export functionality is completely compatible with
 Bioconductor’s alabaster framework and hence allows also to read the
@@ -421,8 +422,8 @@ readObject(path = file.path(d, "sample_data"))
     ## DataFrame with 2 rows and 3 columns
     ##                            name        mode spectraOrigin
     ##                     <character> <character>   <character>
-    ## 12094ad629ae_7861 Pestmix1 D...         DDA /github/ho...
-    ## 120924539036_7862 Pestmix SW...       SWATH /github/ho...
+    ## 126e11c6ae01_7861 Pestmix1 D...         DDA /github/ho...
+    ## 126e76144e1b_7862 Pestmix SW...       SWATH /github/ho...
 
 ## Loading data from *MetaboLights*
 
@@ -615,6 +616,11 @@ sampleData(mse)
 
 We can see that it is much simpler.
 
+## Notes and comments
+
+*MsIO* currently does not support serializing *in-memory* MS data, such
+as `Spectra` objects using `MsBackendDataFrame` or `MsBackendMemory`.
+
 ## Session information
 
 ``` r
@@ -648,7 +654,7 @@ sessionInfo()
     ## other attached packages:
     ##  [1] Spectra_1.21.7      BiocParallel_1.45.0 S4Vectors_0.49.1-1 
     ##  [4] BiocGenerics_0.57.0 generics_0.1.4      MsDataHub_1.11.3   
-    ##  [7] MsExperiment_1.13.1 ProtGenerics_1.43.0 MsIO_0.0.16        
+    ##  [7] MsExperiment_1.13.1 ProtGenerics_1.43.0 MsIO_0.0.17        
     ## [10] BiocStyle_2.39.0   
     ## 
     ## loaded via a namespace (and not attached):

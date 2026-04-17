@@ -2,6 +2,11 @@
 
 ## Version 0.0
 
+### Changes in 0.0.17
+
+- Fix import of `MsBackendOfflineSql` from alabaster-based
+  serialization.
+
 ### Changes in 0.0.16
 
 - Import `retry()` function from *MsCoreUtils*.
