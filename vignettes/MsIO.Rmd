@@ -44,7 +44,7 @@ defines type of MS object that should be restored (returned). The second
 parameter `param` defines and configures the storage format of the MS data. The
 currently supported formats and the respective parameter objects are:
 
-- `PlainTextParam`: storage of data in plain text file format.
+- `PlainTextParam`: storage of data in (a custom) plain text file format.
 - `AlabasterParam`: storage of MS data using Bioconductor's
   `r Biocpkg("alabaster.base")` framework based files in HDF5 and JSON format.
 - `mzTabParam`: export of LC-MS analysis results in *mzTab-M* format. Currently
@@ -311,6 +311,11 @@ sampleData(mse)
 
 We can see that it is much simpler.
 
+
+# Notes and comments
+
+*MsIO* currently does not support serializing *in-memory* MS data, such as
+`Spectra` objects using `MsBackendDataFrame` or `MsBackendMemory`.
 
 # Session information
 

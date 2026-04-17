@@ -190,6 +190,19 @@ test_that("saveMsObject/readMsObject MsBackendOfflineSql and AlabasterParam", {
     expect_equal(a@localData, b@localData)
 
     unlink(p, recursive = TRUE)
+
+    ## Save the Spectra with the backend.
+    unlink(p, recursive = TRUE)
+    expect_silent(saveMsObject(s, ap))
+    b <- readMsObject(Spectra(), ap)
+    expect_s4_class(b, "Spectra")
+    expect_equal(mz(s), mz(b))
+    expect_s4_class(b@backend, "MsBackendOfflineSql")
+    b <- readObject(p)
+    expect_s4_class(b, "Spectra")
+    expect_equal(mz(s), mz(b))
+    expect_s4_class(b@backend, "MsBackendOfflineSql")
+    unlink(p, recursive = TRUE)
 })
 
 unlink(dbf)
