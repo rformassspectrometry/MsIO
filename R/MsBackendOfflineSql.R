@@ -97,6 +97,7 @@ setMethod("saveObject", "MsBackendOfflineSql", function(x, path, ...) {
     altSaveObject(as(x, "MsBackendCached"), path, ...)
     info <- readObjectFile(path)
     info$ms_backend_offline_sql <- list(version = "1.0")
+    saveObjectFile(path, "ms_backend_offline_sql", info)
     tryCatch({
         do.call(altSaveObject,
                 list(x = x@dbname, path = file.path(path, "dbname")))
