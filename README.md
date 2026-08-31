@@ -8,6 +8,29 @@
 
 ---
 
+# ⚠️ 🚧
+
+The functionality from this packages is currently being transferred to other
+packages and, once this is completed, *MsIO* will be deprecated.
+
+There will be a dedicated R package with serialization code for each specific
+package, respectively its result object:
+
+- ✅ [*MsStash*](https://github.com/RforMassSpectrometry/MsStash) defining the
+  base methods and parameter classes/storage formats. Available in Bioconductor
+  (version >= 3.24).
+- ✅ [*SpectraStash*](https://github.com/RforMassSpectrometry/SpectraStash)
+  providing storage functionality for `Spectra` and `MsBackend`
+  objects. Submitted to Bioconductor (version >= 3.24).
+- 🔜 [*MsExperimentStash*](https://github.com/RforMassSpectrometry/MsExperimentStash)
+  providing storage functionality for `MsExperiment` objects.
+- 🔜 [*xcmsStash*](https://github.com/RforMassSpectrometry/xcmsStash) providing
+  storage functionality for [*xcms*](https://github.com/sneumann/xcms) result
+  objects.
+- ✅ [*RmzTabM*](https://github.com/RforMassSpectrometry/RmzTabM): core API for
+  writing and reading mzTab-M 2.1 files. Available in Bioconductor (version >=
+  3.24)
+
 ## Overview
 
 **MsIO** provides flexible, language-agnostic import and export capabilities
